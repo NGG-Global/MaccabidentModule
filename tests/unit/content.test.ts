@@ -45,8 +45,15 @@ describe('shipped content', () => {
         }
   });
 
-  it('names S04 narration as missing rather than inventing it', () => {
-    for (let i = 0; i <= 5; i++) expect(content.media[`AUDIO-S04-0${i}`]?.status).toBe('missing');
+  it('uses supplied narration for every S04 station, the chapter closing and the S03 exercise feedback', () => {
+    for (let i = 0; i <= 6; i++) expect(content.media[`AUDIO-S04-0${i}`]?.status).toBe('ready');
+    expect(content.media['AUDIO-S03-FB-01']?.status).toBe('ready');
+    const journey = content.screens.S04!.interaction;
+    expect(journey?.type === 'journey' && journey.completion.sequence).toBe('complete');
+  });
+
+  it('flags the station 3 recording that names the wrong station', () => {
+    expect(content.media['AUDIO-S04-03']?.notes).toContain('השישית');
   });
 
   it('keeps unapproved material flagged as DRAFT', () => {
@@ -106,6 +113,16 @@ describe('content validation', () => {
     const raw = branchingRaw();
     delete (raw.course as { flow: { transitions: Record<string, unknown> } }).flow.transitions.S03;
     expect(problemsOf(() => buildContent(raw)).join('\n')).toContain('role assistant cannot reach the end screen');
+  });
+
+  it('rejects a station point timed after its narration', () => {
+    const raw = branchingRaw();
+    const media = raw.media as Record<string, unknown>[];
+    media.push({ id: 'AUDIO-S07-02', kind: 'audio', status: 'ready', src: 'b.mp3', alt: 'b', durationSec: 3, captionsId: 'AUDIO-S00-01' });
+    const s07 = raw.screens['S07.json'] as { sequences: Record<string, { kind: string; audioId?: string }[]>; interaction: { stages: { points: { text: string; at?: number }[] }[] } };
+    s07.sequences['stage:one']![1]!.audioId = 'AUDIO-S07-02';
+    s07.interaction.stages[0]!.points[0]!.at = 9;
+    expect(problemsOf(() => buildContent(raw)).join('\n')).toContain('is timed after its narration ends');
   });
 
   it('rejects ready audio or video without a measured duration', () => {

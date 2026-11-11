@@ -194,6 +194,12 @@
           }
         }
       }
+    ],
+    "exerciseFeedback": [
+      {
+        "kind": "narration",
+        "audioId": "AUDIO-S03-FB-01"
+      }
     ]
   },
   "interactionType": "valuesMatch",
@@ -214,6 +220,7 @@
       }
     ],
     "prompt": "לאיזה ערך שייכת כל פעולה?",
+    "feedbackSequence": "exerciseFeedback",
     "items": [
       {
         "id": "delay-update",

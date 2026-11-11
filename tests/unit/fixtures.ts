@@ -33,7 +33,7 @@ export const scenario = (scenarioId: string, extra: Record<string, unknown> = {}
   ...extra,
 });
 
-const stage = (id: string, number: number) => ({ id, number, title: id, summary: 's', points: ['a', 'b'], sequence: `stage:${id}`, sourcePages: [9] });
+const stage = (id: string, number: number) => ({ id, number, title: id, summary: 's', points: [{ text: 'a', at: 0.5 }, { text: 'b' }], sequence: `stage:${id}`, sourcePages: [9] });
 const stageIds = ['one', 'two', 'three', 'four', 'five'];
 const journeyStages = stageIds.map((id, i) => ({ id, number: i + 1, title: id }));
 

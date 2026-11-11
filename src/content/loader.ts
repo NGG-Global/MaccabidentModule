@@ -157,6 +157,7 @@ export function buildContent(raw: RawContent): Content {
       }
       for (const item of interaction.items)
         if (!valueIds.has(item.valueId)) problems.push(`${where}: item ${item.id} refers to unknown value ${item.valueId}`);
+      needsSequence(interaction.feedbackSequence, 'feedbackSequence');
     }
     if (interaction?.type === 'journey') {
       const ids = interaction.stages.map((s) => s.id);
@@ -165,7 +166,14 @@ export function buildContent(raw: RawContent): Content {
         if (s.number !== i + 1) problems.push(`${where}: stage ${s.id} must be number ${i + 1}`);
         if (s.imageId) requireMedia(s.imageId, 'image', where);
         needsSequence(s.sequence, `stage ${s.id}`);
+        // Timed points must fall within the station narration.
+        const narration = screen.sequences[s.sequence]?.find((b) => b.kind === 'narration');
+        const duration = narration?.kind === 'narration' ? media[narration.audioId]?.durationSec : undefined;
+        for (const point of s.points)
+          if (point.at !== undefined && duration !== undefined && point.at >= duration)
+            problems.push(`${where}: stage ${s.id} point "${point.text}" is timed after its narration ends`);
       });
+      needsSequence(interaction.completion.sequence, 'completion sequence');
     }
 
     const refs = screen.scenarioIds;

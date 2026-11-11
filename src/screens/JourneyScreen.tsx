@@ -1,4 +1,5 @@
 import { AnimatePresence, motion } from 'motion/react';
+import { useEffect, useRef } from 'react';
 import { content, ui } from '../content';
 import { useTrack } from '../analytics/TrackContext';
 import { itemKey } from '../engine/flow';
@@ -7,6 +8,7 @@ import { StageControls } from '../stage/StageControls';
 import { useStage } from '../stage/StageProvider';
 import { StageViewport } from '../stage/StageViewport';
 import { unlockPlayback } from '../stage/session';
+import { useStageTime } from '../stage/useStageTime';
 import { ScreenHeading } from './ScreenHeading';
 import { useEnterSequence } from './useEnterSequence';
 import type { ScreenProps } from './types';
@@ -23,12 +25,26 @@ export function JourneyScreen({ screen, state, dispatch, done }: ScreenProps) {
   const stage = useStage();
   const track = useTrack();
   const interaction = screen.interaction?.type === 'journey' ? screen.interaction : null;
+  const activeKey = stage.state.key?.startsWith('stage:') ? stage.state.key : null;
+  const narrationTime = useStageTime(activeKey);
+  const closingPlayed = useRef(done);
+
+  const allVisited = interaction ? interaction.stages.every((s) => state.visited.includes(itemKey(screen.screenId, s.id))) : false;
+  const closingKey = interaction?.completion.sequence;
+  // The chapter-closing narration follows the last station's narration; it never cuts it off.
+  useEffect(() => {
+    if (!interaction || !closingKey || closingPlayed.current || !allVisited) return;
+    if (stage.state.status === 'playing' || stage.state.status === 'paused') return;
+    closingPlayed.current = true;
+    stage.run(closingKey, { autoplay: true, visualProps: { visited: interaction.stages.map((s) => s.id) } });
+  }, [allVisited, closingKey, interaction, stage]);
+
   if (!interaction) return null;
 
   const visitedIds = interaction.stages.filter((s) => state.visited.includes(itemKey(screen.screenId, s.id))).map((s) => s.id);
-  const activeId = stage.state.key?.startsWith('stage:') ? stage.state.key.slice('stage:'.length) : null;
+  const activeId = activeKey ? activeKey.slice('stage:'.length) : null;
   const active = interaction.stages.find((s) => s.id === activeId);
-  const complete = visitedIds.length === interaction.stages.length;
+  const complete = allVisited;
 
   const open = (stageId: string) => {
     const s = interaction.stages.find((x) => x.id === stageId)!;
@@ -111,19 +127,22 @@ export function JourneyScreen({ screen, state, dispatch, done }: ScreenProps) {
                 <h3 className="font-display text-3xl font-bold text-navy sm:text-4xl">{active.title}</h3>
                 <p className="text-xl leading-relaxed">{active.summary}</p>
                 <h4 className="pt-2 text-sm font-semibold text-ink/60">{ui.journey.points}</h4>
-                <ul className="space-y-3">
-                  {active.points.map((point, i) => (
+                <ul className="space-y-3" aria-live="polite">
+                  {active.points
+                    // While the station is narrated, each point appears as it is spoken; otherwise all are shown.
+                    .filter((point) => narrationTime === null || point.at === undefined || point.at <= narrationTime + 0.1)
+                    .map((point, i) => (
                     <motion.li
-                      key={point}
+                      key={point.text}
                       initial={{ opacity: 0, x: 16 }}
                       animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: 0.25 + i * 0.35, type: 'spring', damping: 26, stiffness: 160 }}
+                      transition={narrationTime === null ? { delay: 0.2 + i * 0.25, type: 'spring', damping: 26, stiffness: 160 } : { type: 'spring', damping: 26, stiffness: 160 }}
                       className="flex items-start gap-3 text-lg"
                     >
                       <span aria-hidden className="mt-2.5 size-2 shrink-0 rounded-full bg-violet" />
-                      {point}
+                      {point.text}
                     </motion.li>
-                  ))}
+                    ))}
                 </ul>
               </div>
               {image?.status === 'ready' && (
@@ -171,6 +190,19 @@ export function JourneyScreen({ screen, state, dispatch, done }: ScreenProps) {
             </svg>
             <h2 className="relative font-display text-4xl font-bold sm:text-6xl">{interaction.completion.title}</h2>
             <p className="relative mt-4 text-xl text-mist sm:text-2xl">{interaction.completion.next}</p>
+            {closingKey && (
+              <button
+                type="button"
+                onClick={() => {
+                  closingPlayed.current = true;
+                  stage.run(closingKey, { autoplay: true, visualProps: { visited: interaction.stages.map((s) => s.id) } });
+                }}
+                className="relative mt-8 inline-flex min-h-11 items-center gap-2 rounded-full bg-paper px-5 font-semibold text-navy"
+              >
+                <span aria-hidden>▶</span>
+                {ui.journey.listen}
+              </button>
+            )}
             <p className="relative mt-8 max-w-xl text-sm text-white/60">{ui.journey.savedNote}</p>
           </motion.section>
         )}

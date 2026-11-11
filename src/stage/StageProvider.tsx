@@ -236,7 +236,15 @@ export function StageProvider({ screen, children }: { screen: Screen; children: 
       /** Jump to just before the end of the active beat. */
       finish: () => {
         const a = active.current;
-        if (a?.kind === 'audio' || a?.kind === 'video') a.el.currentTime = Math.max(0, (a.el.duration || 0) - 0.15);
+        if (a?.kind === 'audio' || a?.kind === 'video') {
+          const el = a.el;
+          const toEnd = () => {
+            el.currentTime = Math.max(0, el.duration - 0.15);
+          };
+          // Duration is unknown until metadata has loaded; seek once it is.
+          if (Number.isFinite(el.duration) && el.duration > 0) toEnd();
+          else el.addEventListener('loadedmetadata', toEnd, { once: true });
+        }
         if (a?.kind === 'player') dispatch({ type: 'BEAT_DONE', runId: state.runId, index: state.index });
       },
     };

@@ -93,21 +93,34 @@ test('a new employee completes the introduction chapter, S00 to S04', async ({ p
   await page.getByTestId('match-adapt-explanation').getByRole('button', { name: 'מתאמצים למענך' }).click();
   await page.getByTestId('match-next-step').getByRole('button', { name: 'מלווים אותך לאורך הדרך' }).click();
   await expect(page.getByTestId('match-progress')).toHaveText('3 מתוך 3 הותאמו');
+  await waitForStage(page, (s) => s.key === 'exerciseFeedback' && s.status === 'playing'); // spoken feedback after the exercise
   await next(page).click();
 
-  // S04 — all five stages, missing narration named, chapter completion
+  // S04 — introduction narration, all five stations with their narration, then the chapter closing
   await expect(heading(page, 'מסע המטופל')).toBeVisible();
   await expect(page.getByRole('button', { name: 'המשך', exact: true })).toHaveCount(0);
-  for (const [i, id] of ['prep', 'contact', 'communication', 'closing', 'followup'].entries()) {
+  await expect(page.getByTestId('missing-narration')).toHaveCount(0);
+  const stations = ['prep', 'contact', 'communication', 'closing', 'followup'];
+  for (const [i, id] of stations.entries()) {
     await expect(page.getByTestId('chapter-complete')).toHaveCount(0);
     await page.getByTestId(`stage-${id}`).click();
+    await waitForStage(page, (s) => s.key === `stage:${id}` && s.beat === 'narration' && s.status === 'playing');
     await expect(page.getByTestId(`stage-${id}`)).toHaveAttribute('data-visited', 'true');
-    await expect(page.getByTestId('stage-detail')).toBeVisible();
     await expect(page.getByTestId('journey-progress')).toHaveText(`${i + 1} מתוך 5 נקודות מגע`);
+    // Key points appear with the narration: none at the start, all once it has been heard.
+    if (i === 0) {
+      await expect(page.getByTestId('stage-detail').locator('li')).toHaveCount(0);
+      await finishSequence(page);
+      await expect(page.getByTestId('stage-detail').locator('li')).toHaveCount(3);
+    }
   }
-  await expect(page.getByTestId('missing-narration')).toBeVisible();
   await expect(page.getByTestId('chapter-complete')).toContainText('השלמתם את פרק ההיכרות');
   await expect(page.getByTestId('chapter-complete')).toContainText('בהמשך: מתרגלים שירות במצבים אמיתיים');
+  // The closing narration waits for station 5 to finish, then plays.
+  expect((await stageStatus(page))?.key).toBe('stage:followup');
+  await finishBeat(page);
+  await waitForStage(page, (s) => s.key === 'complete' && s.status === 'playing');
+  await expect(page.getByTestId('composition')).toHaveAttribute('data-composition', 'journey');
   await expectNoBrokenLayout(page);
 
   expect(failed, 'no failed requests').toEqual([]);
@@ -117,7 +130,7 @@ test('a new employee completes the introduction chapter, S00 to S04', async ({ p
   expect(count('role_selected')).toBe(1);
   expect(count('screen_viewed')).toBe(5);
   expect(count('video_started')).toBeGreaterThanOrEqual(3);
-  expect(count('narration_started')).toBeGreaterThanOrEqual(5);
+  expect(count('narration_started')).toBeGreaterThanOrEqual(12);
   expect(count('question_answered')).toBe(6);
   expect(count('journey_stage_viewed')).toBe(5);
   expect(count('prototype_completed')).toBe(1);

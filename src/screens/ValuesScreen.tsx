@@ -27,6 +27,18 @@ export function ValuesScreen({ screen, state, dispatch, done }: ScreenProps) {
     shownAt.current = nowMs();
   }, []);
   const interaction = screen.interaction?.type === 'valuesMatch' ? screen.interaction : null;
+  const feedbackPlayed = useRef(done);
+  const solvedAll = interaction
+    ? interaction.items.every((item) => state.answers[itemKey(screen.screenId, item.id)]?.includes(item.valueId))
+    : false;
+  const feedbackKey = interaction?.feedbackSequence;
+  // Exercise feedback is spoken once all actions are matched, after any narration that is still playing.
+  useEffect(() => {
+    if (!feedbackKey || feedbackPlayed.current || !solvedAll) return;
+    if (stage.state.status === 'playing' || stage.state.status === 'paused') return;
+    feedbackPlayed.current = true;
+    stage.run(feedbackKey, { autoplay: true });
+  }, [solvedAll, feedbackKey, stage]);
   if (!interaction) return null;
   const values = content.values.values;
   const nameOf = (id: string) => values.find((v) => v.id === id)?.name ?? id;
@@ -93,9 +105,24 @@ export function ValuesScreen({ screen, state, dispatch, done }: ScreenProps) {
               {interaction.prompt}
             </h2>
           </div>
-          <p className="text-sm text-ink/65" data-testid="match-progress" aria-live="polite">
-            {fill(ui.values.progress, { done: matched, total: interaction.items.length })}
-          </p>
+          <div className="flex flex-wrap items-center gap-3">
+            <p className="text-sm text-ink/65" data-testid="match-progress" aria-live="polite">
+              {fill(ui.values.progress, { done: matched, total: interaction.items.length })}
+            </p>
+            {solvedAll && feedbackKey && (
+              <button
+                type="button"
+                onClick={() => {
+                  feedbackPlayed.current = true;
+                  stage.run(feedbackKey, { autoplay: true });
+                }}
+                className="inline-flex min-h-11 items-center gap-2 rounded-full border border-ink/20 px-4 text-sm"
+              >
+                <span aria-hidden>▶</span>
+                {ui.values.listen}
+              </button>
+            )}
+          </div>
         </div>
         <ol className="space-y-6">
           {interaction.items.map((item, i) => {

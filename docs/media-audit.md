@@ -14,7 +14,7 @@ Generated from `src/content/media-manifest.json` and `src/content/captions.json`
 
 | Asset | Screen | Status | Duration (s) | Source file | Notes |
 |---|---|---|---:|---|---|
-| `VID-INTRO-01` | S00 | ready | 10.042 | lv_0_20261111233252.mp4 (corrected V01) | Wall sign corrected; shorter dialogue; AI-generated logo to be confirmed |
+| `VID-INTRO-01` | S00 | ready | 10.042 | lv_0_20261111233252.mp4 (corrected V01) | Corrected version: the meaningless wall sign of the first V01 is gone. Dialogue is shorter than the first version ("שלום, בוקר טוב. יש לי תור לעשר."). The logo on the wall is AI-generated; confirm it is acceptable to Maccabident. |
 | `VID-COMPARE-A-01` | S02 | ready | 10.026 | V02A_Reception_Distracted_Service.mp4 |  |
 | `VID-COMPARE-B-01` | S02 | ready | 10.026 | 1064077222_1794425076924453.mp4 (V02B) | Uploaded under a numeric file name; identified as V02B by its dialogue and framing, which match V02A. The earlier upload named V02B was a byte-identical copy of V04B. |
 | `VID-WAIT-01` | later chapters | blocked |  | V03_Yossi_Waiting_Complaint.mp4 | Burned-in Hebrew subtitle is garbled ("שמחון בזת לאינוי של?"). Not usable; needs regeneration without subtitles. |
@@ -33,19 +33,21 @@ Generated from `src/content/media-manifest.json` and `src/content/captions.json`
 | `AUDIO-S03-02` | S03 | ready | 28.029 | S03_02_Seeing_You.mp3 |  |
 | `AUDIO-S03-03` | S03 | ready | 33.306 | S03_03_Going_Extra_Mile.mp3 |  |
 | `AUDIO-S03-04` | S03 | ready | 31.321 | S03_04_Accompanying_You.mp3 |  |
-| `AUDIO-S04-00` | S04 | missing |  | — | Not supplied. The S00–S03 archive contained no S04 files. |
-| `AUDIO-S04-01` | S04 | missing |  | — | Not supplied. The S00–S03 archive contained no S04 files. |
-| `AUDIO-S04-02` | S04 | missing |  | — | Not supplied. The S00–S03 archive contained no S04 files. |
-| `AUDIO-S04-03` | S04 | missing |  | — | Not supplied. The S00–S03 archive contained no S04 files. |
-| `AUDIO-S04-04` | S04 | missing |  | — | Not supplied. The S00–S03 archive contained no S04 files. |
-| `AUDIO-S04-05` | S04 | missing |  | — | Not supplied. The S00–S03 archive contained no S04 files. |
-| `AUDIO-S03-FB-01` | later chapters | missing |  | — | Not supplied; the exercise shows written feedback only. |
+| `AUDIO-S04-00` | S04 | ready | 27.246 | ElevenLabs upload 2f39a0c0 |  |
+| `AUDIO-S04-01` | S04 | ready | 25.626 | ElevenLabs upload f22e5d6e |  |
+| `AUDIO-S04-02` | S04 | ready | 23.406 | ElevenLabs upload 98c955cd |  |
+| `AUDIO-S04-03` | S04 | ready | 25.548 | ElevenLabs upload 48a10b17 | The recording opens with "התחנה השישית" ("the sixth station") although this is station 3 (transcribed with 94% confidence). Re-record the opening line. |
+| `AUDIO-S04-04` | S04 | ready | 29.309 | ElevenLabs upload 3fa15816 |  |
+| `AUDIO-S04-05` | S04 | ready | 28.839 | ElevenLabs upload 5b17c10b |  |
+| `AUDIO-S04-06` | S04 | ready | 15.882 | ElevenLabs upload f865d408 |  |
+| `AUDIO-S03-FB-01` | S03 | ready | 16.117 | ElevenLabs upload 60731d8f |  |
 
 ## Findings
 
 1. **V02B duplicate.** The first upload named `V02B_Reception_Welcoming_Service.mp4` was byte-identical to `V04B_Reception_Empathetic_Response.mp4`. The correct V02B arrived later as `1064077222_1794425076924453.mp4`; it was identified by its dialogue ("בוקר טוב, ברוך הבא. בוא נבדוק יחד.") and its framing, which matches V02A.
 2. **Unidentified narration file.** `UNVERIFIED_19_08_45.mp3` is an alternate take of `S02_02_Comparison_Question.mp3` (same text, different encoding). It is not used.
-3. **S04 narration missing.** The narration archive contains S00–S03 only. S04 stage narration and the S03 exercise feedback narration were not supplied; S04 shows written key points and names the missing narration on screen.
+3. **S04 and exercise narration — supplied separately.** The first narration archive contained S00–S03 only. Eight further ElevenLabs files arrived later under generated names; each was identified by its content (the upload order did not match the station order): the journey introduction, five stations, the chapter closing, and the S03 exercise feedback.
+8. **Station 3 recording names the wrong station.** `AUDIO-S04-03` opens with "התחנה השישית" ("the sixth station"), transcribed with 94% confidence; it is station 3. It is used because the rest of the content is correct, and the caption shows what is actually said. Re-record the opening line ("התחנה השלישית").
 4. **V01 wall sign — resolved.** The first V01 showed a meaningless sign under the logo ("הפנידיה משיבידנט"). A corrected version (`lv_0_20261111233252.mp4`) replaced it in S00: the sign now shows the logo only, and Yossi matches the other clips. Its dialogue is shorter than the first version: "שלום, בוקר טוב. יש לי תור לעשר." The logo itself is still AI-generated and should be confirmed with Maccabident.
 5. **V03 burned-in subtitle.** The subtitle reads "שמחון בזת לאינוי של?" (garbled). V03 is blocked; one still frame from before the subtitle appears is used in the compositions.
 6. **Bitstream defect.** The delivered H.264 streams failed to decode in Chromium when seeked. The web copies were re-encoded to clean 720p H.264 (keyframe every second, AAC 160 kb/s); the original uploads are unchanged.

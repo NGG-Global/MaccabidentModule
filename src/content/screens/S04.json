@@ -25,8 +25,8 @@
         }
       },
       {
-        "kind": "composition",
-        "durationSec": 4,
+        "kind": "narration",
+        "audioId": "AUDIO-S04-00",
         "visual": {
           "id": "journey",
           "props": {
@@ -61,16 +61,12 @@
             "visited": []
           }
         }
-      },
-      {
-        "kind": "narration",
-        "audioId": "AUDIO-S04-00"
       }
     ],
     "stage:prep": [
       {
-        "kind": "composition",
-        "durationSec": 2.4,
+        "kind": "narration",
+        "audioId": "AUDIO-S04-01",
         "visual": {
           "id": "journey",
           "props": {
@@ -105,16 +101,12 @@
             "visited": []
           }
         }
-      },
-      {
-        "kind": "narration",
-        "audioId": "AUDIO-S04-01"
       }
     ],
     "stage:contact": [
       {
-        "kind": "composition",
-        "durationSec": 2.4,
+        "kind": "narration",
+        "audioId": "AUDIO-S04-02",
         "visual": {
           "id": "journey",
           "props": {
@@ -149,16 +141,12 @@
             "visited": []
           }
         }
-      },
-      {
-        "kind": "narration",
-        "audioId": "AUDIO-S04-02"
       }
     ],
     "stage:communication": [
       {
-        "kind": "composition",
-        "durationSec": 2.4,
+        "kind": "narration",
+        "audioId": "AUDIO-S04-03",
         "visual": {
           "id": "journey",
           "props": {
@@ -193,16 +181,12 @@
             "visited": []
           }
         }
-      },
-      {
-        "kind": "narration",
-        "audioId": "AUDIO-S04-03"
       }
     ],
     "stage:closing": [
       {
-        "kind": "composition",
-        "durationSec": 2.4,
+        "kind": "narration",
+        "audioId": "AUDIO-S04-04",
         "visual": {
           "id": "journey",
           "props": {
@@ -237,16 +221,12 @@
             "visited": []
           }
         }
-      },
-      {
-        "kind": "narration",
-        "audioId": "AUDIO-S04-04"
       }
     ],
     "stage:followup": [
       {
-        "kind": "composition",
-        "durationSec": 2.4,
+        "kind": "narration",
+        "audioId": "AUDIO-S04-05",
         "visual": {
           "id": "journey",
           "props": {
@@ -281,10 +261,46 @@
             "visited": []
           }
         }
-      },
+      }
+    ],
+    "complete": [
       {
         "kind": "narration",
-        "audioId": "AUDIO-S04-05"
+        "audioId": "AUDIO-S04-06",
+        "visual": {
+          "id": "journey",
+          "props": {
+            "stages": [
+              {
+                "id": "prep",
+                "number": 1,
+                "title": "היערכות לקבלת המטופל"
+              },
+              {
+                "id": "contact",
+                "number": 2,
+                "title": "יצירת קשר עם המטופל"
+              },
+              {
+                "id": "communication",
+                "number": 3,
+                "title": "תקשורת עם המטופל"
+              },
+              {
+                "id": "closing",
+                "number": 4,
+                "title": "סגירת מעגל הטיפול"
+              },
+              {
+                "id": "followup",
+                "number": 5,
+                "title": "מעקב, בקרה וקשר"
+              }
+            ],
+            "active": null,
+            "visited": []
+          }
+        }
       }
     ]
   },
@@ -296,11 +312,20 @@
         "id": "prep",
         "number": 1,
         "title": "היערכות לקבלת המטופל",
-        "summary": "המפגש מתחיל עוד לפני שהמטופל מגיע.",
+        "summary": "שירות טוב מתחיל בהכנה טובה.",
         "points": [
-          "סביבת עבודה מסודרת ותג שם גלוי",
-          "מעבר על המידע הרלוונטי בתיק",
-          "עדכון המטופל כשיש עיכוב"
+          {
+            "text": "סביבת עבודה מסודרת",
+            "at": 9.84
+          },
+          {
+            "text": "הכנה מתאימה למפגש",
+            "at": 11.7
+          },
+          {
+            "text": "היכרות עם המידע הרלוונטי ועדכון על עיכובים צפויים",
+            "at": 13.5
+          }
         ],
         "sequence": "stage:prep",
         "sourcePages": [
@@ -315,11 +340,20 @@
         "id": "contact",
         "number": 2,
         "title": "יצירת קשר עם המטופל",
-        "summary": "הרגע הראשון קובע את הטון של כל הביקור.",
+        "summary": "כאן נוצר הרושם האישי הראשון.",
         "points": [
-          "קשר עין והתייחסות עם כניסתו",
-          "הצגה עצמית והצגת הצוות",
-          "פנייה למטופל בשמו"
+          {
+            "text": "פנייה למטופל בשמו",
+            "at": 6.08
+          },
+          {
+            "text": "הצגה עצמית",
+            "at": 7.86
+          },
+          {
+            "text": "קשר עין וחיוך",
+            "at": 9.02
+          }
         ],
         "sequence": "stage:contact",
         "sourcePages": [
@@ -334,11 +368,24 @@
         "id": "communication",
         "number": 3,
         "title": "תקשורת עם המטופל",
-        "summary": "במהלך המפגש מקשיבים, מסבירים ושומרים על המטופל.",
+        "summary": "זה המקום להקשיב, להסביר ולהפגין אמפתיה.",
         "points": [
-          "הקשבה פעילה ואמפתיה",
-          "בירור צרכים ותיאום ציפיות",
-          "הסברים מותאמים ושמירה על פרטיות"
+          {
+            "text": "הקשבה ובירור צרכים",
+            "at": 3.26
+          },
+          {
+            "text": "הסברים ואמפתיה",
+            "at": 6.12
+          },
+          {
+            "text": "שפה ברורה ומותאמת",
+            "at": 8.52
+          },
+          {
+            "text": "שמירה על פרטיות ובדיקת הבנה",
+            "at": 11.36
+          }
         ],
         "sequence": "stage:communication",
         "sourcePages": [
@@ -355,9 +402,18 @@
         "title": "סגירת מעגל הטיפול",
         "summary": "המטופל יוצא כשהוא יודע מה הלאה.",
         "points": [
-          "הסבר על הצעד הבא והנחיות להמשך",
-          "בירור צרכים נוספים",
-          "הכוונה לקבלה, לתורים או לערוצי השירות"
+          {
+            "text": "הסבר על המשך התהליך",
+            "at": 15.58
+          },
+          {
+            "text": "בירור צרכים נוספים",
+            "at": 18.82
+          },
+          {
+            "text": "וידוא שהמטופל יודע מה מצופה ממנו",
+            "at": 20.8
+          }
         ],
         "sequence": "stage:closing",
         "sourcePages": [
@@ -372,11 +428,20 @@
         "id": "followup",
         "number": 5,
         "title": "מעקב, בקרה וקשר",
-        "summary": "הקשר לא מסתיים ביציאה מהמרפאה.",
+        "summary": "המעקב שומר על רצף השירות.",
         "points": [
-          "מעקב אחר תוכניות טיפול ואי-הגעה",
-          "פנייה יזומה אחרי טיפול מורכב, בהתאם לנוהל",
-          "סגירת משימות ומעגלים פתוחים"
+          {
+            "text": "מעקב אחר המשך סדרת טיפולים",
+            "at": 9.42
+          },
+          {
+            "text": "בירור לגבי תור שלא התקיים",
+            "at": 12.02
+          },
+          {
+            "text": "יצירת קשר אחרי טיפול מורכב, בהתאם לתפקיד ולנהלים",
+            "at": 14.68
+          }
         ],
         "sequence": "stage:followup",
         "sourcePages": [
@@ -389,7 +454,8 @@
     ],
     "completion": {
       "title": "השלמתם את פרק ההיכרות",
-      "next": "בהמשך: מתרגלים שירות במצבים אמיתיים"
+      "next": "בהמשך: מתרגלים שירות במצבים אמיתיים",
+      "sequence": "complete"
     }
   },
   "completion": "interaction",

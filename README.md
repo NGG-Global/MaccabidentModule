@@ -16,8 +16,8 @@ The specification is in `docs/good_hands_spec/`; the media verification is in
 | S00 Opening | Arrival film, then a narrated title sequence | V01, narration S00, Remotion `opening` |
 | S01 Role | Three roles; the choice is saved for later branching | Narration S01 with live captions |
 | S02 Two experiences | Chapter card, "Meet Yossi", both reception versions, question, animated feedback | V02A, V02B, narration S02 ×3, `chapter`, `meetYossi`, `compareFeedback` |
-| S03 Three values | Introduction and one animation per value, then a matching exercise | Narration S03 ×4, `valuesIntro`, `valueSeeing`, `valueAdapting`, `valueAccompanying` |
-| S04 Patient journey | Five touchpoints; all must be explored; chapter completion | `journey` (narration not supplied) |
+| S03 Three values | Introduction and one animation per value, then a matching exercise with spoken feedback | Narration S03 ×5, `valuesIntro`, `valueSeeing`, `valueAdapting`, `valueAccompanying` |
+| S04 Patient journey | Five touchpoints, key points revealed as narrated; all must be explored; narrated chapter closing | Narration S04 ×7, `journey` |
 
 Learner controls: start, continue, back, pause, replay, mute, captions,
 transcript and speed; local save and resume; restart with confirmation.
@@ -88,7 +88,7 @@ data is collected. To connect a destination later, implement
 ## Known limits
 
 - **Remotion licence.** Remotion requires a paid company licence for companies above a small size (see remotion.dev/license). This must be confirmed before production use; the prototype does not set `acknowledgeRemotionLicense`.
-- S04 narration, S03 exercise feedback narration and S05–S09 media were not supplied.
+- The station 3 narration says "התחנה השישית" instead of "השלישית" and should be re-recorded. S05–S09 media have not been supplied.
 - V03 has a garbled burned-in subtitle and is not used. The clinic logo in the videos is AI-generated and needs Maccabident's confirmation. See `docs/media-audit.md`.
 - Captions are a hand-corrected machine transcription pending comparison with the approved scripts.
 - Progress and the learner id are stored in this browser only; they are not an organisational record.

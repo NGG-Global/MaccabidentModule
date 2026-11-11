@@ -110,7 +110,8 @@ const JourneyStageSchema = z.strictObject({
   number: z.number().int().positive(),
   title: z.string().min(1),
   summary: z.string().min(1),
-  points: z.array(z.string().min(1)).min(2).max(4),
+  /** Key points, revealed as the station narration reaches `at` (seconds); all shown when not narrated. */
+  points: z.array(z.strictObject({ text: z.string().min(1), at: z.number().nonnegative().optional() })).min(2).max(4),
   imageId: MediaIdSchema.optional(),
   sequence: z.string().min(1),
   sourcePages: SourcePagesSchema,
@@ -124,6 +125,8 @@ export const InteractionSchema = z.discriminatedUnion('type', [
     type: z.literal('valuesMatch'),
     chapters: z.array(z.strictObject({ valueId: z.string(), beatIndex: z.number().int().nonnegative() })),
     prompt: z.string().min(1),
+    /** Sequence played once every item is matched correctly. */
+    feedbackSequence: z.string().optional(),
     items: z
       .array(z.strictObject({ id: z.string().regex(/^[a-z-]+$/), text: z.string().min(1), valueId: z.string(), feedback: z.string().min(1) }))
       .min(1),
@@ -131,7 +134,7 @@ export const InteractionSchema = z.discriminatedUnion('type', [
   z.strictObject({
     type: z.literal('journey'),
     stages: z.array(JourneyStageSchema).length(5),
-    completion: z.strictObject({ title: z.string(), next: z.string() }),
+    completion: z.strictObject({ title: z.string(), next: z.string(), sequence: z.string().optional() }),
   }),
 ]);
 export type Interaction = z.infer<typeof InteractionSchema>;
