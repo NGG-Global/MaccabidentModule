@@ -1,0 +1,467 @@
+{
+  "screenId": "S04",
+  "chapter": "מסע המטופל",
+  "title": "מסע המטופל",
+  "eyebrow": "פרק 3",
+  "targetMinutes": 5,
+  "learningObjective": "לסדר ולזהות חמש נקודות מגע בדיאלוג השירותי.",
+  "onScreenText": [
+    "בחרו כל אחת מחמש נקודות המגע כדי להכיר אותה."
+  ],
+  "visualDescription": "מפת מסע מונפשת עם חמש תחנות.",
+  "mediaIds": [],
+  "sequences": {
+    "enter": [
+      {
+        "kind": "composition",
+        "durationSec": 2.8,
+        "visual": {
+          "id": "chapter",
+          "props": {
+            "number": "03",
+            "title": "מסע המטופל",
+            "subtitle": "חמש נקודות מגע בדיאלוג השירותי"
+          }
+        }
+      },
+      {
+        "kind": "narration",
+        "audioId": "AUDIO-S04-00",
+        "visual": {
+          "id": "journey",
+          "props": {
+            "stages": [
+              {
+                "id": "prep",
+                "number": 1,
+                "title": "היערכות לקבלת המטופל"
+              },
+              {
+                "id": "contact",
+                "number": 2,
+                "title": "יצירת קשר עם המטופל"
+              },
+              {
+                "id": "communication",
+                "number": 3,
+                "title": "תקשורת עם המטופל"
+              },
+              {
+                "id": "closing",
+                "number": 4,
+                "title": "סגירת מעגל הטיפול"
+              },
+              {
+                "id": "followup",
+                "number": 5,
+                "title": "מעקב, בקרה וקשר"
+              }
+            ],
+            "active": null,
+            "visited": []
+          }
+        }
+      }
+    ],
+    "stage:prep": [
+      {
+        "kind": "narration",
+        "audioId": "AUDIO-S04-01",
+        "visual": {
+          "id": "journey",
+          "props": {
+            "stages": [
+              {
+                "id": "prep",
+                "number": 1,
+                "title": "היערכות לקבלת המטופל"
+              },
+              {
+                "id": "contact",
+                "number": 2,
+                "title": "יצירת קשר עם המטופל"
+              },
+              {
+                "id": "communication",
+                "number": 3,
+                "title": "תקשורת עם המטופל"
+              },
+              {
+                "id": "closing",
+                "number": 4,
+                "title": "סגירת מעגל הטיפול"
+              },
+              {
+                "id": "followup",
+                "number": 5,
+                "title": "מעקב, בקרה וקשר"
+              }
+            ],
+            "active": "prep",
+            "visited": []
+          }
+        }
+      }
+    ],
+    "stage:contact": [
+      {
+        "kind": "narration",
+        "audioId": "AUDIO-S04-02",
+        "visual": {
+          "id": "journey",
+          "props": {
+            "stages": [
+              {
+                "id": "prep",
+                "number": 1,
+                "title": "היערכות לקבלת המטופל"
+              },
+              {
+                "id": "contact",
+                "number": 2,
+                "title": "יצירת קשר עם המטופל"
+              },
+              {
+                "id": "communication",
+                "number": 3,
+                "title": "תקשורת עם המטופל"
+              },
+              {
+                "id": "closing",
+                "number": 4,
+                "title": "סגירת מעגל הטיפול"
+              },
+              {
+                "id": "followup",
+                "number": 5,
+                "title": "מעקב, בקרה וקשר"
+              }
+            ],
+            "active": "contact",
+            "visited": []
+          }
+        }
+      }
+    ],
+    "stage:communication": [
+      {
+        "kind": "narration",
+        "audioId": "AUDIO-S04-03",
+        "visual": {
+          "id": "journey",
+          "props": {
+            "stages": [
+              {
+                "id": "prep",
+                "number": 1,
+                "title": "היערכות לקבלת המטופל"
+              },
+              {
+                "id": "contact",
+                "number": 2,
+                "title": "יצירת קשר עם המטופל"
+              },
+              {
+                "id": "communication",
+                "number": 3,
+                "title": "תקשורת עם המטופל"
+              },
+              {
+                "id": "closing",
+                "number": 4,
+                "title": "סגירת מעגל הטיפול"
+              },
+              {
+                "id": "followup",
+                "number": 5,
+                "title": "מעקב, בקרה וקשר"
+              }
+            ],
+            "active": "communication",
+            "visited": []
+          }
+        }
+      }
+    ],
+    "stage:closing": [
+      {
+        "kind": "narration",
+        "audioId": "AUDIO-S04-04",
+        "visual": {
+          "id": "journey",
+          "props": {
+            "stages": [
+              {
+                "id": "prep",
+                "number": 1,
+                "title": "היערכות לקבלת המטופל"
+              },
+              {
+                "id": "contact",
+                "number": 2,
+                "title": "יצירת קשר עם המטופל"
+              },
+              {
+                "id": "communication",
+                "number": 3,
+                "title": "תקשורת עם המטופל"
+              },
+              {
+                "id": "closing",
+                "number": 4,
+                "title": "סגירת מעגל הטיפול"
+              },
+              {
+                "id": "followup",
+                "number": 5,
+                "title": "מעקב, בקרה וקשר"
+              }
+            ],
+            "active": "closing",
+            "visited": []
+          }
+        }
+      }
+    ],
+    "stage:followup": [
+      {
+        "kind": "narration",
+        "audioId": "AUDIO-S04-05",
+        "visual": {
+          "id": "journey",
+          "props": {
+            "stages": [
+              {
+                "id": "prep",
+                "number": 1,
+                "title": "היערכות לקבלת המטופל"
+              },
+              {
+                "id": "contact",
+                "number": 2,
+                "title": "יצירת קשר עם המטופל"
+              },
+              {
+                "id": "communication",
+                "number": 3,
+                "title": "תקשורת עם המטופל"
+              },
+              {
+                "id": "closing",
+                "number": 4,
+                "title": "סגירת מעגל הטיפול"
+              },
+              {
+                "id": "followup",
+                "number": 5,
+                "title": "מעקב, בקרה וקשר"
+              }
+            ],
+            "active": "followup",
+            "visited": []
+          }
+        }
+      }
+    ],
+    "complete": [
+      {
+        "kind": "narration",
+        "audioId": "AUDIO-S04-06",
+        "visual": {
+          "id": "journey",
+          "props": {
+            "stages": [
+              {
+                "id": "prep",
+                "number": 1,
+                "title": "היערכות לקבלת המטופל"
+              },
+              {
+                "id": "contact",
+                "number": 2,
+                "title": "יצירת קשר עם המטופל"
+              },
+              {
+                "id": "communication",
+                "number": 3,
+                "title": "תקשורת עם המטופל"
+              },
+              {
+                "id": "closing",
+                "number": 4,
+                "title": "סגירת מעגל הטיפול"
+              },
+              {
+                "id": "followup",
+                "number": 5,
+                "title": "מעקב, בקרה וקשר"
+              }
+            ],
+            "active": null,
+            "visited": []
+          }
+        }
+      }
+    ]
+  },
+  "interactionType": "journey",
+  "interaction": {
+    "type": "journey",
+    "stages": [
+      {
+        "id": "prep",
+        "number": 1,
+        "title": "היערכות לקבלת המטופל",
+        "summary": "שירות טוב מתחיל בהכנה טובה.",
+        "points": [
+          {
+            "text": "סביבת עבודה מסודרת",
+            "at": 9.84
+          },
+          {
+            "text": "הכנה מתאימה למפגש",
+            "at": 11.7
+          },
+          {
+            "text": "היכרות עם המידע הרלוונטי ועדכון על עיכובים צפויים",
+            "at": 13.5
+          }
+        ],
+        "sequence": "stage:prep",
+        "sourcePages": [
+          9,
+          13,
+          14,
+          15
+        ],
+        "imageId": "STILL-PREP-01"
+      },
+      {
+        "id": "contact",
+        "number": 2,
+        "title": "יצירת קשר עם המטופל",
+        "summary": "כאן נוצר הרושם האישי הראשון.",
+        "points": [
+          {
+            "text": "פנייה למטופל בשמו",
+            "at": 6.08
+          },
+          {
+            "text": "הצגה עצמית",
+            "at": 7.86
+          },
+          {
+            "text": "קשר עין וחיוך",
+            "at": 9.02
+          }
+        ],
+        "sequence": "stage:contact",
+        "sourcePages": [
+          9,
+          13,
+          14,
+          15
+        ],
+        "imageId": "STILL-WELCOME-01"
+      },
+      {
+        "id": "communication",
+        "number": 3,
+        "title": "תקשורת עם המטופל",
+        "summary": "זה המקום להקשיב, להסביר ולהפגין אמפתיה.",
+        "points": [
+          {
+            "text": "הקשבה ובירור צרכים",
+            "at": 3.26
+          },
+          {
+            "text": "הסברים ואמפתיה",
+            "at": 6.12
+          },
+          {
+            "text": "שפה ברורה ומותאמת",
+            "at": 8.52
+          },
+          {
+            "text": "שמירה על פרטיות ובדיקת הבנה",
+            "at": 11.36
+          }
+        ],
+        "sequence": "stage:communication",
+        "sourcePages": [
+          9,
+          13,
+          14,
+          15
+        ],
+        "imageId": "STILL-EXPLAIN-01"
+      },
+      {
+        "id": "closing",
+        "number": 4,
+        "title": "סגירת מעגל הטיפול",
+        "summary": "המטופל יוצא כשהוא יודע מה הלאה.",
+        "points": [
+          {
+            "text": "הסבר על המשך התהליך",
+            "at": 15.58
+          },
+          {
+            "text": "בירור צרכים נוספים",
+            "at": 18.82
+          },
+          {
+            "text": "וידוא שהמטופל יודע מה מצופה ממנו",
+            "at": 20.8
+          }
+        ],
+        "sequence": "stage:closing",
+        "sourcePages": [
+          9,
+          13,
+          14,
+          15
+        ],
+        "imageId": "STILL-CLOSING-01"
+      },
+      {
+        "id": "followup",
+        "number": 5,
+        "title": "מעקב, בקרה וקשר",
+        "summary": "המעקב שומר על רצף השירות.",
+        "points": [
+          {
+            "text": "מעקב אחר המשך סדרת טיפולים",
+            "at": 9.42
+          },
+          {
+            "text": "בירור לגבי תור שלא התקיים",
+            "at": 12.02
+          },
+          {
+            "text": "יצירת קשר אחרי טיפול מורכב, בהתאם לתפקיד ולנהלים",
+            "at": 14.68
+          }
+        ],
+        "sequence": "stage:followup",
+        "sourcePages": [
+          9,
+          13,
+          14,
+          15
+        ]
+      }
+    ],
+    "completion": {
+      "title": "השלמתם את פרק ההיכרות",
+      "next": "בהמשך: מתרגלים שירות במצבים אמיתיים",
+      "sequence": "complete"
+    }
+  },
+  "completion": "interaction",
+  "sourcePages": [
+    9,
+    11
+  ],
+  "approvalStatus": "DRAFT"
+}

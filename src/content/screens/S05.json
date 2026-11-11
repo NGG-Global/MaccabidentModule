@@ -1,0 +1,25 @@
+{
+  "screenId": "S05",
+  "chapter": "תרגול",
+  "title": "תרחיש: עיכוב בתור",
+  "targetMinutes": 3,
+  "learningObjective": "לבחור תגובה שירותית מתאימה למצב שכיח, תוך אמפתיה, יוזמה ותיאום ציפיות.",
+  "onScreenText": [],
+  "mediaIds": [],
+  "interactionType": "scenario",
+  "scenarioIds": {
+    "common": [
+      "SC-COM-01"
+    ]
+  },
+  "completion": "interaction",
+  "sourcePages": [
+    13,
+    14,
+    15,
+    21,
+    22,
+    23
+  ],
+  "approvalStatus": "DRAFT"
+}

@@ -1,0 +1,14 @@
+{
+  "screenId": "S09",
+  "chapter": "סיכום",
+  "title": "סיכום",
+  "targetMinutes": 1,
+  "onScreenText": [
+    "סיימת את המסלול. הנה תמונת מצב קצרה."
+  ],
+  "mediaIds": [],
+  "interactionType": "summary",
+  "completion": "view",
+  "sourcePages": [],
+  "approvalStatus": "DRAFT"
+}

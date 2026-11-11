@@ -1,0 +1,250 @@
+{
+  "screenId": "S03",
+  "chapter": "שלושה ערכים",
+  "title": "שלושת ערכי השירות",
+  "eyebrow": "פרק 2",
+  "targetMinutes": 5,
+  "learningObjective": "לזהות את שלושת ערכי השירות ולשייך להם התנהגויות מתוך מצבים.",
+  "onScreenText": [],
+  "mediaIds": [],
+  "sequences": {
+    "enter": [
+      {
+        "kind": "composition",
+        "durationSec": 2.8,
+        "visual": {
+          "id": "chapter",
+          "props": {
+            "number": "02",
+            "title": "שלושה ערכים",
+            "subtitle": "תפיסת השירות בידיים טובות"
+          }
+        }
+      },
+      {
+        "kind": "narration",
+        "audioId": "AUDIO-S03-01",
+        "visual": {
+          "id": "valuesIntro",
+          "props": {
+            "title": {
+              "at": 2.18,
+              "text": "בידיים טובות"
+            },
+            "lead": {
+              "at": 4.64,
+              "text": "שלושה ערכים שמלווים את המפגש עם המטופל"
+            },
+            "values": [
+              {
+                "at": 8.2,
+                "text": "רואים אותך"
+              },
+              {
+                "at": 9.48,
+                "text": "מתאמצים למענך"
+              },
+              {
+                "at": 10.88,
+                "text": "מלווים אותך לאורך הדרך"
+              }
+            ],
+            "outro": {
+              "at": 13.3,
+              "text": "איך כל אחד מהם מתבטא בעבודה שלנו"
+            }
+          }
+        }
+      },
+      {
+        "kind": "narration",
+        "audioId": "AUDIO-S03-02",
+        "visual": {
+          "id": "valueSeeing",
+          "props": {
+            "number": "1",
+            "name": "רואים אותך",
+            "photoId": "STILL-WAIT-01",
+            "lead": {
+              "at": 1.08,
+              "text": "לא מחכים שהמטופל יבקש עזרה"
+            },
+            "actions": [
+              {
+                "at": 5.8,
+                "text": "שמים לב"
+              },
+              {
+                "at": 7.74,
+                "text": "מזהים צרכים"
+              },
+              {
+                "at": 8.78,
+                "text": "פועלים ביוזמה"
+              }
+            ],
+            "examples": [
+              {
+                "at": 10.22,
+                "text": "מטופל נראה מבולבל באזור ההמתנה|פונים אליו ובודקים אם הוא זקוק להכוונה"
+              },
+              {
+                "at": 16.86,
+                "text": "יש עיכוב בתור|מעדכנים ביוזמה, עוד לפני שהוא שואל"
+              }
+            ],
+            "closing": {
+              "at": 24.06,
+              "text": "עצם הידיעה שמישהו שם לב עושה הבדל גדול"
+            }
+          }
+        }
+      },
+      {
+        "kind": "narration",
+        "audioId": "AUDIO-S03-03",
+        "visual": {
+          "id": "valueAdapting",
+          "props": {
+            "number": "2",
+            "name": "מתאמצים למענך",
+            "photoId": "STILL-CHAIR-01",
+            "lead": {
+              "at": 1.5,
+              "text": "לא כל המטופלים זקוקים לאותו הדבר"
+            },
+            "needs": [
+              {
+                "at": 4.26,
+                "text": "הסבר קצר וברור"
+              },
+              {
+                "at": 7.4,
+                "text": "יותר זמן והרגעה"
+              },
+              {
+                "at": 12.12,
+                "text": "עזרה בהתמצאות ובשלבים הבאים"
+              }
+            ],
+            "actions": [
+              {
+                "at": 17.86,
+                "text": "להקשיב"
+              },
+              {
+                "at": 18.72,
+                "text": "לגלות רגישות"
+              },
+              {
+                "at": 20.52,
+                "text": "להתאים את השירות לצורך האישי"
+              }
+            ],
+            "boundary": {
+              "at": 24.7,
+              "text": "בלי להבטיח מה שאי אפשר לקיים"
+            },
+            "closing": {
+              "at": 27.46,
+              "text": "לעשות את המיטב במסגרת התפקיד והאפשרויות"
+            }
+          }
+        }
+      },
+      {
+        "kind": "narration",
+        "audioId": "AUDIO-S03-04",
+        "visual": {
+          "id": "valueAccompanying",
+          "props": {
+            "number": "3",
+            "name": "מלווים אותך לאורך הדרך",
+            "photoId": "STILL-CLOSING-01",
+            "lead": {
+              "at": 2.02,
+              "text": "החוויה נבנית לאורך רצף של מפגשים, הסברים והחלטות"
+            },
+            "steps": [
+              {
+                "at": 10.14,
+                "text": "לא משאירים סימני שאלה"
+              },
+              {
+                "at": 14.1,
+                "text": "מסבירים מה השלב הבא"
+              },
+              {
+                "at": 15.78,
+                "text": "מוודאים שהמידע ברור"
+              },
+              {
+                "at": 17.3,
+                "text": "שומרים על רציפות בין אנשי הצוות"
+              },
+              {
+                "at": 22.34,
+                "text": "ממשיכים בקשר אחרי הביקור, במקרים המתאימים"
+              }
+            ],
+            "closing": {
+              "at": 26.76,
+              "text": "יש מי שמלווה אותו לאורך כל הדרך"
+            }
+          }
+        }
+      }
+    ],
+    "exerciseFeedback": [
+      {
+        "kind": "narration",
+        "audioId": "AUDIO-S03-FB-01"
+      }
+    ]
+  },
+  "interactionType": "valuesMatch",
+  "interaction": {
+    "type": "valuesMatch",
+    "chapters": [
+      {
+        "valueId": "see-you",
+        "beatIndex": 2
+      },
+      {
+        "valueId": "effort-for-you",
+        "beatIndex": 3
+      },
+      {
+        "valueId": "with-you",
+        "beatIndex": 4
+      }
+    ],
+    "prompt": "לאיזה ערך שייכת כל פעולה?",
+    "feedbackSequence": "exerciseFeedback",
+    "items": [
+      {
+        "id": "delay-update",
+        "text": "עדכון יזום על עיכוב בתור",
+        "valueId": "see-you",
+        "feedback": "עדכון יזום, עוד לפני שהמטופל שואל, הוא ביטוי של \"רואים אותך\": שמים לב ופועלים ביוזמה."
+      },
+      {
+        "id": "adapt-explanation",
+        "text": "התאמת ההסבר למטופל שחושש",
+        "valueId": "effort-for-you",
+        "feedback": "התאמת ההסבר לצורך האישי של המטופל היא ביטוי של \"מתאמצים למענך\"."
+      },
+      {
+        "id": "next-step",
+        "text": "הסבר על הצעד הבא ובדיקת הבנה",
+        "valueId": "with-you",
+        "feedback": "הסבר על ההמשך ובדיקה שהמידע ברור שומרים על רציפות: \"מלווים אותך לאורך הדרך\"."
+      }
+    ]
+  },
+  "completion": "interaction",
+  "sourcePages": [
+    8
+  ],
+  "approvalStatus": "DRAFT"
+}

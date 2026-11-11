@@ -1,0 +1,27 @@
+{
+  "screenId": "S01",
+  "chapter": "התפקיד שלי",
+  "title": "מה התפקיד שלך במרפאה?",
+  "eyebrow": "לפני שמתחילים",
+  "targetMinutes": 1,
+  "onScreenText": [
+    "הבחירה קובעת אילו מצבים תתרגלו בהמשך. תפיסת השירות ומסע המטופל משותפים לכולם."
+  ],
+  "mediaIds": [],
+  "sequences": {
+    "enter": [
+      {
+        "kind": "narration",
+        "audioId": "AUDIO-S01-01"
+      }
+    ]
+  },
+  "interactionType": "roleSelect",
+  "completion": "interaction",
+  "sourcePages": [
+    13,
+    14,
+    15
+  ],
+  "approvalStatus": "DRAFT"
+}

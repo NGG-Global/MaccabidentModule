@@ -1,0 +1,147 @@
+{
+  "screenId": "S02",
+  "chapter": "שתי חוויות",
+  "title": "שתי חוויות של אותו מטופל",
+  "eyebrow": "פרק 1",
+  "targetMinutes": 3,
+  "learningObjective": "לזהות כיצד התנהגות שירותית משנה את חוויית המטופל, גם כשהטיפול זהה.",
+  "onScreenText": [],
+  "mediaIds": [],
+  "sequences": {
+    "enter": [
+      {
+        "kind": "composition",
+        "durationSec": 2.8,
+        "visual": {
+          "id": "chapter",
+          "props": {
+            "number": "01",
+            "title": "שתי חוויות",
+            "subtitle": "אותו מטופל. אותו תור."
+          }
+        }
+      },
+      {
+        "kind": "narration",
+        "audioId": "AUDIO-S02-01",
+        "visual": {
+          "id": "meetYossi",
+          "props": {
+            "photoId": "STILL-WAIT-01",
+            "name": "יוסי",
+            "lines": [
+              {
+                "at": 0,
+                "text": "הכירו את יוסי"
+              },
+              {
+                "at": 1.2,
+                "text": "הגיע לטיפול שנקבע מראש"
+              },
+              {
+                "at": 4.72,
+                "text": "לא מכיר את הצוות, ולא בטוח מה מצפה לו"
+              },
+              {
+                "at": 8.38,
+                "text": "שתי דרכים שבהן הביקור יכול להתחיל"
+              },
+              {
+                "at": 12.08,
+                "text": "שימו לב למה שאומרים לו"
+              },
+              {
+                "at": 14.5,
+                "text": "וגם למה שהוא עשוי להרגיש"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "kind": "video",
+        "mediaId": "VID-COMPARE-A-01"
+      },
+      {
+        "kind": "video",
+        "mediaId": "VID-COMPARE-B-01"
+      },
+      {
+        "kind": "narration",
+        "audioId": "AUDIO-S02-02"
+      }
+    ],
+    "feedback": [
+      {
+        "kind": "narration",
+        "audioId": "AUDIO-S02-03",
+        "visual": {
+          "id": "compareFeedback",
+          "props": {
+            "same": [
+              {
+                "at": 0,
+                "text": "אותה מרפאה"
+              },
+              {
+                "at": 3.08,
+                "text": "אותו תור"
+              },
+              {
+                "at": 4.5,
+                "text": "אותו טיפול"
+              }
+            ],
+            "different": {
+              "at": 5.12,
+              "text": "חוויית שירות שונה"
+            },
+            "practices": [
+              {
+                "at": 7.84,
+                "text": "קשר אישי"
+              },
+              {
+                "at": 9.86,
+                "text": "הקשבה"
+              },
+              {
+                "at": 10.72,
+                "text": "הסבר מה עומד לקרות"
+              }
+            ],
+            "result": {
+              "at": 12.86,
+              "text": "המטופל מרגיש שרואים אותו"
+            },
+            "closing": {
+              "at": 15.42,
+              "text": "כאן תפיסת השירות מתחילה לקבל משמעות"
+            }
+          }
+        }
+      }
+    ]
+  },
+  "interactionType": "compare",
+  "interaction": {
+    "type": "compare",
+    "versions": [
+      {
+        "label": "גרסה א",
+        "mediaId": "VID-COMPARE-A-01"
+      },
+      {
+        "label": "גרסה ב",
+        "mediaId": "VID-COMPARE-B-01"
+      }
+    ],
+    "questionId": "Q-S02-01"
+  },
+  "completion": "interaction",
+  "sourcePages": [
+    12,
+    13
+  ],
+  "approvalStatus": "DRAFT"
+}
