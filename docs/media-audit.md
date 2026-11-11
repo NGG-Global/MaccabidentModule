@@ -14,7 +14,7 @@ Generated from `src/content/media-manifest.json` and `src/content/captions.json`
 
 | Asset | Screen | Status | Duration (s) | Source file | Notes |
 |---|---|---|---:|---|---|
-| `VID-INTRO-01` | S00 | ready | 9.962 | V01_Yossi_Clinic_Arrival.mp4 | The wall sign under the AI-generated logo reads "הפנידיה משיבידנט", which is meaningless. Used in S00 at stakeholder request; regenerate before release. |
+| `VID-INTRO-01` | S00 | ready | 10.042 | lv_0_20261111233252.mp4 (corrected V01) | Wall sign corrected; shorter dialogue; AI-generated logo to be confirmed |
 | `VID-COMPARE-A-01` | S02 | ready | 10.026 | V02A_Reception_Distracted_Service.mp4 |  |
 | `VID-COMPARE-B-01` | S02 | ready | 10.026 | 1064077222_1794425076924453.mp4 (V02B) | Uploaded under a numeric file name; identified as V02B by its dialogue and framing, which match V02A. The earlier upload named V02B was a byte-identical copy of V04B. |
 | `VID-WAIT-01` | later chapters | blocked |  | V03_Yossi_Waiting_Complaint.mp4 | Burned-in Hebrew subtitle is garbled ("שמחון בזת לאינוי של?"). Not usable; needs regeneration without subtitles. |
@@ -46,7 +46,7 @@ Generated from `src/content/media-manifest.json` and `src/content/captions.json`
 1. **V02B duplicate.** The first upload named `V02B_Reception_Welcoming_Service.mp4` was byte-identical to `V04B_Reception_Empathetic_Response.mp4`. The correct V02B arrived later as `1064077222_1794425076924453.mp4`; it was identified by its dialogue ("בוקר טוב, ברוך הבא. בוא נבדוק יחד.") and its framing, which matches V02A.
 2. **Unidentified narration file.** `UNVERIFIED_19_08_45.mp3` is an alternate take of `S02_02_Comparison_Question.mp3` (same text, different encoding). It is not used.
 3. **S04 narration missing.** The narration archive contains S00–S03 only. S04 stage narration and the S03 exercise feedback narration were not supplied; S04 shows written key points and names the missing narration on screen.
-4. **V01 wall sign.** The AI-generated sign under the logo reads "הפנידיה משיבידנט", which is meaningless. V01 is used in S00 as the brief requires; it should be regenerated before release.
+4. **V01 wall sign — resolved.** The first V01 showed a meaningless sign under the logo ("הפנידיה משיבידנט"). A corrected version (`lv_0_20261111233252.mp4`) replaced it in S00: the sign now shows the logo only, and Yossi matches the other clips. Its dialogue is shorter than the first version: "שלום, בוקר טוב. יש לי תור לעשר." The logo itself is still AI-generated and should be confirmed with Maccabident.
 5. **V03 burned-in subtitle.** The subtitle reads "שמחון בזת לאינוי של?" (garbled). V03 is blocked; one still frame from before the subtitle appears is used in the compositions.
 6. **Bitstream defect.** The delivered H.264 streams failed to decode in Chromium when seeked. The web copies were re-encoded to clean 720p H.264 (keyframe every second, AAC 160 kb/s); the original uploads are unchanged.
 7. **Consistency.** In V05 Yossi wears a different outfit; in V07 the actor may differ and the tablet shows an AI-generated dental image that needs clinical review. V10 shows a card going into a wallet; confirm it does not imply payment. None of these clips is used in S00–S04.

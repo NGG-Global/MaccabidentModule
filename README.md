@@ -89,7 +89,7 @@ data is collected. To connect a destination later, implement
 
 - **Remotion licence.** Remotion requires a paid company licence for companies above a small size (see remotion.dev/license). This must be confirmed before production use; the prototype does not set `acknowledgeRemotionLicense`.
 - S04 narration, S03 exercise feedback narration and S05–S09 media were not supplied.
-- V01 shows a meaningless AI-generated wall sign; V03 has a garbled burned-in subtitle and is not used. See `docs/media-audit.md`.
+- V03 has a garbled burned-in subtitle and is not used. The clinic logo in the videos is AI-generated and needs Maccabident's confirmation. See `docs/media-audit.md`.
 - Captions are a hand-corrected machine transcription pending comparison with the approved scripts.
 - Progress and the learner id are stored in this browser only; they are not an organisational record.
 - In development, React StrictMode makes the Remotion Player log `Cannot suspend a closed AudioContext`; this does not occur in the production build.

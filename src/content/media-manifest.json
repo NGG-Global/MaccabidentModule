@@ -14,13 +14,13 @@
     "kind": "video",
     "status": "ready",
     "alt": "יוסי נכנס למרפאה וניגש לדלפק הקבלה",
-    "source": "V01_Yossi_Clinic_Arrival.mp4",
+    "source": "lv_0_20261111233252.mp4 (corrected V01)",
     "verification": "Verified by transcript (local speech-to-text) and visual review. Web copy re-encoded to 720p H.264 with a keyframe every second; the original upload is unchanged.",
     "src": "VID-INTRO-01.mp4",
     "posterId": "POSTER-VID-INTRO-01",
     "captionsId": "VID-INTRO-01",
-    "notes": "The wall sign under the AI-generated logo reads \"הפנידיה משיבידנט\", which is meaningless. Used in S00 at stakeholder request; regenerate before release.",
-    "durationSec": 9.962,
+    "notes": "Corrected version: the meaningless wall sign of the first V01 is gone. Dialogue is shorter than the first version (\"שלום, בוקר טוב. יש לי תור לעשר.\"). The logo on the wall is AI-generated; confirm it is acceptable to Maccabident.",
+    "durationSec": 10.042,
     "approvalStatus": "DRAFT"
   },
   {
@@ -29,7 +29,7 @@
     "status": "ready",
     "src": "POSTER-VID-INTRO-01.jpg",
     "alt": "יוסי נכנס למרפאה וניגש לדלפק הקבלה",
-    "source": "Frame from V01_Yossi_Clinic_Arrival.mp4",
+    "source": "Frame from lv_0_20261111233252.mp4 (corrected V01)",
     "verification": "Extracted frame",
     "approvalStatus": "DRAFT"
   },
