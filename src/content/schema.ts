@@ -30,14 +30,111 @@ export type InteractionType = z.infer<typeof InteractionTypeSchema>;
 
 const ScreenIdSchema = z.string().regex(/^S\d{2}$/, 'screenId must look like S00');
 const ScenarioIdSchema = z.string().regex(/^SC-[A-Z]{3}-\d{2}$/, 'scenarioId must look like SC-COM-01');
-const MediaIdSchema = z.string().regex(/^[A-Z]+(-[A-Z0-9]+)+$/, 'media id must look like IMG-WAIT-01');
+const QuestionIdSchema = z.string().regex(/^Q-S\d{2}-\d{2}$/, 'questionId must look like Q-S02-01');
+export const MediaIdSchema = z.string().regex(/^[A-Z]+(-[A-Z0-9]+)+$/, 'media id must look like IMG-WAIT-01');
 const SourcePagesSchema = z.array(z.number().int().positive());
 
-export const NarrationSchema = z.strictObject({
-  audioId: MediaIdSchema,
-  transcript: z.string().min(1),
+/** Remotion compositions available to content. Registered in src/remotion/registry.ts. */
+export const COMPOSITION_IDS = [
+  'opening',
+  'chapter',
+  'meetYossi',
+  'compareFeedback',
+  'valuesIntro',
+  'valueSeeing',
+  'valueAdapting',
+  'valueAccompanying',
+  'journey',
+] as const;
+export const CompositionIdSchema = z.enum(COMPOSITION_IDS);
+export type CompositionId = z.infer<typeof CompositionIdSchema>;
+
+/** Timed text for a composition, in seconds from the start of its narration. */
+export const TimedTextSchema = z.strictObject({ at: z.number().nonnegative(), text: z.string().min(1) });
+export type TimedText = z.infer<typeof TimedTextSchema>;
+
+export const CompositionRefSchema = z.strictObject({
+  id: CompositionIdSchema,
+  /** Free-form, validated by the composition itself (see src/remotion/registry.ts). */
+  props: z.record(z.string(), z.unknown()).default({}),
 });
-export type Narration = z.infer<typeof NarrationSchema>;
+export type CompositionRef = z.infer<typeof CompositionRefSchema>;
+
+/**
+ * A beat is one unit of timed media. Beats in a sequence play one after
+ * another and never overlap: narration, video dialogue and silent animation
+ * each own the timeline while they run.
+ */
+export const BeatSchema = z.discriminatedUnion('kind', [
+  z.strictObject({
+    kind: z.literal('narration'),
+    audioId: MediaIdSchema,
+    /** Composition driven frame-by-frame by the narration clock. */
+    visual: CompositionRefSchema.optional(),
+    /** Fallback transcript for narration without captions (e.g. not yet supplied). */
+    transcript: z.string().optional(),
+  }),
+  z.strictObject({ kind: z.literal('video'), mediaId: MediaIdSchema }),
+  z.strictObject({
+    kind: z.literal('composition'),
+    visual: CompositionRefSchema,
+    durationSec: z.number().positive(),
+  }),
+]);
+export type Beat = z.infer<typeof BeatSchema>;
+
+export const SequencesSchema = z.record(z.string().min(1), z.array(BeatSchema).min(1));
+
+const OptionIdSchema = z.enum(['A', 'B', 'C']);
+
+export const QuestionSchema = z
+  .strictObject({
+    questionId: QuestionIdSchema,
+    prompt: z.string().min(1),
+    options: z
+      .array(z.strictObject({ id: OptionIdSchema, text: z.string().min(1), correct: z.boolean(), feedback: z.string().min(1) }))
+      .length(3),
+    /** Sequence key on the owning screen played after any answer. */
+    feedbackSequence: z.string().optional(),
+    sourcePages: SourcePagesSchema,
+    approvalStatus: ApprovalStatusSchema,
+  })
+  .refine((q) => q.options.filter((o) => o.correct).length === 1, {
+    message: 'exactly one option must be correct',
+    path: ['options'],
+  });
+export type Question = z.infer<typeof QuestionSchema>;
+
+const JourneyStageSchema = z.strictObject({
+  id: z.string().regex(/^[a-z-]+$/),
+  number: z.number().int().positive(),
+  title: z.string().min(1),
+  summary: z.string().min(1),
+  points: z.array(z.string().min(1)).min(2).max(4),
+  imageId: MediaIdSchema.optional(),
+  sequence: z.string().min(1),
+  sourcePages: SourcePagesSchema,
+});
+export type JourneyStage = z.infer<typeof JourneyStageSchema>;
+
+/** Interaction details, discriminated by type. Its presence and type are checked against interactionType. */
+export const InteractionSchema = z.discriminatedUnion('type', [
+  z.strictObject({ type: z.literal('compare'), versions: z.array(z.strictObject({ label: z.string(), mediaId: MediaIdSchema })).length(2), questionId: QuestionIdSchema }),
+  z.strictObject({
+    type: z.literal('valuesMatch'),
+    chapters: z.array(z.strictObject({ valueId: z.string(), beatIndex: z.number().int().nonnegative() })),
+    prompt: z.string().min(1),
+    items: z
+      .array(z.strictObject({ id: z.string().regex(/^[a-z-]+$/), text: z.string().min(1), valueId: z.string(), feedback: z.string().min(1) }))
+      .min(1),
+  }),
+  z.strictObject({
+    type: z.literal('journey'),
+    stages: z.array(JourneyStageSchema).length(5),
+    completion: z.strictObject({ title: z.string(), next: z.string() }),
+  }),
+]);
+export type Interaction = z.infer<typeof InteractionSchema>;
 
 const ScenarioRefsSchema = z.union([
   z.array(ScenarioIdSchema),
@@ -51,14 +148,19 @@ const ScenarioRefsSchema = z.union([
 
 export const ScreenSchema = z.strictObject({
   screenId: ScreenIdSchema,
+  /** Short label used in the chapter progress. */
+  chapter: z.string().min(1),
   title: z.string().min(1),
+  eyebrow: z.string().optional(),
   targetMinutes: z.number().positive(),
   learningObjective: z.string().optional(),
   onScreenText: z.array(z.string()),
-  narration: NarrationSchema.optional(),
   visualDescription: z.string().optional(),
   mediaIds: z.array(MediaIdSchema),
+  /** Timed media. "enter" plays when the screen opens (after the learner's first gesture). */
+  sequences: SequencesSchema.default({}),
   interactionType: InteractionTypeSchema,
+  interaction: InteractionSchema.optional(),
   scenarioIds: ScenarioRefsSchema.optional(),
   /** 'view': may advance freely. 'interaction': the activity must be done first. */
   completion: z.enum(['view', 'interaction']),
@@ -67,11 +169,17 @@ export const ScreenSchema = z.strictObject({
 });
 export type Screen = z.infer<typeof ScreenSchema>;
 
+export const NarrationSchema = z.strictObject({
+  audioId: MediaIdSchema,
+  transcript: z.string().min(1),
+});
+export type Narration = z.infer<typeof NarrationSchema>;
+
 export const OptionRatingSchema = z.enum(['preferred', 'partial', 'undesirable']);
 export type OptionRating = z.infer<typeof OptionRatingSchema>;
 
 export const ScenarioOptionSchema = z.strictObject({
-  id: z.enum(['A', 'B', 'C']),
+  id: OptionIdSchema,
   text: z.string().min(1),
   rating: OptionRatingSchema,
   feedback: z.string().min(1),
@@ -116,18 +224,41 @@ export const MediaAssetSchema = z
   .strictObject({
     id: MediaIdSchema,
     kind: MediaKindSchema,
-    status: z.enum(['missing', 'ready']),
+    /** missing: not supplied. blocked: supplied but not usable (see notes). ready: in public/media/. */
+    status: z.enum(['missing', 'blocked', 'ready']),
     /** Path relative to public/media/. Required once status is "ready". */
     src: z.string().optional(),
-    /** Text alternative / description, shown in the placeholder while the asset is missing. */
+    /** Text alternative / description, shown in the placeholder while the asset is not ready. */
     alt: z.string().min(1),
+    /** Measured with ffprobe; drives composition length for narration. */
+    durationSec: z.number().positive().optional(),
+    posterId: MediaIdSchema.optional(),
     captionsId: MediaIdSchema.optional(),
+    /** Original upload this asset was produced from. */
+    source: z.string().optional(),
+    verification: z.string().optional(),
+    approvalStatus: ApprovalStatusSchema.default('DRAFT'),
+    notes: z.string().optional(),
   })
-  .refine((m) => m.status === 'missing' || Boolean(m.src), {
-    message: 'a "ready" asset needs a src',
-    path: ['src'],
+  .refine((m) => m.status !== 'ready' || Boolean(m.src), { message: 'a "ready" asset needs a src', path: ['src'] })
+  .refine((m) => m.status !== 'ready' || !['audio', 'video'].includes(m.kind) || m.durationSec, {
+    message: 'a "ready" audio or video asset needs a measured durationSec',
+    path: ['durationSec'],
   });
 export type MediaAsset = z.infer<typeof MediaAssetSchema>;
+
+export const CueSchema = z.strictObject({ start: z.number().nonnegative(), end: z.number().positive(), text: z.string().min(1) });
+export type Cue = z.infer<typeof CueSchema>;
+export const CaptionsFileSchema = z.record(
+  MediaIdSchema,
+  z.strictObject({
+    /** machine-transcribed: generated by local speech-to-text and corrected by hand; pending script check. */
+    status: z.enum(['machine-transcribed', 'approved']),
+    note: z.string().optional(),
+    cues: z.array(CueSchema).min(1),
+  }),
+);
+export type CaptionsFile = z.infer<typeof CaptionsFileSchema>;
 
 const TransitionSchema = z.union([
   ScreenIdSchema,
@@ -146,12 +277,13 @@ export const CourseConfigSchema = z.strictObject({
     maxAttempts: z.number().int().positive().nullable(),
     note: z.string(),
   }),
-  /** Business rule behind the course_completed event. */
-  completionRule: z.literal('reach-summary'),
+  /** Business rule behind the prototype_completed event. */
+  completionRule: z.literal('end-screen-complete'),
   /** Explicit navigation graph: each screen names its successor, optionally per role. */
   flow: z.strictObject({
     start: ScreenIdSchema,
-    summary: ScreenIdSchema,
+    /** Last screen of the current build; completing its interaction completes the prototype. */
+    end: ScreenIdSchema,
     transitions: z.record(ScreenIdSchema, TransitionSchema),
   }),
 });
@@ -187,7 +319,9 @@ export interface Content {
   course: CourseConfig;
   screens: Record<string, Screen>;
   scenarios: Record<string, Scenario>;
+  questions: Record<string, Question>;
   media: Record<string, MediaAsset>;
+  captions: CaptionsFile;
   values: ValuesFile;
   roles: RoleInfo[];
 }

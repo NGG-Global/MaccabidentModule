@@ -6,7 +6,7 @@ import { useTrack } from '../analytics/TrackContext';
 import { DraftBadge } from '../components/DraftBadge';
 import { FeedbackPanel } from '../components/FeedbackPanel';
 import { OptionList } from '../components/OptionList';
-import { useNarrationClip } from '../narration/NarrationProvider';
+import { elapsedMs, nowMs } from './timing';
 import type { ScreenProps } from './types';
 
 const fill = (template: string, values: Record<string, number>) =>
@@ -15,7 +15,8 @@ const fill = (template: string, values: Record<string, number>) =>
 /**
  * Practice scenarios: three options, immediate feedback specific to the
  * choice, and unlimited retries without penalty. Works for one shared
- * scenario or a list of role scenarios.
+ * scenario or a list of role scenarios. Not in the S00–S04 flow yet;
+ * kept for S05–S06. Narration for scenarios will run through the stage.
  */
 export function ScenarioScreen({ screen, state, dispatch }: ScreenProps) {
   const track = useTrack();
@@ -30,20 +31,9 @@ export function ScenarioScreen({ screen, state, dispatch }: ScreenProps) {
 
   // Response time is measured from the moment the options are (re)presented.
   useEffect(() => {
-    if (submitted === null) shownAt.current = performance.now();
+    if (submitted === null) shownAt.current = nowMs();
   }, [index, submitted]);
 
-  useNarrationClip(
-    submittedOption
-      ? submittedOption.feedbackAudioId
-        ? {
-            audioId: submittedOption.feedbackAudioId,
-            // The short feedback is already on screen; only a longer spoken version needs a transcript.
-            transcript: submittedOption.feedbackNarration ?? '',
-          }
-        : null
-      : scenario?.narration,
-  );
 
   if (!scenario) return <p>{ui.pendingScreen}</p>;
   if (scenario.approvalStatus === 'DRAFT' && !env.showDraftContent) return <p>{ui.draftHidden}</p>;
@@ -51,23 +41,20 @@ export function ScenarioScreen({ screen, state, dispatch }: ScreenProps) {
   const check = () => {
     const option = scenario.options.find((o) => o.id === selected);
     if (!option) return;
-    const attemptNumber = (state.practiceAnswers[scenario.scenarioId]?.length ?? 0) + 1;
+    const attemptNumber = (state.answers[scenario.scenarioId]?.length ?? 0) + 1;
     dispatch({ type: 'ANSWER_PRACTICE', scenarioId: scenario.scenarioId, optionId: option.id });
     setSubmitted(option.id);
-    const fields = { scenarioId: scenario.scenarioId };
     track(
-      'scenario_answered',
+      'question_answered',
       {
+        questionId: scenario.scenarioId,
         answerId: option.id,
-        isPreferred: option.rating === 'preferred',
-        responseTimeMs: Math.max(0, Math.round(performance.now() - shownAt.current)),
+        isCorrect: option.rating === 'preferred',
         attemptNumber,
-        skill: scenario.skill,
-        mode: 'practice',
+        responseTimeMs: elapsedMs(shownAt.current),
       },
-      fields,
+      { scenarioId: scenario.scenarioId },
     );
-    track('feedback_viewed', { answerId: option.id }, fields);
   };
 
   const reset = (nextIndex: number) => {

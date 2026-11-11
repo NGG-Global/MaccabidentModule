@@ -1,27 +1,27 @@
 # בידיים טובות — Maccabident onboarding module
 
-Hebrew (RTL) e-learning module for new clinic employees: a shared core plus role
-tracks for reception, assistants and clinicians, designed for one sitting.
+Hebrew (RTL) interactive learning experience for new clinic employees.
+**This build is a working prototype of the introduction chapter, S00–S04**, for
+an internal stakeholder demonstration. S05–S09 are modelled in the content and
+navigation but not implemented.
 
-**Status: infrastructure and one vertical slice.** The specification in
-`docs/good_hands_spec/` is version 0.1, a draft pending professional approval.
-All learner-facing text in this repository is DRAFT and is not approved
-Maccabident policy.
+All learner-facing text is DRAFT and has not been approved by Maccabident.
+The specification is in `docs/good_hands_spec/`; the media verification is in
+`docs/media-audit.md`.
 
-## What is built
+## What the prototype covers
 
-| Area | State |
-|---|---|
-| Content model with schema validation | Done (`src/content`) |
-| Navigation engine, role paths, skip prevention | Done (`src/engine/flow.ts`) |
-| Scoring with configurable threshold | Engine done and tested; no assessment screen yet |
-| Progress save and resume | Done, browser localStorage only |
-| Narration player and transcript | Done; no narration has been produced |
-| Analytics events and adapter | Done; Console and Noop adapters only |
-| Media manifest and placeholders | Done; every asset is listed as `missing` |
-| Screens | Slice only: S00 → S01 → S03 (values as cards) → S05 → S09 |
+| Screen | Content | Media |
+|---|---|---|
+| S00 Opening | Arrival film, then a narrated title sequence | V01, narration S00, Remotion `opening` |
+| S01 Role | Three roles; the choice is saved for later branching | Narration S01 with live captions |
+| S02 Two experiences | Chapter card, "Meet Yossi", both reception versions, question, animated feedback | V02A, V02B, narration S02 ×3, `chapter`, `meetYossi`, `compareFeedback` |
+| S03 Three values | Introduction and one animation per value, then a matching exercise | Narration S03 ×4, `valuesIntro`, `valueSeeing`, `valueAdapting`, `valueAccompanying` |
+| S04 Patient journey | Five touchpoints; all must be explored; chapter completion | `journey` (narration not supplied) |
 
-S02, S04, S06, S07 and S08 exist as validated content stubs and are not yet in the flow.
+Learner controls: start, continue, back, pause, replay, mute, captions,
+transcript and speed; local save and resume; restart with confirmation.
+Nothing makes a sound before the learner presses Start (or Play after a refresh).
 
 ## Run
 
@@ -29,63 +29,57 @@ Requires Node 22.
 
 ```bash
 npm install
-npm run dev        # development server, DRAFT content visible with a "טעון אישור" badge
-npm run typecheck
-npm run lint
-npm test           # unit tests (Vitest)
-npm run e2e        # browser tests (Playwright, desktop and 360px)
-npm run build      # static build in dist/, relative paths, host-neutral
+npm run dev          # http://localhost:5173 — DRAFT content visible, console analytics
+npm run build:demo   # static build with DRAFT content shown, for the stakeholder demonstration
+npm run preview      # serve the last build locally
 ```
 
-`npm run e2e` needs a Chromium for Playwright (`npx playwright install chromium`).
+`npm run build` (without `:demo`) hides DRAFT content, as a production build should.
+The build is static with relative paths and can be served from any web server or folder.
 
-A production build hides DRAFT content. To show it deliberately, for example in a
-pilot, build with `VITE_ALLOW_DRAFT=true`; the badge then stays visible.
-`VITE_ANALYTICS_ADAPTER=console|noop` selects the analytics adapter
-(default: `console` in development, `noop` in production).
+## Checks
 
-## Editing content
+```bash
+npm run typecheck
+npm run lint
+npm test             # unit tests (Vitest)
+npm run e2e          # browser tests (Playwright; desktop and 360px)
+```
 
-No content lives in components. Everything is JSON under `src/content` and is
-validated when the application starts and in the unit tests.
+`npm run e2e` needs Chromium for Playwright (`npx playwright install chromium`).
 
-| File | Holds |
-|---|---|
-| `course.json` | Version, assessment settings, the navigation graph (`flow.transitions`) |
-| `screens/Sxx.json` | One screen: title, on-screen text, narration transcript, media ids, source pages, approval status |
-| `scenarios/SC-XXX-nn.json` | One scenario: scene, question, exactly three options with one `preferred`, feedback per option |
-| `values.json`, `roles.json` | Service values and role labels |
-| `media-manifest.json` | Every media asset id; set `status: "ready"` and `src` once a file is in `public/media/` |
-| `ui.json` | Interface wording |
+## Architecture
 
-To add a screen to the course, add its JSON file and reference it in
-`course.json` → `flow.transitions`. A transition is either a screen id or an
-object keyed by role. Validation fails with a list of problems if a reference is
-broken, a scenario does not have exactly one preferred option, or a role cannot
-reach the summary screen.
+| Layer | Location | Notes |
+|---|---|---|
+| Content | `src/content/` | JSON validated with Zod at start-up: screens, timed sequences, questions, captions, media manifest |
+| Media | `public/media/`, `src/content/media-manifest.json` | Stable ids, measured durations, source and verification per asset |
+| Interaction logic | `src/engine/flow.ts` | Pure reducer: navigation graph, completion rules, skip prevention, resume validation |
+| Playback | `src/stage/` | One active media beat at a time; narration drives its composition frame by frame |
+| Presentation | `src/screens/`, `src/components/`, `src/remotion/` | React + Tailwind + Motion; Remotion compositions in `@remotion/player` |
+| Analytics | `src/analytics/` | Typed, validated, local only (memory buffer, console in development) |
 
-Change `courseVersion` when content changes in a way that makes saved progress
-invalid; progress saved under another version is discarded.
+Narration timing: every animated line has an `at` time in seconds taken from
+word timings of the actual narration, so animation follows the voice and never
+cuts it off. Compositions render 16:9 on wide screens and 4:5 on phones.
 
 ## Analytics
 
-`track()` builds the event envelope, validates it against the schema in
-`src/analytics/events.ts` (the events in `docs/good_hands_spec/05-analytics.md`)
-and hands it to an `AnalyticsAdapter`. A failing adapter or an invalid event
-never interrupts the learner. Payloads are strict: an unexpected field is
-rejected. To connect a real destination, implement `AnalyticsAdapter` in
-`src/analytics/adapter.ts`; screen components do not change.
+Events: `course_started`, `screen_viewed`, `narration_started`,
+`narration_completed`, `video_started`, `video_completed`,
+`question_answered`, `journey_stage_viewed`, `role_selected`,
+`prototype_completed`. They are validated against strict schemas and kept in
+the page only; in development they are also printed to the console and exposed
+as `window.__goodHandsEvents`. Nothing is transmitted and no personal or medical
+data is collected. To connect a destination later, implement
+`AnalyticsAdapter` in `src/analytics/adapter.ts`.
 
 ## Known limits
 
-- Progress and the learner id are stored in the browser on one device. They are
-  not an organisational record and not evidence of completion.
-- No personal or medical data is collected. The learner id is a random value
-  with no link to a person.
-- The 80/100 pass threshold and 20 points per decision are development targets
-  from the specification, not a Maccabident requirement.
-- Colours and fonts are neutral placeholders (`src/styles/index.css`) until brand assets are supplied.
-- Not yet covered: SCORM/xAPI packaging, employee identification, completion
-  certificate, slow-network behaviour, testing with a real screen reader, and
-  measured completion time. The open decisions are listed in
-  `docs/good_hands_spec/07-open-decisions.md`.
+- **Remotion licence.** Remotion requires a paid company licence for companies above a small size (see remotion.dev/license). This must be confirmed before production use; the prototype does not set `acknowledgeRemotionLicense`.
+- S04 narration, S03 exercise feedback narration and S05–S09 media were not supplied.
+- V01 shows a meaningless AI-generated wall sign; V03 has a garbled burned-in subtitle and is not used. See `docs/media-audit.md`.
+- Captions are a hand-corrected machine transcription pending comparison with the approved scripts.
+- Progress and the learner id are stored in this browser only; they are not an organisational record.
+- In development, React StrictMode makes the Remotion Player log `Cannot suspend a closed AudioContext`; this does not occur in the production build.
+- Not verified here: testing with a real screen reader, measured completion time with learners, SCORM/xAPI packaging.

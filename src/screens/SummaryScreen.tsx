@@ -1,18 +1,16 @@
 import { useState } from 'react';
 import { content, ui } from '../content';
 import { resolvePath } from '../engine/flow';
-import { useNarrationClip } from '../narration/NarrationProvider';
 import type { ScreenProps } from './types';
 
 /** Personal recap. States plainly that progress is device-local and not an organisational record. */
-export function SummaryScreen({ screen, state, dispatch }: ScreenProps) {
-  useNarrationClip(screen.narration);
+export function SummaryScreen({ state, dispatch }: ScreenProps) {
   const [confirming, setConfirming] = useState(false);
 
   const role = content.roles.find((r) => r.id === state.role);
-  const path = resolvePath(content.course, state.role).filter((id) => id !== content.course.flow.summary);
+  const path = resolvePath(content.course, state.role).filter((id) => id !== content.course.flow.end);
   const done = path.filter((id) => state.completed.includes(id)).length;
-  const practised = Object.entries(state.practiceAnswers).filter(([, answers]) => answers.length > 0);
+  const practised = Object.entries(state.answers).filter(([id, answers]) => Boolean(content.scenarios[id]) && answers.length > 0);
 
   return (
     <div className="space-y-4">

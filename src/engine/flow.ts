@@ -23,12 +23,15 @@ export type AssessmentAttempt = z.infer<typeof AssessmentAttemptSchema>;
 export const FlowStateSchema = z.strictObject({
   role: RoleSchema.nullable(),
   currentScreenId: z.string(),
-  /** Screens whose activity is done (interaction screens) or that were left via "next" (view screens). */
+  /** View screens the learner has moved past. Interaction screens are judged by their answers. */
   completed: z.array(z.string()),
-  /** scenarioId → option ids chosen in practice, in order. */
-  practiceAnswers: z.record(z.string(), z.array(z.string())),
+  /** Answer history, in order, keyed by question id, scenario id or "<screenId>:<itemId>". */
+  answers: z.record(z.string(), z.array(z.string())),
+  /** Journey stages opened, as "<screenId>:<stageId>". */
+  visited: z.array(z.string()),
   attempts: z.array(AssessmentAttemptSchema),
   startedAt: z.string().nullable(),
+  /** Set once, when the end screen's activity is first completed. */
   completedAt: z.string().nullable(),
 });
 export type FlowState = z.infer<typeof FlowStateSchema>;
@@ -36,12 +39,17 @@ export type FlowState = z.infer<typeof FlowStateSchema>;
 export type FlowAction =
   | { type: 'START'; at: string }
   | { type: 'SELECT_ROLE'; role: Role }
+  | { type: 'ANSWER_QUESTION'; questionId: string; optionId: string }
+  | { type: 'MATCH_VALUE'; itemId: string; valueId: string }
+  | { type: 'VISIT_STAGE'; stageId: string; at: string }
   | { type: 'ANSWER_PRACTICE'; scenarioId: string; optionId: string }
-  | { type: 'NEXT'; at: string }
+  | { type: 'NEXT' }
   | { type: 'BACK' }
   | { type: 'GOTO'; screenId: string }
   | { type: 'RECORD_ATTEMPT'; attempt: AssessmentAttempt }
   | { type: 'RESET' };
+
+export const itemKey = (screenId: string, itemId: string) => `${screenId}:${itemId}`;
 
 export function resolveNext(course: CourseConfig, screenId: string, role: Role | null): string | null {
   const to = course.flow.transitions[screenId];
@@ -62,9 +70,13 @@ export function resolvePath(course: CourseConfig, role: Role | null): string[] {
 }
 
 const addOnce = (list: string[], id: string) => (list.includes(id) ? list : [...list, id]);
+const append = (answers: FlowState['answers'], key: string, value: string) => ({
+  ...answers,
+  [key]: [...(answers[key] ?? []), value],
+});
 
 export function createFlow(content: Content) {
-  const { course, screens, scenarios } = content;
+  const { course, screens, scenarios, questions } = content;
 
   const screenOf = (id: string): Screen => {
     const screen = screens[id];
@@ -76,19 +88,51 @@ export function createFlow(content: Content) {
     role: null,
     currentScreenId: course.flow.start,
     completed: [],
-    practiceAnswers: {},
+    answers: {},
+    visited: [],
     attempts: [],
     startedAt: null,
     completedAt: null,
   });
 
-  const isScreenComplete = (state: FlowState, screenId: string) => state.completed.includes(screenId);
+  /** Has the learner done what the screen asks? Practice answers count whether right or wrong, unless stated. */
+  const isActivityDone = (state: FlowState, screen: Screen): boolean => {
+    const interaction = screen.interaction;
+    switch (screen.interactionType) {
+      case 'intro':
+        return state.startedAt !== null;
+      case 'roleSelect':
+        return state.role !== null;
+      case 'compare':
+        return interaction?.type === 'compare' && (state.answers[interaction.questionId]?.length ?? 0) > 0;
+      case 'valuesMatch':
+        // Each item must eventually be matched to its value; wrong tries are allowed and recorded.
+        return (
+          interaction?.type === 'valuesMatch' &&
+          interaction.items.every((item) => state.answers[itemKey(screen.screenId, item.id)]?.includes(item.valueId))
+        );
+      case 'journey':
+        return (
+          interaction?.type === 'journey' &&
+          interaction.stages.every((stage) => state.visited.includes(itemKey(screen.screenId, stage.id)))
+        );
+      case 'scenario':
+        return scenarioIdsFor(screen, state.role).every((id) => (state.answers[id]?.length ?? 0) > 0);
+      default:
+        return false;
+    }
+  };
+
+  const isScreenComplete = (state: FlowState, screenId: string): boolean => {
+    const screen = screenOf(screenId);
+    return screen.completion === 'view' ? state.completed.includes(screenId) : isActivityDone(state, screen);
+  };
 
   /** May the learner leave the current screen forwards? Interaction screens gate on their activity. */
   const canAdvance = (state: FlowState): boolean => {
     const screen = screenOf(state.currentScreenId);
     if (resolveNext(course, screen.screenId, state.role) === null) return false;
-    return screen.completion === 'view' || isScreenComplete(state, screen.screenId);
+    return screen.completion === 'view' || isActivityDone(state, screen);
   };
 
   /** A screen can be visited only when everything before it on the learner's path is complete. */
@@ -104,66 +148,69 @@ export function createFlow(content: Content) {
     return index > 0 ? (path[index - 1] ?? null) : null;
   };
 
-  /** Position for the progress indicator. Before a role is chosen, a branching graph is sized by the first role. */
-  const progress = (state: FlowState): { current: number; total: number } => {
-    const path = resolvePath(course, state.role ?? ROLES[0]);
-    return { current: Math.max(path.indexOf(state.currentScreenId), 0) + 1, total: path.length };
-  };
+  /** Chapters for the progress indicator. Before a role is chosen, a branching graph is sized by the first role. */
+  const chapters = (state: FlowState) =>
+    resolvePath(course, state.role ?? ROLES[0]).map((id) => ({
+      screenId: id,
+      label: screenOf(id).chapter,
+      complete: isScreenComplete(state, id),
+      current: id === state.currentScreenId,
+    }));
 
-  const reducer = (state: FlowState, action: FlowAction): FlowState => {
+  const step = (state: FlowState, action: FlowAction): FlowState => {
     const screen = screenOf(state.currentScreenId);
+    const interaction = screen.interaction;
     switch (action.type) {
-      case 'START': {
-        if (screen.interactionType !== 'intro' || state.startedAt) return state;
-        return { ...state, startedAt: action.at, completed: addOnce(state.completed, screen.screenId) };
+      case 'START':
+        return screen.interactionType === 'intro' && !state.startedAt ? { ...state, startedAt: action.at } : state;
+      case 'SELECT_ROLE':
+        return screen.interactionType === 'roleSelect' ? { ...state, role: action.role } : state;
+      case 'ANSWER_QUESTION': {
+        if (interaction?.type !== 'compare' || interaction.questionId !== action.questionId) return state;
+        if (!questions[action.questionId]?.options.some((o) => o.id === action.optionId)) return state;
+        return { ...state, answers: append(state.answers, action.questionId, action.optionId) };
       }
-      case 'SELECT_ROLE': {
-        if (screen.interactionType !== 'roleSelect') return state;
-        return { ...state, role: action.role, completed: addOnce(state.completed, screen.screenId) };
+      case 'MATCH_VALUE': {
+        if (interaction?.type !== 'valuesMatch' || !interaction.items.some((i) => i.id === action.itemId)) return state;
+        if (!content.values.values.some((v) => v.id === action.valueId)) return state;
+        return { ...state, answers: append(state.answers, itemKey(screen.screenId, action.itemId), action.valueId) };
+      }
+      case 'VISIT_STAGE': {
+        if (interaction?.type !== 'journey' || !interaction.stages.some((s) => s.id === action.stageId)) return state;
+        return { ...state, visited: addOnce(state.visited, itemKey(screen.screenId, action.stageId)) };
       }
       case 'ANSWER_PRACTICE': {
-        const expected = scenarioIdsFor(screen, state.role);
         const scenario = scenarios[action.scenarioId];
-        if (!expected.includes(action.scenarioId) || !scenario?.options.some((o) => o.id === action.optionId))
-          return state;
-        const practiceAnswers = {
-          ...state.practiceAnswers,
-          [action.scenarioId]: [...(state.practiceAnswers[action.scenarioId] ?? []), action.optionId],
-        };
-        // Practice is not penalised: any answer counts, the screen completes once each scenario was attempted.
-        const allAttempted = expected.every((id) => (practiceAnswers[id]?.length ?? 0) > 0);
-        return {
-          ...state,
-          practiceAnswers,
-          completed: allAttempted ? addOnce(state.completed, screen.screenId) : state.completed,
-        };
+        if (!scenarioIdsFor(screen, state.role).includes(action.scenarioId)) return state;
+        if (!scenario?.options.some((o) => o.id === action.optionId)) return state;
+        return { ...state, answers: append(state.answers, action.scenarioId, action.optionId) };
       }
       case 'NEXT': {
         if (!canAdvance(state)) return state;
         const next = resolveNext(course, screen.screenId, state.role);
         if (!next) return state;
-        const reachedSummary = next === course.flow.summary && !state.completedAt;
-        return {
-          ...state,
-          currentScreenId: next,
-          completed: addOnce(state.completed, screen.screenId),
-          completedAt: reachedSummary ? action.at : state.completedAt,
-        };
+        return { ...state, currentScreenId: next, completed: addOnce(state.completed, screen.screenId) };
       }
       case 'BACK': {
         const previous = previousOf(state);
         return previous ? { ...state, currentScreenId: previous } : state;
       }
-      case 'GOTO': {
+      case 'GOTO':
         return canVisit(state, action.screenId) ? { ...state, currentScreenId: action.screenId } : state;
-      }
-      case 'RECORD_ATTEMPT': {
+      case 'RECORD_ATTEMPT':
         return { ...state, attempts: [...state.attempts, action.attempt] };
-      }
-      case 'RESET': {
+      case 'RESET':
         return initialState();
-      }
     }
+  };
+
+  const reducer = (state: FlowState, action: FlowAction): FlowState => {
+    const next = step(state, action);
+    // The prototype is complete the first time the end screen's activity is done.
+    if (next !== state && !next.completedAt && next.currentScreenId === course.flow.end && isScreenComplete(next, course.flow.end)) {
+      return { ...next, completedAt: 'at' in action ? action.at : new Date().toISOString() };
+    }
+    return next;
   };
 
   /**
@@ -178,7 +225,7 @@ export function createFlow(content: Content) {
     return state;
   };
 
-  return { initialState, reducer, canAdvance, canVisit, previousOf, progress, restore, screenOf };
+  return { initialState, reducer, canAdvance, canVisit, previousOf, chapters, isScreenComplete, isActivityDone, restore, screenOf };
 }
 
 export type Flow = ReturnType<typeof createFlow>;

@@ -1,3 +1,4 @@
+import captions from './captions.json';
 import course from './course.json';
 import media from './media-manifest.json';
 import roles from './roles.json';
@@ -13,10 +14,12 @@ const byFileName = (modules: Record<string, unknown>) =>
 export const content = buildContent({
   course,
   media,
+  captions,
   roles,
   values,
   screens: byFileName(import.meta.glob<unknown>('./screens/*.json', { eager: true, import: 'default' })),
   scenarios: byFileName(import.meta.glob<unknown>('./scenarios/*.json', { eager: true, import: 'default' })),
+  questions: byFileName(import.meta.glob<unknown>('./questions/*.json', { eager: true, import: 'default' })),
 });
 
 /** Interface microcopy. Kept with the content so wording is editable outside components. */

@@ -21,6 +21,33 @@ export class ConsoleAdapter implements AnalyticsAdapter {
   }
 }
 
+/**
+ * Keeps the most recent events in memory for this page only, for local
+ * inspection during a demonstration (window.__goodHandsEvents in development).
+ */
+export class MemoryAdapter implements AnalyticsAdapter {
+  readonly events: AnalyticsEvent[] = [];
+  constructor(private readonly limit = 500) {}
+  send(event: AnalyticsEvent): void {
+    this.events.push(event);
+    if (this.events.length > this.limit) this.events.shift();
+  }
+}
+
+/** Fans one event out to several local adapters; a failing adapter does not affect the others. */
+export class CompositeAdapter implements AnalyticsAdapter {
+  constructor(private readonly adapters: AnalyticsAdapter[]) {}
+  send(event: AnalyticsEvent): void {
+    for (const adapter of this.adapters) {
+      try {
+        void adapter.send(event);
+      } catch {
+        // isolated by design
+      }
+    }
+  }
+}
+
 export function createAdapter(kind: string): AnalyticsAdapter {
   return kind === 'console' ? new ConsoleAdapter() : new NoopAdapter();
 }

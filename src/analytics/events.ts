@@ -1,8 +1,8 @@
 import { z } from 'zod';
-import { InteractionTypeSchema, MediaKindSchema, RoleSchema } from '../content/schema';
+import { InteractionTypeSchema, RoleSchema } from '../content/schema';
 
 /**
- * Vendor-neutral event schema (05-analytics). Payloads are strict objects so a
+ * Vendor-neutral event schema, envelope as in 05-analytics. Payloads are strict objects so a
  * stray field, such as free text or a personal identifier, fails validation
  * instead of leaving the application.
  */
@@ -24,31 +24,26 @@ const envelope = {
   schemaVersion: z.literal(SCHEMA_VERSION),
 };
 
+const mediaPayload = z.strictObject({ sequence: z.string().max(40) });
+
+/** Local-only event set for the S00–S04 prototype. Nothing is transmitted to a third party. */
 const payloads = {
   course_started: z.strictObject({}),
-  role_selected: z.strictObject({ role: RoleSchema }),
-  screen_viewed: z.strictObject({ interactionType: InteractionTypeSchema }),
-  media_started: z.strictObject({ mediaId: z.string(), kind: MediaKindSchema }),
-  media_completed: z.strictObject({ mediaId: z.string(), kind: MediaKindSchema }),
-  scenario_answered: z.strictObject({
+  screen_viewed: z.strictObject({ interactionType: InteractionTypeSchema, resumed: z.boolean() }),
+  narration_started: mediaPayload.extend({ audioId: z.string() }),
+  narration_completed: mediaPayload.extend({ audioId: z.string() }),
+  video_started: mediaPayload.extend({ mediaId: z.string() }),
+  video_completed: mediaPayload.extend({ mediaId: z.string() }),
+  question_answered: z.strictObject({
+    questionId: z.string(),
     answerId: z.string(),
-    isPreferred: z.boolean(),
+    isCorrect: z.boolean(),
+    attemptNumber: z.number().int().positive(),
     responseTimeMs: z.number().nonnegative(),
-    attemptNumber: z.number().int().positive(),
-    skill: z.string(),
-    mode: z.enum(['practice', 'assessment']),
   }),
-  feedback_viewed: z.strictObject({ answerId: z.string() }),
-  assessment_started: z.strictObject({ attemptNumber: z.number().int().positive() }),
-  assessment_completed: z.strictObject({
-    score: z.number(),
-    passed: z.boolean(),
-    activeTimeMs: z.number().nonnegative(),
-    attemptNumber: z.number().int().positive(),
-  }),
-  course_completed: z.strictObject({ rule: z.string() }),
-  course_resumed: z.strictObject({ resumedScreenId: z.string() }),
-  client_error: z.strictObject({ kind: z.enum(['error', 'unhandledrejection', 'render']), message: z.string().max(200) }),
+  journey_stage_viewed: z.strictObject({ stageId: z.string(), visitedCount: z.number().int().positive() }),
+  role_selected: z.strictObject({ role: RoleSchema }),
+  prototype_completed: z.strictObject({ rule: z.string() }),
 } as const;
 
 export type EventName = keyof typeof payloads;

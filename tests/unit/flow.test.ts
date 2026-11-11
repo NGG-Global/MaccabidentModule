@@ -8,124 +8,122 @@ const flow = createFlow(content);
 const at = '2026-11-11T10:00:00.000Z';
 const run = (actions: FlowAction[], from: FlowState = flow.initialState()) => actions.reduce(flow.reducer, from);
 
-const toScenarios = (role: 'reception' | 'assistant' | 'clinician') =>
-  run([
-    { type: 'START', at },
-    { type: 'NEXT', at },
-    { type: 'SELECT_ROLE', role },
-    { type: 'NEXT', at },
-    { type: 'NEXT', at },
-  ]);
+const toCompare = (role: 'reception' | 'assistant' = 'reception') =>
+  run([{ type: 'START', at }, { type: 'NEXT' }, { type: 'SELECT_ROLE', role }, { type: 'NEXT' }, { type: 'NEXT' }]);
+const toValues = () => run([{ type: 'ANSWER_QUESTION', questionId: 'Q-S05-01', optionId: 'B' }, { type: 'NEXT' }], toCompare());
+const toJourney = () =>
+  run(
+    [
+      { type: 'MATCH_VALUE', itemId: 'item-a', valueId: 'v1' },
+      { type: 'MATCH_VALUE', itemId: 'item-b', valueId: 'v2' },
+      { type: 'NEXT' },
+    ],
+    toValues(),
+  );
 
 describe('role paths', () => {
   it('routes each role through its own screen and shares the rest', () => {
-    expect(resolvePath(content.course, 'reception')).toEqual(['S00', 'S01', 'S02', 'S05', 'S09']);
-    expect(resolvePath(content.course, 'assistant')).toEqual(['S00', 'S01', 'S03', 'S05', 'S09']);
-    expect(resolvePath(content.course, 'clinician')).toEqual(['S00', 'S01', 'S04', 'S05', 'S09']);
-  });
-
-  it('stops at the branch while no role is chosen', () => {
+    expect(resolvePath(content.course, 'reception')).toEqual(['S00', 'S01', 'S02', 'S05', 'S06', 'S07']);
+    expect(resolvePath(content.course, 'clinician')).toEqual(['S00', 'S01', 'S04', 'S05', 'S06', 'S07']);
     expect(resolvePath(content.course, null)).toEqual(['S00', 'S01']);
   });
 
-  it('changes role scenarios without changing the shared one', () => {
-    expect(toScenarios('reception').currentScreenId).toBe('S05');
-    const assistant = run(
+  it('requires role scenarios only on the role that has them', () => {
+    const clinician = run([{ type: 'START', at }, { type: 'NEXT' }, { type: 'SELECT_ROLE', role: 'clinician' }, { type: 'NEXT' }]);
+    expect(clinician.currentScreenId).toBe('S04');
+    expect(flow.canAdvance(clinician)).toBe(false);
+    const answered = run(
       [
-        { type: 'ANSWER_PRACTICE', scenarioId: 'SC-REC-01', optionId: 'B' }, // not on the assistant track: ignored
         { type: 'ANSWER_PRACTICE', scenarioId: 'SC-COM-01', optionId: 'A' },
+        { type: 'ANSWER_PRACTICE', scenarioId: 'SC-REC-01', optionId: 'B' }, // not on this track: ignored
+        { type: 'ANSWER_PRACTICE', scenarioId: 'SC-CLN-01', optionId: 'C' },
       ],
-      toScenarios('assistant'),
+      clinician,
     );
-    expect(assistant.practiceAnswers).toEqual({ 'SC-COM-01': ['A'] });
+    expect(answered.answers).toEqual({ 'SC-COM-01': ['A'], 'SC-CLN-01': ['C'] });
+    expect(flow.canAdvance(answered)).toBe(true);
   });
 });
 
 describe('skip prevention', () => {
-  it('does not leave the intro before START', () => {
-    const state = run([{ type: 'NEXT', at }]);
-    expect(state.currentScreenId).toBe('S00');
-    expect(flow.canAdvance(state)).toBe(false);
+  it('does not leave the intro before START, or role selection without a role', () => {
+    expect(run([{ type: 'NEXT' }]).currentScreenId).toBe('S00');
+    expect(run([{ type: 'START', at }, { type: 'NEXT' }, { type: 'NEXT' }]).currentScreenId).toBe('S01');
   });
 
-  it('does not leave role selection without a role', () => {
-    const state = run([{ type: 'START', at }, { type: 'NEXT', at }, { type: 'NEXT', at }]);
-    expect(state.currentScreenId).toBe('S01');
+  it('gates the comparison on an answer, right or wrong', () => {
+    const state = toCompare();
+    expect(state.currentScreenId).toBe('S05');
+    expect(flow.canAdvance(state)).toBe(false);
+    expect(flow.canAdvance(run([{ type: 'ANSWER_QUESTION', questionId: 'Q-S05-01', optionId: 'C' }], state))).toBe(true);
   });
 
-  it('requires every scenario on the screen to be attempted, right or wrong', () => {
-    let state = toScenarios('clinician');
+  it('ignores answers to other questions and unknown options', () => {
+    const state = toCompare();
+    expect(run([{ type: 'ANSWER_QUESTION', questionId: 'Q-S99-01', optionId: 'A' }], state)).toBe(state);
+    expect(run([{ type: 'ANSWER_QUESTION', questionId: 'Q-S05-01', optionId: 'Z' }], state)).toBe(state);
+  });
+
+  it('completes the values exercise only when every item is matched correctly; wrong tries are kept', () => {
+    let state = run([{ type: 'MATCH_VALUE', itemId: 'item-a', valueId: 'v2' }], toValues());
     expect(flow.canAdvance(state)).toBe(false);
-    state = run([{ type: 'ANSWER_PRACTICE', scenarioId: 'SC-COM-01', optionId: 'A' }], state);
-    expect(flow.canAdvance(state)).toBe(false);
-    state = run([{ type: 'ANSWER_PRACTICE', scenarioId: 'SC-CLN-01', optionId: 'C' }], state);
+    state = run([{ type: 'MATCH_VALUE', itemId: 'item-a', valueId: 'v1' }, { type: 'MATCH_VALUE', itemId: 'item-b', valueId: 'v2' }], state);
+    expect(state.answers['S06:item-a']).toEqual(['v2', 'v1']);
     expect(flow.canAdvance(state)).toBe(true);
   });
 
-  it('ignores answers with an unknown option', () => {
-    const before = toScenarios('reception');
-    expect(run([{ type: 'ANSWER_PRACTICE', scenarioId: 'SC-COM-01', optionId: 'Z' }], before)).toBe(before);
-  });
-
-  it('refuses GOTO to a screen beyond incomplete ones, and allows going back to visited ones', () => {
-    const state = run([{ type: 'START', at }, { type: 'NEXT', at }, { type: 'SELECT_ROLE', role: 'reception' }]);
-    expect(run([{ type: 'GOTO', screenId: 'S09' }], state).currentScreenId).toBe('S01');
-    expect(run([{ type: 'GOTO', screenId: 'S05' }], state).currentScreenId).toBe('S01');
+  it('refuses GOTO beyond incomplete screens and allows going back', () => {
+    const state = toCompare();
+    expect(run([{ type: 'GOTO', screenId: 'S07' }], state).currentScreenId).toBe('S05');
     expect(run([{ type: 'GOTO', screenId: 'S00' }], state).currentScreenId).toBe('S00');
-    expect(run([{ type: 'GOTO', screenId: 'S03' }], state).currentScreenId).toBe('S01'); // another role's screen
+    expect(run([{ type: 'GOTO', screenId: 'S03' }], state).currentScreenId).toBe('S05'); // another role's screen
   });
 });
 
-describe('progression', () => {
-  it('records practice retries in order', () => {
-    const state = run(
-      [
-        { type: 'ANSWER_PRACTICE', scenarioId: 'SC-COM-01', optionId: 'A' },
-        { type: 'ANSWER_PRACTICE', scenarioId: 'SC-COM-01', optionId: 'B' },
-      ],
-      toScenarios('reception'),
-    );
-    expect(state.practiceAnswers['SC-COM-01']).toEqual(['A', 'B']);
+describe('journey and completion', () => {
+  it('requires all five stages, ignores unknown ones and completes once', () => {
+    let state = toJourney();
+    expect(state.currentScreenId).toBe('S07');
+    state = run(['one', 'two', 'two', 'three', 'four', 'nope'].map((stageId) => ({ type: 'VISIT_STAGE', stageId, at }) as const), state);
+    expect(state.visited).toEqual(['S07:one', 'S07:two', 'S07:three', 'S07:four']);
+    expect(state.completedAt).toBeNull();
+    state = run([{ type: 'VISIT_STAGE', stageId: 'five', at: '2026-11-11T11:00:00.000Z' }], state);
+    expect(state.completedAt).toBe('2026-11-11T11:00:00.000Z');
+    state = run([{ type: 'BACK' }, { type: 'NEXT' }, { type: 'VISIT_STAGE', stageId: 'one', at: '2026-11-11T12:00:00.000Z' }], state);
+    expect(state.completedAt).toBe('2026-11-11T11:00:00.000Z');
   });
 
-  it('marks completion once, on first reaching the summary', () => {
-    let state = run(
-      [
-        { type: 'ANSWER_PRACTICE', scenarioId: 'SC-COM-01', optionId: 'B' },
-        { type: 'ANSWER_PRACTICE', scenarioId: 'SC-REC-01', optionId: 'B' },
-        { type: 'NEXT', at: '2026-11-11T10:30:00.000Z' },
-      ],
-      toScenarios('reception'),
-    );
-    expect(state.currentScreenId).toBe('S09');
-    expect(state.completedAt).toBe('2026-11-11T10:30:00.000Z');
-    expect(flow.canAdvance(state)).toBe(false);
-    state = run([{ type: 'BACK' }, { type: 'NEXT', at: '2026-11-11T11:00:00.000Z' }], state);
-    expect(state.completedAt).toBe('2026-11-11T10:30:00.000Z');
+  it('has no screen after the end', () => {
+    expect(flow.canAdvance(toJourney())).toBe(false);
   });
 
-  it('goes back along the learner path and reports progress', () => {
-    const state = toScenarios('assistant');
-    expect(flow.progress(state)).toEqual({ current: 4, total: 5 });
-    expect(run([{ type: 'BACK' }], state).currentScreenId).toBe('S03');
-    expect(run([{ type: 'BACK' }]).currentScreenId).toBe('S00');
+  it('reports chapters with their state', () => {
+    const chapters = flow.chapters(toCompare());
+    expect(chapters.map((c) => [c.screenId, c.complete, c.current])).toEqual([
+      ['S00', true, false],
+      ['S01', true, false],
+      ['S02', true, false],
+      ['S05', false, true],
+      ['S06', false, false],
+      ['S07', false, false],
+    ]);
   });
 
   it('resets to a clean state', () => {
-    expect(run([{ type: 'RESET' }], toScenarios('assistant'))).toEqual(flow.initialState());
+    expect(run([{ type: 'RESET' }], toJourney())).toEqual(flow.initialState());
   });
 });
 
 describe('restore', () => {
   it('accepts a legitimate saved state', () => {
-    const state = toScenarios('assistant');
+    const state = toJourney();
     expect(flow.restore(JSON.parse(JSON.stringify(state)))).toEqual(state);
   });
 
   it('rejects malformed state and states that skip ahead', () => {
     expect(flow.restore(null)).toBeNull();
     expect(flow.restore({ ...flow.initialState(), extra: 1 })).toBeNull();
-    expect(flow.restore({ ...flow.initialState(), currentScreenId: 'S09' })).toBeNull();
+    expect(flow.restore({ ...flow.initialState(), currentScreenId: 'S07' })).toBeNull();
     expect(flow.restore({ ...flow.initialState(), currentScreenId: 'S77' })).toBeNull();
   });
 });

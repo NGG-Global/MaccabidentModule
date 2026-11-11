@@ -6,4 +6,6 @@ export interface ScreenProps {
   screen: Screen;
   state: FlowState;
   dispatch: Dispatch<FlowAction>;
+  /** Whether the learner has already completed this screen's activity (e.g. on revisiting). */
+  done: boolean;
 }

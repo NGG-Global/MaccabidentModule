@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 import type { AnalyticsAdapter } from '../../src/analytics/adapter';
-import { ConsoleAdapter, createAdapter, NoopAdapter } from '../../src/analytics/adapter';
+import { CompositeAdapter, ConsoleAdapter, createAdapter, MemoryAdapter, NoopAdapter } from '../../src/analytics/adapter';
 import { EVENT_NAMES, validateEvent, type AnalyticsEvent } from '../../src/analytics/events';
 import { createTracker } from '../../src/analytics/tracker';
 
@@ -27,28 +27,26 @@ const make = (adapter: AnalyticsAdapter, onProblem = vi.fn()) => ({
 const fields = { role: 'reception' as const, screenId: 'S05' };
 
 describe('event schema', () => {
-  it('defines the twelve events of the analytics specification', () => {
+  it('defines the ten local-only prototype events', () => {
     expect([...EVENT_NAMES].sort()).toEqual(
       [
-        'assessment_completed',
-        'assessment_started',
-        'client_error',
-        'course_completed',
-        'course_resumed',
         'course_started',
-        'feedback_viewed',
-        'media_completed',
-        'media_started',
+        'journey_stage_viewed',
+        'narration_completed',
+        'narration_started',
+        'prototype_completed',
+        'question_answered',
         'role_selected',
-        'scenario_answered',
         'screen_viewed',
+        'video_completed',
+        'video_started',
       ],
     );
   });
 
   it('accepts the example event from the specification', () => {
     const example = {
-      eventName: 'scenario_answered',
+      eventName: 'question_answered',
       eventId: 'generated-uuid',
       timestamp: '2026-11-11T12:00:00Z',
       sessionId: 'session-opaque',
@@ -60,7 +58,7 @@ describe('event schema', () => {
       scenarioId: 'SC-COM-01',
       attemptId: 'attempt-1',
       schemaVersion: '1',
-      payload: { answerId: 'B', isPreferred: true, responseTimeMs: 8200, attemptNumber: 1, skill: 's', mode: 'practice' },
+      payload: { questionId: 'Q-S02-01', answerId: 'A', isCorrect: true, attemptNumber: 1, responseTimeMs: 8200 },
     };
     expect(validateEvent(example).ok).toBe(true);
   });
@@ -70,7 +68,7 @@ describe('event schema', () => {
     const { events, adapter } = recording();
     const { tracker, onProblem } = make(adapter);
     // @ts-expect-error employeeName is not part of the payload
-    expect(tracker.track('feedback_viewed', { answerId: 'A', employeeName: 'x' }, fields)).toBe(false);
+    expect(tracker.track('role_selected', { role: 'reception', employeeName: 'x' }, fields)).toBe(false);
     expect(events).toHaveLength(0);
     expect(onProblem).toHaveBeenCalledOnce();
   });
@@ -81,14 +79,14 @@ describe('tracker', () => {
     const { events, adapter } = recording();
     const { tracker } = make(adapter);
     const ok = tracker.track(
-      'scenario_answered',
-      { answerId: 'B', isPreferred: true, responseTimeMs: 10, attemptNumber: 1, skill: 's', mode: 'practice' },
+      'question_answered',
+      { questionId: 'Q-S02-01', answerId: 'A', isCorrect: true, attemptNumber: 1, responseTimeMs: 10 },
       { ...fields, scenarioId: 'SC-COM-01' },
     );
     expect(ok).toBe(true);
     expect(events).toEqual([
       {
-        eventName: 'scenario_answered',
+        eventName: 'question_answered',
         eventId: 'id-1',
         timestamp: '2026-11-11T12:00:00.000Z',
         sessionId: 'session-opaque',
@@ -99,7 +97,7 @@ describe('tracker', () => {
         screenId: 'S05',
         scenarioId: 'SC-COM-01',
         schemaVersion: '1',
-        payload: { answerId: 'B', isPreferred: true, responseTimeMs: 10, attemptNumber: 1, skill: 's', mode: 'practice' },
+        payload: { questionId: 'Q-S02-01', answerId: 'A', isCorrect: true, attemptNumber: 1, responseTimeMs: 10 },
       },
     ]);
   });
@@ -140,5 +138,20 @@ describe('adapters', () => {
     expect(createAdapter('console')).toBeInstanceOf(ConsoleAdapter);
     expect(createAdapter('noop')).toBeInstanceOf(NoopAdapter);
     expect(createAdapter('anything-else')).toBeInstanceOf(NoopAdapter);
+  });
+
+  it('keeps a bounded local buffer and isolates failing adapters', () => {
+    const memory = new MemoryAdapter(2);
+    const composite = new CompositeAdapter([
+      {
+        send: () => {
+          throw new Error('down');
+        },
+      },
+      memory,
+    ]);
+    const { tracker } = make(composite);
+    for (let i = 0; i < 3; i++) expect(tracker.track('course_started', {}, fields)).toBe(true);
+    expect(memory.events).toHaveLength(2);
   });
 });

@@ -16,27 +16,42 @@ const problemsOf = (run: () => unknown): string[] => {
 };
 
 describe('shipped content', () => {
-  it('passes validation and defines screens S00–S09', () => {
-    expect(Object.keys(content.screens).sort()).toEqual(
-      ['S00', 'S01', 'S02', 'S03', 'S04', 'S05', 'S06', 'S07', 'S08', 'S09'],
-    );
+  it('passes validation, keeps S00–S09 and runs S00–S04 in this build', () => {
+    expect(Object.keys(content.screens).sort()).toEqual(['S00', 'S01', 'S02', 'S03', 'S04', 'S05', 'S06', 'S07', 'S08', 'S09']);
+    for (const role of ROLES) expect(resolvePath(content.course, role)).toEqual(['S00', 'S01', 'S02', 'S03', 'S04']);
   });
 
-  it('gives every role a path from start to summary', () => {
-    for (const role of ROLES) {
-      const path = resolvePath(content.course, role);
-      expect(path[0]).toBe(content.course.flow.start);
-      expect(path.at(-1)).toBe(content.course.flow.summary);
+  it('gives every narration and video used in S00–S04 a measured duration and captions', () => {
+    for (const id of ['S00', 'S01', 'S02', 'S03']) {
+      for (const beats of Object.values(content.screens[id]!.sequences))
+        for (const beat of beats) {
+          if (beat.kind === 'composition') continue;
+          const asset = content.media[beat.kind === 'narration' ? beat.audioId : beat.mediaId]!;
+          expect(asset.status, asset.id).toBe('ready');
+          expect(asset.durationSec, asset.id).toBeGreaterThan(0);
+          expect(content.captions[asset.captionsId!]?.cues.length, asset.id).toBeGreaterThan(0);
+        }
     }
   });
 
-  it('lists every asset as missing until real media is produced', () => {
-    expect(Object.values(content.media).every((m) => m.status === 'missing')).toBe(true);
+  it('times every animated line within its narration', () => {
+    for (const screen of Object.values(content.screens))
+      for (const beats of Object.values(screen.sequences))
+        for (const beat of beats) {
+          if (beat.kind !== 'narration' || !beat.visual) continue;
+          const duration = content.media[beat.audioId]!.durationSec!;
+          const ats = JSON.stringify(beat.visual.props).match(/"at":([\d.]+)/g)?.map((m) => Number(m.slice(5))) ?? [];
+          for (const at of ats) expect(at, `${screen.screenId} ${beat.audioId}`).toBeLessThan(duration);
+        }
+  });
+
+  it('names S04 narration as missing rather than inventing it', () => {
+    for (let i = 0; i <= 5; i++) expect(content.media[`AUDIO-S04-0${i}`]?.status).toBe('missing');
   });
 
   it('keeps unapproved material flagged as DRAFT', () => {
-    expect(Object.values(content.scenarios).every((s) => s.approvalStatus === 'DRAFT')).toBe(true);
-    expect(content.values.approvalStatus).toBe('DRAFT');
+    expect(Object.values(content.screens).every((s) => s.approvalStatus === 'DRAFT')).toBe(true);
+    expect(Object.values(content.questions).every((q) => q.approvalStatus === 'DRAFT')).toBe(true);
   });
 });
 
@@ -53,47 +68,57 @@ describe('content validation', () => {
     expect(problemsOf(() => buildContent(raw)).join('\n')).toContain('exactly one option must be rated "preferred"');
   });
 
-  it('rejects a scenario without exactly three options', () => {
+  it('rejects a question without exactly one correct option', () => {
     const raw = branchingRaw();
-    const bad = scenario('SC-COM-01');
-    bad.options.pop();
-    raw.scenarios['SC-COM-01.json'] = bad;
-    expect(problemsOf(() => buildContent(raw)).some((p) => p.startsWith('SC-COM-01.json at options'))).toBe(true);
+    (raw.questions['Q-S05-01.json'] as { options: { correct: boolean }[] }).options[1]!.correct = true;
+    expect(problemsOf(() => buildContent(raw)).join('\n')).toContain('exactly one option must be correct');
   });
 
-  it('rejects references to media that is not in the manifest', () => {
+  it('rejects ready narration without captions or transcript', () => {
+    const raw = branchingRaw();
+    raw.captions = {};
+    expect(problemsOf(() => buildContent(raw)).join('\n')).toContain('has neither captions nor a transcript');
+  });
+
+  it('rejects composition props that do not fit the composition', () => {
+    const raw = branchingRaw();
+    const s06 = raw.screens['S06.json'] as { sequences: { enter: { visual: { props: Record<string, unknown> } }[] } };
+    s06.sequences.enter[0]!.visual.props = { number: '02' };
+    expect(problemsOf(() => buildContent(raw)).join('\n')).toContain('composition chapter props at title');
+  });
+
+  it('rejects references to unknown media, sequences and questions', () => {
     const raw = branchingRaw();
     (raw.screens['S02.json'] as { mediaIds: string[] }).mediaIds = ['IMG-NOPE-01'];
-    expect(problemsOf(() => buildContent(raw)).join('\n')).toContain('IMG-NOPE-01 is not in media-manifest.json');
-  });
-
-  it('rejects an unknown scenario reference and unknown fields', () => {
-    const raw = branchingRaw();
-    Object.assign(raw.screens['S05.json'] as object, { scenarioIds: ['SC-COM-99'], patientName: 'x' });
+    (raw.questions['Q-S05-01.json'] as { feedbackSequence: string }).feedbackSequence = 'nope';
     const problems = problemsOf(() => buildContent(raw)).join('\n');
-    expect(problems).toContain('S05.json');
-    expect(problems).toContain('patientName');
+    expect(problems).toContain('IMG-NOPE-01 is not in media-manifest.json');
+    expect(problems).toContain('unknown sequence "nope"');
   });
 
-  it('rejects a flow in which a role cannot reach the summary', () => {
+  it('rejects an interaction block that does not match the interaction type', () => {
     const raw = branchingRaw();
-    const course = raw.course as { flow: { transitions: Record<string, unknown> } };
-    delete course.flow.transitions.S03;
-    expect(problemsOf(() => buildContent(raw)).join('\n')).toContain('role assistant cannot reach the summary');
+    delete (raw.screens['S07.json'] as { interaction?: unknown }).interaction;
+    expect(problemsOf(() => buildContent(raw)).join('\n')).toContain('needs an interaction of type journey');
   });
 
-  it('rejects a ready asset without a source file', () => {
+  it('rejects a flow in which a role cannot reach the end screen', () => {
     const raw = branchingRaw();
-    raw.media = [{ id: 'AUDIO-S00', kind: 'audio', status: 'ready', alt: 'a' }];
-    expect(problemsOf(() => buildContent(raw)).join('\n')).toContain('a "ready" asset needs a src');
+    delete (raw.course as { flow: { transitions: Record<string, unknown> } }).flow.transitions.S03;
+    expect(problemsOf(() => buildContent(raw)).join('\n')).toContain('role assistant cannot reach the end screen');
+  });
+
+  it('rejects ready audio or video without a measured duration', () => {
+    const raw = branchingRaw();
+    (raw.media as Record<string, unknown>[])[0]!.durationSec = undefined;
+    expect(problemsOf(() => buildContent(raw)).join('\n')).toContain('needs a measured durationSec');
   });
 });
 
 describe('scenarioIdsFor', () => {
   const { screens } = buildContent(branchingRaw());
   it('returns shared scenarios first, then the role scenarios', () => {
-    expect(scenarioIdsFor(screens.S05!, 'assistant')).toEqual(['SC-COM-01', 'SC-AST-01']);
-    expect(scenarioIdsFor(screens.S05!, null)).toEqual(['SC-COM-01']);
-    expect(scenarioIdsFor(screens.S02!, 'assistant')).toEqual([]);
+    expect(scenarioIdsFor(screens.S04!, 'clinician')).toEqual(['SC-COM-01', 'SC-CLN-01']);
+    expect(scenarioIdsFor(screens.S04!, null)).toEqual(['SC-COM-01']);
   });
 });

@@ -22,7 +22,7 @@ const makeStore = (storage: ReturnType<typeof memoryStorage> | null, courseVersi
 const midCourse = () =>
   [
     { type: 'START', at: 't' } as const,
-    { type: 'NEXT', at: 't' } as const,
+    { type: 'NEXT' } as const,
     { type: 'SELECT_ROLE', role: 'clinician' } as const,
   ].reduce(flow.reducer, flow.initialState());
 
@@ -52,7 +52,7 @@ describe('local progress store', () => {
     expect(store.load()).toBeNull();
     storage.data.set(
       key,
-      JSON.stringify({ courseId: 'good-hands', courseVersion: '9.9.9', state: { ...midCourse(), currentScreenId: 'S09' } }),
+      JSON.stringify({ courseId: 'good-hands', courseVersion: '9.9.9', state: { ...midCourse(), currentScreenId: 'S07' } }),
     );
     expect(store.load()).toBeNull();
   });
