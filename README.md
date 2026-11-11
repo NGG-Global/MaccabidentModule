@@ -37,6 +37,17 @@ npm run preview      # serve the last build locally
 `npm run build` (without `:demo`) hides DRAFT content, as a production build should.
 The build is static with relative paths and can be served from any web server or folder.
 
+## Deploying to Vercel
+
+`vercel.json` holds the build settings (`npm run build:demo`, output `dist`, Node 22).
+The site sends `noindex` headers and a `robots.txt` that blocks crawlers, but these
+do not restrict access. **Turn on Deployment Protection before sharing any link.**
+
+1. In Vercel, import `NGG-Global/MaccabidentModule` under the NGG team. The settings are read from `vercel.json`.
+2. Before the first share, open Project Settings → Deployment Protection and enable protection for all deployments (Vercel Authentication, or a password if the plan includes it). Check which options the plan includes.
+3. Give access only to NGG team members and the stakeholders cleared to see draft Maccabident content.
+4. Use the production deployment for the demonstration; each push to a branch gets its own preview link for review.
+
 ## Checks
 
 ```bash
