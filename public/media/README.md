@@ -1,7 +1,13 @@
 # Media assets
 
-Place produced assets here and register them in `src/content/media-manifest.json`
-by setting `"status": "ready"` and `"src"` (path relative to this folder).
-Until then the course shows a described placeholder and the narration transcript.
+Web copies of the supplied media, named by stable asset id. Every file here is
+registered in `src/content/media-manifest.json` with its source upload,
+measured duration and verification notes; see `docs/media-audit.md`.
 
-File names should follow the stable asset ids, for example `AUDIO-S00.mp3`, `SUB-S00.vtt`, `IMG-WAIT-01.webp`.
+- Videos: re-encoded web copies (720p H.264, AAC). The original uploads are kept outside the repository.
+- Narration: ElevenLabs MP3 files as supplied, renamed to their asset id.
+- Stills and posters: frames extracted from the supplied videos.
+
+To add or replace a file, put it here, set `"status": "ready"`, `"src"` and the
+measured `"durationSec"` (audio/video) in the manifest, and add captions to
+`src/content/captions.json`. Validation fails if any of these is missing.
