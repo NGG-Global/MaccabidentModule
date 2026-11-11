@@ -1,0 +1,23 @@
+{
+  "courseId": "good-hands",
+  "courseVersion": "0.1.0",
+  "title": "בידיים טובות",
+  "assessment": {
+    "passThreshold": 80,
+    "pointsPerDecision": 20,
+    "partialCreditRatio": 0,
+    "maxAttempts": null,
+    "note": "Development targets from 02-learning-design. Not a Maccabident requirement; pass threshold, attempts and partial credit await a product-owner decision."
+  },
+  "completionRule": "reach-summary",
+  "flow": {
+    "start": "S00",
+    "summary": "S09",
+    "transitions": {
+      "S00": "S01",
+      "S01": "S03",
+      "S03": "S05",
+      "S05": "S09"
+    }
+  }
+}

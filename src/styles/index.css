@@ -1,0 +1,29 @@
+@import 'tailwindcss';
+
+/*
+ * Brand tokens are neutral placeholders until Maccabident supplies approved
+ * colours, fonts and logo (07-open-decisions). Swap them here only.
+ */
+@theme {
+  --color-brand-50: #eef6fb;
+  --color-brand-100: #d6e9f5;
+  --color-brand-600: #0b5f8a;
+  --color-brand-700: #094c6f;
+  --font-sans: 'Segoe UI', 'Arial Hebrew', 'Noto Sans Hebrew', Arial, system-ui, sans-serif;
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-brand-600);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

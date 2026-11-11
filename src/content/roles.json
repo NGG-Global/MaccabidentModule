@@ -1,0 +1,5 @@
+[
+  { "id": "reception", "label": "נציגות שירות", "description": "קבלה, דלפק ותיאום תורים" },
+  { "id": "assistant", "label": "סייעות", "description": "ליווי המטופל בחדר הטיפולים" },
+  { "id": "clinician", "label": "רופאי/ות שיניים ושינניות", "description": "הצוות המטפל" }
+]

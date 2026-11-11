@@ -1,0 +1,12 @@
+{
+  "screenId": "S07",
+  "title": "איך אנחנו לומדים ממשוב",
+  "targetMinutes": 2,
+  "learningObjective": "להסביר בקצרה כיצד משוב מטופלים ותצפיות מסייעים לשיפור.",
+  "onScreenText": [],
+  "mediaIds": [],
+  "interactionType": "measurement",
+  "completion": "view",
+  "sourcePages": [17, 18, 19, 20],
+  "approvalStatus": "DRAFT"
+}

@@ -1,0 +1,13 @@
+{
+  "screenId": "S03",
+  "title": "שלושת ערכי השירות",
+  "targetMinutes": 4,
+  "learningObjective": "לזהות את שלושת ערכי השירות ולשייך להם התנהגויות מתוך מצבים.",
+  "onScreenText": ["שלושה ערכים מנחים כל מפגש עם מטופל."],
+  "visualDescription": "שלושה כרטיסי ערך עם ערכי המשנה.",
+  "mediaIds": ["ANIM-VALUES-01"],
+  "interactionType": "valuesMatch",
+  "completion": "view",
+  "sourcePages": [8],
+  "approvalStatus": "DRAFT"
+}

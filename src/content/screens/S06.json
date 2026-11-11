@@ -1,0 +1,11 @@
+{
+  "screenId": "S06",
+  "title": "תרחישים לפי תפקיד",
+  "targetMinutes": 8,
+  "onScreenText": [],
+  "mediaIds": [],
+  "interactionType": "scenario",
+  "completion": "interaction",
+  "sourcePages": [13, 14, 15, 21, 22, 23, 27, 28, 29],
+  "approvalStatus": "DRAFT"
+}

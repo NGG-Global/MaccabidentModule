@@ -1,0 +1,13 @@
+{
+  "screenId": "S01",
+  "title": "מה התפקיד שלך במרפאה?",
+  "targetMinutes": 1,
+  "onScreenText": [
+    "הבחירה קובעת אילו תרחישים יוצגו בהמשך. ליבת הלמידה משותפת לכל התפקידים."
+  ],
+  "mediaIds": [],
+  "interactionType": "roleSelect",
+  "completion": "interaction",
+  "sourcePages": [13, 14, 15],
+  "approvalStatus": "DRAFT"
+}

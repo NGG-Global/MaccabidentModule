@@ -1,0 +1,41 @@
+{
+  "scenarioId": "SC-COM-01",
+  "title": "עיכוב בתור",
+  "track": "common",
+  "touchpoint": "היערכות / תקשורת",
+  "values": ["see-you", "effort-for-you"],
+  "skill": "empathy-and-expectation-setting",
+  "scene": "מטופל אומר: \"אני מחכה כבר הרבה זמן. למה אף אחד לא מעדכן?\"",
+  "question": "מה כדאי לעשות עכשיו?",
+  "narration": {
+    "audioId": "AUDIO-S05",
+    "transcript": "יוסי ממתין לתור שלו. הזמן עובר, והוא מתחיל להרגיש שאף אחד לא רואה אותו. עכשיו הוא פונה אליך ושואל: למה אף אחד לא מעדכן אותי? מה תהיה התגובה שלך?"
+  },
+  "options": [
+    {
+      "id": "A",
+      "text": "\"כולם מחכים, אין לי מה לעשות.\"",
+      "rating": "undesirable",
+      "feedback": "התגובה מבטלת את תחושת המטופל ואין בה יוזמה. הדגש הוא הכרה בחוויה, יוזמה ומידע מדויק.",
+      "feedbackAudioId": "AUDIO-S05-FB-A"
+    },
+    {
+      "id": "B",
+      "text": "\"אני מבין/ה את התסכול. אברר מה מצב התור ואעדכן אותך במה שאדע.\"",
+      "rating": "preferred",
+      "feedback": "יש כאן אמפתיה, בירור ועדכון, בלי להבטיח זמן שאינו ידוע.",
+      "feedbackNarration": "זו תגובה טובה. היא מכירה בתחושה של המטופל, ומציעה פעולה ממשית בלי להבטיח דבר שאיננו יודעים. כך אנחנו מראים לו שרואים אותו ומתאמצים למענו.",
+      "feedbackAudioId": "AUDIO-S05-FB-B"
+    },
+    {
+      "id": "C",
+      "text": "\"עוד חמש דקות נכנסים, מבטיח/ה.\"",
+      "rating": "undesirable",
+      "feedback": "זו הבטחה לא מבוססת. לא ממציאים זמן המתנה; מכירים בחוויה, מבררים ומעדכנים במידע מדויק.",
+      "feedbackAudioId": "AUDIO-S05-FB-C"
+    }
+  ],
+  "sourcePages": [13, 14, 15, 21, 22, 23],
+  "approvalStatus": "DRAFT",
+  "notes": "Proposed development content from 03-scenario-bank, not a quotation from the source deck. Requires SME approval."
+}

@@ -1,0 +1,12 @@
+{
+  "screenId": "S04",
+  "title": "מסע המטופל וחמש נקודות המגע",
+  "targetMinutes": 5,
+  "learningObjective": "לסדר ולזהות חמש נקודות מגע בדיאלוג השירותי.",
+  "onScreenText": [],
+  "mediaIds": ["ANIM-JOURNEY-01"],
+  "interactionType": "journey",
+  "completion": "view",
+  "sourcePages": [9, 11],
+  "approvalStatus": "DRAFT"
+}

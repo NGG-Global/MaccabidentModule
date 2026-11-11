@@ -1,0 +1,11 @@
+{
+  "screenId": "S02",
+  "title": "שתי חוויות של אותו מטופל",
+  "targetMinutes": 3,
+  "onScreenText": [],
+  "mediaIds": [],
+  "interactionType": "compare",
+  "completion": "view",
+  "sourcePages": [],
+  "approvalStatus": "DRAFT"
+}

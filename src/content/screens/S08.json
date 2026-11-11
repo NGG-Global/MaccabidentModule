@@ -1,0 +1,11 @@
+{
+  "screenId": "S08",
+  "title": "אתגר מסכם",
+  "targetMinutes": 4,
+  "onScreenText": [],
+  "mediaIds": [],
+  "interactionType": "assessment",
+  "completion": "interaction",
+  "sourcePages": [],
+  "approvalStatus": "DRAFT"
+}
