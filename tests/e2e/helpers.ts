@@ -78,6 +78,8 @@ export async function finishSequence(page: Page) {
 }
 
 export const next = (page: Page) => page.getByRole('button', { name: 'המשך', exact: true });
+/** The footer's forward button, whatever it says on this step. */
+export const forward = (page: Page, name: string) => page.locator('footer').getByRole('button', { name, exact: true });
 export const heading = (page: Page, name: string) => page.getByRole('heading', { level: 1, name });
 
 export async function expectNoBrokenLayout(page: Page) {
@@ -87,6 +89,19 @@ export async function expectNoBrokenLayout(page: Page) {
   }));
   expect(overflow, 'no horizontal scrolling').toBeLessThanOrEqual(0);
   expect(brokenImages, 'no broken images').toBe(0);
+}
+
+/** The course is one window tall: neither the page nor the screen area scrolls. */
+export async function expectFitsWindow(page: Page, where: string) {
+  const m = await page.evaluate(() => {
+    const main = document.getElementById('main')!;
+    return {
+      page: document.documentElement.scrollHeight - window.innerHeight,
+      main: main.scrollHeight - main.clientHeight,
+    };
+  });
+  expect(m.page, `${where}: the page does not scroll`).toBeLessThanOrEqual(0);
+  expect(m.main, `${where}: the screen fits without scrolling`).toBeLessThanOrEqual(1);
 }
 
 /** Seeds saved progress so a test can start on a later screen. */

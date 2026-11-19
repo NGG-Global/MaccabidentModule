@@ -1,11 +1,12 @@
 import { useCallback } from 'react';
 import { content, ui } from '../content';
+import { Icon } from '../components/Icon';
 import { resolveMedia } from '../media/resolveMedia';
-import { CaptionLine } from './CaptionLine';
 import { useStage } from './StageProvider';
 
 interface Props {
   mediaId: string;
+  /** Shown on the picture while it is on screen, e.g. "Version A". */
   label?: string;
   /** Plays this video on its own when the learner chooses it outside the running sequence. */
   allowSoloPlay?: boolean;
@@ -14,7 +15,7 @@ interface Props {
 
 /**
  * A video owned by the stage controller: no native controls, captions drawn
- * by the course, never more than one source of sound at a time.
+ * by the course (in the strip under the frame), never more than one source of sound at a time.
  */
 export function StageVideo({ mediaId, label, allowSoloPlay = true, className = '' }: Props) {
   const stage = useStage();
@@ -29,7 +30,7 @@ export function StageVideo({ mediaId, label, allowSoloPlay = true, className = '
 
   if (media.status !== 'ready') {
     return (
-      <div className={`grid aspect-video place-items-center rounded-lg border border-dashed border-ink/30 bg-ink/5 p-4 text-center text-sm ${className}`} role="img" aria-label={media.alt}>
+      <div className={`grid aspect-video place-items-center bg-ink/90 p-4 text-center text-sm text-white ${className}`} role="img" aria-label={media.alt}>
         <span>
           <strong className="block">{ui.media.missingVideo}</strong>
           {media.alt}
@@ -39,7 +40,7 @@ export function StageVideo({ mediaId, label, allowSoloPlay = true, className = '
   }
 
   return (
-    <figure className={`relative overflow-hidden rounded-lg bg-ink ${className}`} data-testid={`video-${mediaId}`} data-active={isCurrent}>
+    <figure className={`relative overflow-hidden bg-ink ${className}`} data-testid={`video-${mediaId}`} data-active={isCurrent}>
       <video
         ref={register}
         src={media.url}
@@ -49,19 +50,20 @@ export function StageVideo({ mediaId, label, allowSoloPlay = true, className = '
         className="aspect-video w-full object-cover"
         aria-label={media.alt}
       />
-      {isCurrent && <CaptionLine overlay />}
       {label && (
-        <figcaption className="absolute start-3 top-3 rounded-full bg-paper/95 px-3 py-1 text-sm font-semibold text-navy">{label}</figcaption>
+        <figcaption className="absolute start-3 top-3 rounded-full bg-paper/95 px-3 py-1 text-sm font-semibold text-navy shadow sm:start-4 sm:top-4 sm:text-base" data-testid="video-label">
+          {label}
+        </figcaption>
       )}
       {allowSoloPlay && !playing && (
         <button
           type="button"
-          onClick={() => stage.runBeats(`replay:${mediaId}`, [{ kind: 'video', mediaId }], { autoplay: true })}
+          onClick={() => stage.runBeats(`replay:${mediaId}`, [{ kind: 'video', mediaId, label }], { autoplay: true })}
           className="absolute inset-0 grid place-items-center bg-ink/10 transition hover:bg-ink/25 focus-visible:bg-ink/25"
           aria-label={`${ui.stage.watch}: ${label ?? media.alt}`}
         >
-          <span className="grid size-16 place-items-center rounded-full bg-paper/95 text-2xl text-navy shadow-lg" aria-hidden>
-            ▶
+          <span className="grid size-16 place-items-center rounded-full bg-paper/95 text-navy shadow-lg" aria-hidden>
+            <Icon name="play" className="size-7" />
           </span>
         </button>
       )}

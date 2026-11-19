@@ -2,213 +2,259 @@ import { AnimatePresence, motion } from 'motion/react';
 import { useEffect, useRef, useState } from 'react';
 import { content, ui } from '../content';
 import { useTrack } from '../analytics/TrackContext';
-import { StageControls } from '../stage/StageControls';
-import { useStage } from '../stage/StageProvider';
+import { Icon } from '../components/Icon';
+import { useScreenNav } from '../components/ScreenNav';
 import { resolveMedia } from '../media/resolveMedia';
+import { useMediaPrefs } from '../stage/prefs';
+import { useStage } from '../stage/StageProvider';
 import { StageViewport } from '../stage/StageViewport';
-import { ScreenHeading } from './ScreenHeading';
+import { ScreenFrame, ScreenHeading, type StepInfo } from './ScreenHeading';
 import { elapsedMs, nowMs } from './timing';
 import { useEnterSequence } from './useEnterSequence';
+import { useSteps } from './useSteps';
 import type { ScreenProps } from './types';
 
+type Step = 'watch' | 'question' | 'explain';
+const ORDER: Step[] = ['watch', 'question', 'explain'];
+
 /**
- * S02. Yossi's arrival, two ways. The two versions sit side by side with the
- * same framing; the question appears once both have been shown, and the
- * narrated, animated explanation follows the learner's answer.
+ * S02. Yossi's arrival, two ways, in three steps: watch both versions in the
+ * frame (each labelled while it plays), answer the question while its
+ * narration asks it, then the narrated, animated explanation.
  */
 export function CompareScreen({ screen, state, dispatch, done }: ScreenProps) {
-  useEnterSequence(done);
   const stage = useStage();
   const track = useTrack();
+  const prefs = useMediaPrefs();
   const interaction = screen.interaction?.type === 'compare' ? screen.interaction : null;
   const question = interaction ? content.questions[interaction.questionId] : undefined;
   const history = (question && state.answers[question.questionId]) || [];
+  const answered = history.length > 0;
+  const [step, setStep] = useSteps<Step>(answered ? 'question' : 'watch');
+  useEnterSequence(done);
+
   const [selected, setSelected] = useState<string | null>(null);
   const [submitted, setSubmitted] = useState<string | null>(history.at(-1) ?? null);
-  const [revealed, setRevealed] = useState(history.length > 0);
   const shownAt = useRef(0);
-  const stageRef = useRef<HTMLDivElement>(null);
 
-  // Reveal the question when the enter sequence reaches the question narration (after both videos) or ends.
-  // Latched during render (derived-state pattern), so replaying a video later does not hide it again.
+  // The question narration is the first narration after the videos. Reaching it in playback opens the question.
   const enter = screen.sequences.enter ?? [];
   const questionBeat = enter.findIndex((b, i) => i > 0 && b.kind === 'narration' && enter[i - 1]?.kind === 'video');
-  const reached = stage.state.key === 'enter' && (stage.state.index >= questionBeat || stage.state.status === 'ended');
-  if (reached && !revealed) setRevealed(true);
+  const atQuestionBeat = stage.state.key === 'enter' && stage.state.index === questionBeat && questionBeat >= 0;
   useEffect(() => {
-    if (revealed && submitted === null) shownAt.current = nowMs();
-  }, [revealed, submitted]);
+    if (step === 'watch' && atQuestionBeat && stage.state.status === 'playing') setStep('question');
+  }, [step, atQuestionBeat, stage.state.status, setStep]);
+
+  useEffect(() => {
+    if (step === 'question' && submitted === null) shownAt.current = nowMs();
+  }, [step, submitted]);
+
+  const watchEnded = stage.state.status === 'ended' && (stage.state.key === 'enter' || Boolean(stage.state.key?.startsWith('replay:')));
+  const explainEnded = stage.state.key === question?.feedbackSequence && stage.state.status === 'ended';
+
+  const goQuestion = () => {
+    setStep('question');
+    // Ask the question aloud, unless it is already being asked or the learner has answered before.
+    if (!answered && !atQuestionBeat && questionBeat >= 0) stage.run('enter', { startIndex: questionBeat, autoplay: true });
+    else if (stage.state.status === 'playing' && !atQuestionBeat) stage.pause();
+  };
+  const goWatch = () => {
+    setStep('watch');
+    // Start the film over rather than land on the question narration.
+    if (stage.state.key !== 'enter' || atQuestionBeat || stage.state.status === 'ended') stage.run('enter', { autoplay: false });
+  };
+  const goExplain = () => {
+    setStep('explain');
+    if (question?.feedbackSequence) stage.run(question.feedbackSequence, { autoplay: true });
+  };
+  const backToQuestion = () => {
+    setStep('question');
+    if (stage.state.status === 'playing') stage.pause();
+  };
+  const rewatch = (mediaId: string, label: string) => {
+    setStep('watch');
+    stage.runBeats(`replay:${mediaId}`, [{ kind: 'video', mediaId, label }], { autoplay: true });
+  };
+
+  const steps: StepInfo[] = [
+    { label: ui.compare.steps[0]!, reachable: true, done: answered || watchEnded },
+    { label: ui.compare.steps[1]!, reachable: true, done: answered },
+    { label: ui.compare.steps[2]!, reachable: answered, done: explainEnded },
+  ];
+
+  useScreenNav(
+    screen.screenId,
+    step === 'watch'
+      ? { next: { label: ui.nav.toQuestion, enabled: true, run: goQuestion }, ready: watchEnded, hint: watchEnded ? ui.nav.watchEnded : ui.nav.canSkipWatch }
+      : step === 'question'
+        ? { next: { label: ui.nav.toExplanation, enabled: answered, run: goExplain }, back: goWatch, ready: answered, hint: answered ? undefined : ui.nav.answerQuestion }
+        : { back: backToQuestion, ready: explainEnded, hint: explainEnded ? ui.nav.activityDone : undefined },
+  );
 
   if (!interaction || !question) return null;
   const option = question.options.find((o) => o.id === submitted);
+  const versionLabel = (mediaId: string) => interaction.versions.find((v) => v.mediaId === mediaId)?.label;
 
   const check = () => {
     const chosen = question.options.find((o) => o.id === selected);
     if (!chosen) return;
-    const first = history.length === 0;
     dispatch({ type: 'ANSWER_QUESTION', questionId: question.questionId, optionId: chosen.id });
-    track(
-      'question_answered',
-      {
-        questionId: question.questionId,
-        answerId: chosen.id,
-        isCorrect: chosen.correct,
-        attemptNumber: history.length + 1,
-        responseTimeMs: elapsedMs(shownAt.current),
-      },
-    );
+    track('question_answered', {
+      questionId: question.questionId,
+      answerId: chosen.id,
+      isCorrect: chosen.correct,
+      attemptNumber: history.length + 1,
+      responseTimeMs: elapsedMs(shownAt.current),
+    });
     setSubmitted(chosen.id);
-    // The narrated explanation plays after the first answer; it can be replayed later.
-    if (first && question.feedbackSequence) {
-      stage.run(question.feedbackSequence, { autoplay: true });
-      stageRef.current?.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'center' });
-    }
+    // The question narration has done its job once an answer is in.
+    if (atQuestionBeat && stage.state.status === 'playing') stage.pause();
   };
 
+  const onStep = (i: number) => {
+    const target = ORDER[i]!;
+    if (target === 'watch') goWatch();
+    else if (target === 'question') goQuestion();
+    else goExplain();
+  };
+
+  const asking = atQuestionBeat && (stage.state.status === 'playing' || stage.state.status === 'paused');
+
   return (
-    <div className="space-y-10">
-      <ScreenHeading screen={screen} lead={screen.learningObjective} />
-
-      <div ref={stageRef} className="space-y-4">
-        <StageViewport label={screen.title} />
-        <StageControls />
-      </div>
-
-      <section aria-labelledby="versions-heading" className="space-y-4">
-        <h2 id="versions-heading" className="font-display text-2xl font-semibold text-navy">
-          {interaction.versions.map((v) => v.label).join(' · ')}
-        </h2>
-        <div className="grid gap-4 sm:grid-cols-2">
-          {interaction.versions.map((v) => {
-            const beat = stage.state.status === 'empty' ? undefined : stage.state.beats[stage.state.index];
-            const active = beat?.kind === 'video' && beat.mediaId === v.mediaId;
-            const asset = content.media[v.mediaId];
-            const poster = asset?.posterId ? resolveMedia(content.media, asset.posterId) : undefined;
-            return (
+    <ScreenFrame heading={<ScreenHeading screen={screen} lead={screen.learningObjective} steps={steps} step={ORDER.indexOf(step)} onStep={onStep} />}>
+      <h2 tabIndex={-1} data-step-heading className="sr-only">
+        {steps[ORDER.indexOf(step)]!.label}
+      </h2>
+      {step !== 'question' ? (
+        <motion.div key={step} initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex min-h-0 flex-1 flex-col">
+          <StageViewport label={screen.title} />
+        </motion.div>
+      ) : (
+        <motion.section
+          key="question"
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ type: 'spring', damping: 28, stiffness: 160 }}
+          aria-labelledby="question-heading"
+          className="mx-auto flex w-full max-w-3xl flex-col gap-3 rounded-2xl bg-white p-3.5 shadow-[0_20px_60px_-40px_rgba(11,31,58,0.5)] sm:p-6 sm:[@media(max-height:42rem)]:p-4"
+          data-testid="question"
+        >
+          <div className="flex items-center justify-between gap-2 text-sm">
+            <div className="flex min-w-0 items-center gap-1.5 sm:gap-2" data-testid="rewatch">
+              <span className="text-ink/65 max-[380px]:sr-only">{ui.compare.rewatch}</span>
+              {interaction.versions.map((v) => {
+                const poster = content.media[v.mediaId]?.posterId ? resolveMedia(content.media, content.media[v.mediaId]!.posterId!) : undefined;
+                return (
+                  <button
+                    key={v.mediaId}
+                    type="button"
+                    data-testid={`version-${v.mediaId}`}
+                    onClick={() => rewatch(v.mediaId, v.label)}
+                    className="inline-flex min-h-10 shrink-0 items-center gap-2 rounded-full border border-ink/15 bg-paper py-1 ps-1 pe-3 font-medium hover:border-ink/35"
+                  >
+                    {poster?.status === 'ready' ? (
+                      <img src={poster.url} alt="" className="h-7 w-11 rounded-full object-cover max-sm:w-7" />
+                    ) : (
+                      <Icon name="play" className="size-4" />
+                    )}
+                    {versionLabel(v.mediaId)}
+                  </button>
+                );
+              })}
+            </div>
+            {asking ? (
               <button
-                key={v.mediaId}
                 type="button"
-                data-testid={`version-${v.mediaId}`}
-                aria-current={active ? 'true' : undefined}
-                onClick={() => {
-                  stage.runBeats(`replay:${v.mediaId}`, [{ kind: 'video', mediaId: v.mediaId }], { autoplay: true });
-                  stageRef.current?.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'center' });
-                }}
-                className={`group relative overflow-hidden rounded-xl text-start ring-offset-4 ring-offset-paper transition ${active ? 'ring-4 ring-violet' : 'ring-0'}`}
+                onClick={stage.state.status === 'playing' ? stage.pause : stage.play}
+                className="inline-flex min-h-10 min-w-10 shrink-0 items-center justify-center gap-2 rounded-full px-2.5 text-ink/70 hover:bg-ink/5"
+                aria-label={`${ui.compare.questionNarration}: ${stage.state.status === 'playing' ? ui.stage.pause : ui.stage.play}`}
               >
-                {poster?.status === 'ready' ? (
-                  <img src={poster.url} alt="" className="aspect-video w-full object-cover transition duration-500 group-hover:scale-[1.02]" />
-                ) : (
-                  <div className="aspect-video w-full bg-ink/10" />
-                )}
-                <span className="absolute inset-0 bg-[linear-gradient(to_top,rgba(11,31,58,0.85),rgba(11,31,58,0.1)_60%)]" />
-                <span className="absolute inset-x-0 bottom-0 flex items-center justify-between gap-3 p-4 text-white">
-                  <span>
-                    <span className="block font-display text-2xl font-semibold">{v.label}</span>
-                    <span className="text-sm text-white/80">{active ? ui.stage.nowPlaying : asset?.alt}</span>
-                  </span>
-                  <span aria-hidden className="grid size-11 shrink-0 place-items-center rounded-full bg-paper text-navy">
-                    ▶
-                  </span>
-                </span>
-                <span className="sr-only">{`${ui.stage.watch}: ${v.label}`}</span>
+                <Icon name={stage.state.status === 'playing' ? 'pause' : 'play'} className="size-4" />
+                <span className="max-sm:hidden">{ui.compare.questionNarration}</span>
+                <span aria-hidden className="sm:hidden">{ui.compare.narrationShort}</span>
               </button>
-            );
-          })}
-        </div>
-        {!revealed && (
-          <div className="flex flex-wrap items-center gap-3 text-ink/70">
-            <p>{ui.compare.watchFirst}</p>
-            <button type="button" className="min-h-11 rounded-full border border-ink/20 px-4 text-sm" onClick={() => setRevealed(true)}>
-              {ui.compare.showQuestion}
-            </button>
+            ) : (
+              questionBeat >= 0 && (
+                <button
+                  type="button"
+                  onClick={() => stage.run('enter', { startIndex: questionBeat, autoplay: true })}
+                  className="inline-flex min-h-10 min-w-10 shrink-0 items-center justify-center gap-2 rounded-full px-2.5 text-ink/70 hover:bg-ink/5"
+                >
+                  <Icon name={prefs.muted ? 'muted' : 'volume'} className="size-4" />
+                  <span className="max-sm:sr-only">{ui.compare.listenQuestion}</span>
+                  <span aria-hidden className="sm:hidden">{ui.compare.narrationShort}</span>
+                </button>
+              )
+            )}
           </div>
-        )}
-      </section>
 
-      <AnimatePresence>
-        {revealed && (
-          <motion.section
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ type: 'spring', damping: 28, stiffness: 140 }}
-            aria-labelledby="question-heading"
-            className="rounded-2xl bg-white p-6 shadow-[0_20px_60px_-40px_rgba(11,31,58,0.5)] sm:p-10"
-            data-testid="question"
-          >
-            <fieldset disabled={submitted !== null && option?.correct}>
-              <legend id="question-heading" className="mb-6 font-display text-2xl font-semibold leading-snug sm:text-3xl">
-                {question.prompt}
-              </legend>
-              <div className="space-y-3">
-                {question.options.map((o) => {
-                  const isSelected = (submitted ?? selected) === o.id;
-                  const resolved = submitted === o.id;
-                  return (
-                    <label
-                      key={o.id}
-                      className={`flex min-h-14 cursor-pointer items-start gap-4 rounded-xl border-2 p-4 transition has-[:focus-visible]:outline-3 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-violet ${
-                        resolved ? (o.correct ? 'border-navy bg-brand-50' : 'border-ink/40 bg-paper') : isSelected ? 'border-violet bg-paper' : 'border-ink/12 hover:border-ink/30'
-                      }`}
-                    >
-                      <input
-                        type="radio"
-                        name="compare"
-                        value={o.id}
-                        checked={isSelected}
-                        disabled={submitted !== null}
-                        onChange={() => setSelected(o.id)}
-                        className="mt-1 size-5 shrink-0 accent-[var(--color-navy)]"
-                      />
-                      <span className="text-lg leading-relaxed">{o.text}</span>
-                    </label>
-                  );
-                })}
-              </div>
-            </fieldset>
+          <fieldset disabled={submitted !== null && option?.correct}>
+            <legend id="question-heading" className="mb-2.5 font-display text-xl font-semibold leading-snug sm:mb-3 sm:text-2xl">
+              {question.prompt}
+            </legend>
+            <div className="space-y-2">
+              {question.options.map((o) => {
+                const isSelected = (submitted ?? selected) === o.id;
+                const resolved = submitted === o.id;
+                return (
+                  <label
+                    key={o.id}
+                    className={`flex cursor-pointer items-start gap-3 rounded-xl border-2 px-3.5 py-2.5 transition sm:px-4 ${submitted !== null && !resolved ? 'max-sm:hidden' : ''} has-[:focus-visible]:outline-3 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-violet ${
+                      resolved ? (o.correct ? 'border-navy bg-brand-50' : 'border-ink/40 bg-paper') : isSelected ? 'border-violet bg-paper' : 'border-ink/12 hover:border-ink/30'
+                    }`}
+                  >
+                    <input
+                      type="radio"
+                      name="compare"
+                      value={o.id}
+                      checked={isSelected}
+                      disabled={submitted !== null}
+                      onChange={() => setSelected(o.id)}
+                      className="mt-1 size-5 shrink-0 accent-[var(--color-navy)]"
+                    />
+                    <span className="text-base leading-snug sm:text-lg">{o.text}</span>
+                  </label>
+                );
+              })}
+            </div>
+          </fieldset>
 
+          <AnimatePresence mode="wait" initial={false}>
             {option ? (
-              <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="mt-6 space-y-4" role="status" data-testid="feedback" data-correct={option.correct}>
-                <p className="flex items-center gap-2 text-lg font-bold">
-                  <span aria-hidden className={`grid size-7 place-items-center rounded-full text-sm text-white ${option.correct ? 'bg-navy' : 'bg-ink/60'}`}>
-                    {option.correct ? '✓' : '✕'}
-                  </span>
-                  {option.correct ? ui.compare.correct : ui.compare.incorrect}
-                </p>
-                <p className="text-lg leading-relaxed">{option.feedback}</p>
-                <div className="flex flex-wrap gap-3">
+              <motion.div key={`fb-${option.id}`} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="space-y-1.5" role="status" data-testid="feedback" data-correct={option.correct}>
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <p className="flex items-center gap-2 font-bold sm:text-lg">
+                    <span aria-hidden className={`grid size-6 place-items-center rounded-full text-white ${option.correct ? 'bg-navy' : 'bg-ink/60'}`}>
+                      <Icon name={option.correct ? 'check' : 'close'} className="size-3.5" strokeWidth={3} />
+                    </span>
+                    {option.correct ? ui.compare.correct : ui.compare.incorrect}
+                  </p>
                   {!option.correct && (
                     <button
                       type="button"
-                      className="min-h-11 rounded-full border border-ink/20 px-5"
+                      className="inline-flex min-h-10 items-center gap-1.5 rounded-full border border-ink/20 px-4 text-sm font-medium hover:border-ink/40"
                       onClick={() => {
                         setSubmitted(null);
                         setSelected(null);
                       }}
                     >
+                      <Icon name="replay" className="size-4" />
                       {ui.compare.retry}
                     </button>
                   )}
-                  {question.feedbackSequence && (
-                    <button type="button" className="min-h-11 rounded-full border border-ink/20 px-5" onClick={() => stage.run(question.feedbackSequence!, { autoplay: true })}>
-                      {ui.compare.listen}
-                    </button>
-                  )}
                 </div>
+                <p className="leading-relaxed sm:text-lg">{option.feedback}</p>
               </motion.div>
             ) : (
-              <button
-                type="button"
-                onClick={check}
-                disabled={selected === null}
-                className="mt-6 min-h-12 rounded-full bg-navy px-8 font-semibold text-white disabled:cursor-not-allowed disabled:bg-ink/25"
-              >
-                {ui.compare.check}
-              </button>
+              <motion.div key="check" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                <button type="button" onClick={check} disabled={selected === null} className="min-h-12 rounded-full bg-navy px-8 font-semibold text-white disabled:cursor-not-allowed disabled:bg-ink/25">
+                  {ui.compare.check}
+                </button>
+              </motion.div>
             )}
-          </motion.section>
-        )}
-      </AnimatePresence>
-    </div>
+          </AnimatePresence>
+        </motion.section>
+      )}
+    </ScreenFrame>
   );
 }

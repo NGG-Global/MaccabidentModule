@@ -3,9 +3,11 @@ import {
   collectEvents,
   countPlayCalls,
   DONE_S03,
+  expectFitsWindow,
   expectNoBrokenLayout,
   finishBeat,
   finishSequence,
+  forward,
   heading,
   next,
   playCalls,
@@ -33,7 +35,8 @@ test('a new employee completes the introduction chapter, S00 to S04', async ({ p
   await expect(page.locator('html')).toHaveAttribute('dir', 'rtl');
   await expect(page.locator('html')).toHaveAttribute('lang', 'he');
   await expect(page.getByRole('img', { name: 'מכבידנט' })).toBeVisible();
-  await expect(next(page)).toBeDisabled();
+  // On the cover "Start" is the only action; the footer appears once the course has started.
+  await expect(next(page)).toHaveCount(0);
   await page.waitForTimeout(500);
   expect(await playCalls(page), 'no media plays on load').toBe(0);
   await expectNoBrokenLayout(page);
@@ -42,6 +45,7 @@ test('a new employee completes the introduction chapter, S00 to S04', async ({ p
   // The arrival film plays first, then the narrated opening; never both.
   await waitForStage(page, (s) => s.beat === 'video' && s.status === 'playing');
   await expect(page.getByTestId('caption')).toBeVisible();
+  await expect(page.getByTestId('video-label')).toHaveText('הגעה למרפאה');
   await finishBeat(page);
   await waitForStage(page, (s) => s.index === 1 && s.beat === 'narration');
   await expect(page.getByTestId('composition')).toHaveAttribute('data-composition', 'opening');
@@ -57,28 +61,36 @@ test('a new employee completes the introduction chapter, S00 to S04', async ({ p
   await expect(next(page)).toBeEnabled();
   await next(page).click();
 
-  // S02 — chapter card, meet Yossi, both versions in the stage, then the question
+  // S02 — step 1: chapter card, meet Yossi, then both versions in the frame, each labelled while it plays
   await expect(heading(page, 'שתי חוויות של אותו מטופל')).toBeVisible();
   await expect(page.getByTestId('question')).toHaveCount(0);
+  await expect(forward(page, 'לשאלה')).toBeEnabled();
   // The 2.8 s chapter card may finish on its own; then "Meet Yossi" narration, then version A.
   await waitForStage(page, (s) => s.key === 'enter' && s.index >= 1);
   if ((await stageStatus(page))?.index === 1) await finishBeat(page);
   await waitForStage(page, (s) => s.index === 2 && s.beat === 'video');
-  await expect(page.getByTestId('version-VID-COMPARE-A-01')).toHaveAttribute('aria-current', 'true');
+  await expect(page.getByTestId('video-label')).toHaveText('גרסה א');
   await finishBeat(page);
   await waitForStage(page, (s) => s.index === 3 && s.beat === 'video');
+  await expect(page.getByTestId('video-label')).toHaveText('גרסה ב');
   await finishBeat(page);
+  // Step 2 opens by itself when the narration asks the question.
   await expect(page.getByTestId('question')).toBeVisible();
-  await expect(next(page)).toBeDisabled();
+  await waitForStage(page, (s) => s.key === 'enter' && s.index === 4 && s.beat === 'narration');
+  await expect(page.getByTestId('step-tracker').getByRole('listitem').nth(1)).toHaveAttribute('aria-current', 'step');
+  await expect(forward(page, 'להסבר')).toBeDisabled();
+  await expectFitsWindow(page, 'S02 question');
   await page.getByText('הטיפול הרפואי יהיה בהכרח מהיר יותר').click();
   await page.getByRole('button', { name: 'בדיקה' }).click();
   await expect(page.getByTestId('feedback')).toHaveAttribute('data-correct', 'false');
-  await waitForStage(page, (s) => s.key === 'feedback' && s.status === 'playing');
-  await expect(page.getByTestId('composition')).toHaveAttribute('data-composition', 'compareFeedback');
   await page.getByRole('button', { name: 'ניסיון נוסף' }).click();
   await page.getByText('יחס אישי, הכוונה ברורה').click();
   await page.getByRole('button', { name: 'בדיקה' }).click();
   await expect(page.getByTestId('feedback')).toHaveAttribute('data-correct', 'true');
+  // Step 3: the narrated, animated explanation.
+  await forward(page, 'להסבר').click();
+  await waitForStage(page, (s) => s.key === 'feedback' && s.status === 'playing');
+  await expect(page.getByTestId('composition')).toHaveAttribute('data-composition', 'compareFeedback');
   await expectNoBrokenLayout(page);
   await next(page).click();
 
@@ -86,6 +98,9 @@ test('a new employee completes the introduction chapter, S00 to S04', async ({ p
   await expect(heading(page, 'שלושת ערכי השירות')).toBeVisible();
   await finishSequence(page);
   await expect(page.getByTestId('composition')).toHaveAttribute('data-composition', 'valueAccompanying');
+  await expect(page.getByTestId('stage-ended')).toBeVisible();
+  await expect(forward(page, 'לתרגול')).toHaveAttribute('data-ready', 'true'); // the step is done: continue is highlighted
+  await forward(page, 'לתרגול').click();
   await expect(next(page)).toBeDisabled();
   await page.getByTestId('match-delay-update').getByRole('button', { name: 'מלווים אותך לאורך הדרך' }).click();
   await expect(page.getByTestId('match-delay-update')).toContainText('לא בדיוק');
@@ -94,12 +109,15 @@ test('a new employee completes the introduction chapter, S00 to S04', async ({ p
   await page.getByTestId('match-next-step').getByRole('button', { name: 'מלווים אותך לאורך הדרך' }).click();
   await expect(page.getByTestId('match-progress')).toHaveText('3 מתוך 3 הותאמו');
   await waitForStage(page, (s) => s.key === 'exerciseFeedback' && s.status === 'playing'); // spoken feedback after the exercise
+  await expect(page.getByTestId('exercise-summary')).toBeVisible();
+  await expectFitsWindow(page, 'S03 exercise');
   await next(page).click();
 
-  // S04 — introduction narration, all five stations with their narration, then the chapter closing
+  // S04 — introduction, then all five stations with their narration, then the chapter summary
   await expect(heading(page, 'מסע המטופל')).toBeVisible();
   await expect(page.getByRole('button', { name: 'המשך', exact: true })).toHaveCount(0);
   await expect(page.getByTestId('missing-narration')).toHaveCount(0);
+  await forward(page, 'לנקודות המגע').click();
   const stations = ['prep', 'contact', 'communication', 'closing', 'followup'];
   for (const [i, id] of stations.entries()) {
     await expect(page.getByTestId('chapter-complete')).toHaveCount(0);
@@ -112,16 +130,18 @@ test('a new employee completes the introduction chapter, S00 to S04', async ({ p
       await expect(page.getByTestId('stage-detail').locator('li')).toHaveCount(0);
       await finishSequence(page);
       await expect(page.getByTestId('stage-detail').locator('li')).toHaveCount(3);
+      await expectFitsWindow(page, 'S04 station');
     }
   }
+  await expect(forward(page, 'לנקודת המגע הבאה')).toHaveCount(0);
+  await finishBeat(page);
+  await forward(page, 'לסיכום הפרק').click();
   await expect(page.getByTestId('chapter-complete')).toContainText('השלמתם את פרק ההיכרות');
   await expect(page.getByTestId('chapter-complete')).toContainText('בהמשך: מתרגלים שירות במצבים אמיתיים');
-  // The closing narration waits for station 5 to finish, then plays.
-  expect((await stageStatus(page))?.key).toBe('stage:followup');
-  await finishBeat(page);
   await waitForStage(page, (s) => s.key === 'complete' && s.status === 'playing');
-  await expect(page.getByTestId('composition')).toHaveAttribute('data-composition', 'journey');
+  if ((page.viewportSize()?.width ?? 0) >= 1024) await expect(page.getByTestId('composition')).toHaveAttribute('data-composition', 'journey');
   await expectNoBrokenLayout(page);
+  await expectFitsWindow(page, 'S04 summary');
 
   expect(failed, 'no failed requests').toEqual([]);
   expect(dropped, 'no event failed schema validation').toEqual([]);
@@ -228,6 +248,7 @@ test('reduced motion still shows every composition and keeps targets usable', as
   await page.getByTestId('stage-play').click();
   await waitForStage(page, (s) => s.status === 'playing');
   await expect(page.getByTestId('composition')).toBeVisible();
+  await forward(page, 'לנקודות המגע').click();
   const box = await page.getByTestId('stage-prep').boundingBox();
   expect(box?.height ?? 0).toBeGreaterThanOrEqual(44);
   expect(await stageStatus(page)).not.toBeNull();
@@ -249,4 +270,61 @@ test('restart clears progress only after confirmation', async ({ page }) => {
   await page.getByRole('button', { name: 'כן, להתחיל מחדש' }).click();
   await expect(page.getByRole('button', { name: 'התחלה', exact: true })).toBeVisible();
   expect(await page.evaluate(() => JSON.parse(localStorage.getItem('good-hands:progress:v1') ?? '{}').state?.currentScreenId)).toBe('S00');
+});
+
+test('every screen and step fits the window without scrolling', async ({ page }) => {
+  const steps: Array<[string, Record<string, unknown>, ((p: typeof page) => Promise<void>)?]> = [
+    ['S01', { currentScreenId: 'S01', completed: ['S00'], role: null }],
+    ['S02 watch', { currentScreenId: 'S02', completed: ['S00', 'S01'] }],
+    ['S02 answered', { currentScreenId: 'S02', completed: ['S00', 'S01'], answers: { 'Q-S02-01': ['B'] } }],
+    ['S03 watch', { currentScreenId: 'S03', completed: ['S00', 'S01', 'S02'], answers: { 'Q-S02-01': ['A'] } }],
+    ['S03 exercise', { currentScreenId: 'S03', completed: ['S00', 'S01', 'S02'], answers: DONE_S03 }],
+    ['S04 intro', { currentScreenId: 'S04', completed: ['S00', 'S01', 'S02', 'S03'], answers: DONE_S03 }],
+    [
+      'S04 station',
+      { currentScreenId: 'S04', completed: ['S00', 'S01', 'S02', 'S03'], answers: DONE_S03, visited: ['S04:prep'] },
+      async (p) => {
+        await p.getByTestId('stage-communication').click();
+        await p.getByTestId('stage-toggle').click();
+      },
+    ],
+    [
+      'S04 summary',
+      { currentScreenId: 'S04', completed: ['S00', 'S01', 'S02', 'S03'], answers: DONE_S03, visited: ['S04:prep', 'S04:contact', 'S04:communication', 'S04:closing', 'S04:followup'], completedAt: '2026-11-11T09:00:00.000Z' },
+    ],
+  ];
+  await page.goto('/');
+  await expectFitsWindow(page, 'S00 cover');
+  for (const [name, seed, act] of steps) {
+    await seedProgress(page, seed);
+    await expect(page.locator('#main h1')).toBeVisible();
+    if (act) await act(page);
+    await page.waitForTimeout(300);
+    await expectFitsWindow(page, name);
+    await expectNoBrokenLayout(page);
+  }
+});
+
+test('the S02 question can be reached at any time, and each version can be watched again from it', async ({ page }) => {
+  await seedProgress(page, { currentScreenId: 'S02', completed: ['S00', 'S01'] });
+  await forward(page, 'לשאלה').click();
+  await expect(page.getByTestId('question')).toBeVisible();
+  await waitForStage(page, (s) => s.key === 'enter' && s.index === 4 && s.status === 'playing'); // the question is asked aloud
+  await page.getByTestId('version-VID-COMPARE-B-01').click();
+  await expect(page.getByTestId('question')).toHaveCount(0);
+  await waitForStage(page, (s) => s.key === 'replay:VID-COMPARE-B-01' && s.beat === 'video' && s.status === 'playing');
+  await expect(page.getByTestId('video-label')).toHaveText('גרסה ב');
+  await page.getByRole('button', { name: 'חזרה' }).click(); // back from step 1 leaves the screen
+  await expect(heading(page, 'מה התפקיד שלך במרפאה?')).toBeVisible();
+});
+
+test('the transcript opens in a dialog and closes with Escape', async ({ page }) => {
+  await seedProgress(page, { currentScreenId: 'S01', completed: ['S00'], role: null });
+  const toggle = page.getByTestId('stage-controls').getByRole('button', { name: 'תמלול' });
+  await toggle.click();
+  await expect(page.getByRole('dialog')).toBeVisible();
+  await expectFitsWindow(page, 'transcript open');
+  await page.keyboard.press('Escape');
+  await expect(page.getByRole('dialog')).toHaveCount(0);
+  await expect(toggle).toBeFocused();
 });

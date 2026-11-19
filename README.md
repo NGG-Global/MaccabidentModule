@@ -11,16 +11,25 @@ The specification is in `docs/good_hands_spec/`; the media verification is in
 
 ## What the prototype covers
 
-| Screen | Content | Media |
-|---|---|---|
-| S00 Opening | Arrival film, then a narrated title sequence | V01, narration S00, Remotion `opening` |
-| S01 Role | Three roles; the choice is saved for later branching | Narration S01 with live captions |
-| S02 Two experiences | Chapter card, "Meet Yossi", both reception versions, question, animated feedback | V02A, V02B, narration S02 ×3, `chapter`, `meetYossi`, `compareFeedback` |
-| S03 Three values | Introduction and one animation per value, then a matching exercise with spoken feedback | Narration S03 ×5, `valuesIntro`, `valueSeeing`, `valueAdapting`, `valueAccompanying` |
-| S04 Patient journey | Five touchpoints, key points revealed as narrated; all must be explored; narrated chapter closing | Narration S04 ×7, `journey` |
+| Screen | Steps | Content | Media |
+|---|---|---|---|
+| S00 Opening | Cover → film | Arrival film, then a narrated title sequence | V01, narration S00, Remotion `opening` |
+| S01 Role | — | Three roles; the choice is saved for later branching | Narration S01 with live captions |
+| S02 Two experiences | Watch → Question → Explanation | Chapter card, "Meet Yossi", version A then version B (each labelled while it plays), the question while its narration asks it, then the animated explanation | V02A, V02B, narration S02 ×3, `chapter`, `meetYossi`, `compareFeedback` |
+| S03 Three values | Watch → Exercise | Introduction and one animation per value (with an index), then a matching exercise with spoken feedback | Narration S03 ×5, `valuesIntro`, `valueSeeing`, `valueAdapting`, `valueAccompanying` |
+| S04 Patient journey | Introduction → Touchpoints → Summary | Five touchpoints, key points revealed as narrated; all must be explored; narrated chapter closing | Narration S04 ×7, `journey` |
+
+Videos V04B, V04, V05, V06, V07 and V10 are verified and in the manifest but belong to S05–S09, which are not built; they are not shown in this build.
+
+### Layout and navigation
+
+- **One window, no scrolling.** The course is exactly one viewport tall: header, screen, footer. Every screen and step fits without scrolling at 1920×1080, 1366×768, 1280×650, 1024×600, 768×1024, 390×844 and 360×740 (checked by `every screen and step fits the window without scrolling`). If a window is smaller still, or the text is zoomed, the screen area scrolls instead of cutting content off.
+- **Steps inside a screen.** Longer screens are split into steps shown in a tracker beside the title. Steps already reached can be revisited from the tracker.
+- **One place to continue.** The forward button is always at the bottom left and says where it leads ("לשאלה", "להסבר", "לתרגול", "לנקודת המגע הבאה", "לסיכום הפרק", "המשך"). A line beside it says what is needed to continue; when a step is finished the button is highlighted.
+- **The media frame** sizes itself to the space left, keeps its aspect ratio, and has a fixed strip underneath for captions and for "segment finished / watch again". A segment timeline shows where the learner is in the sequence and lets them jump to a part.
 
 Learner controls: start, continue, back, pause, replay, mute, captions,
-transcript and speed; local save and resume; restart with confirmation.
+transcript (in a dialog) and speed; local save and resume, with a notice on return; restart with confirmation.
 Nothing makes a sound before the learner presses Start (or Play after a refresh).
 
 ## Run
@@ -67,7 +76,7 @@ npm run e2e          # browser tests (Playwright; desktop and 360px)
 | Media | `public/media/`, `src/content/media-manifest.json` | Stable ids, measured durations, source and verification per asset |
 | Interaction logic | `src/engine/flow.ts` | Pure reducer: navigation graph, completion rules, skip prevention, resume validation |
 | Playback | `src/stage/` | One active media beat at a time; narration drives its composition frame by frame |
-| Presentation | `src/screens/`, `src/components/`, `src/remotion/` | React + Tailwind + Motion; Remotion compositions in `@remotion/player` |
+| Presentation | `src/screens/`, `src/components/`, `src/remotion/` | React + Tailwind + Motion; Remotion compositions in `@remotion/player`. Screens set the footer's behaviour per step through `useScreenNav` (`src/components/ScreenNav.tsx`) |
 | Analytics | `src/analytics/` | Typed, validated, local only (memory buffer, console in development) |
 
 Narration timing: every animated line has an `at` time in seconds taken from

@@ -13,7 +13,8 @@
     "enter": [
       {
         "kind": "video",
-        "mediaId": "VID-INTRO-01"
+        "mediaId": "VID-INTRO-01",
+        "label": "הגעה למרפאה"
       },
       {
         "kind": "narration",
@@ -116,7 +117,8 @@
               }
             ]
           }
-        }
+        },
+        "label": "פתיחה"
       }
     ]
   },

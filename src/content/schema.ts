@@ -65,6 +65,9 @@ export type CompositionRef = z.infer<typeof CompositionRefSchema>;
  * another and never overlap: narration, video dialogue and silent animation
  * each own the timeline while they run.
  */
+/** Short name of a beat, shown in the segment timeline and on a playing video. */
+const BeatLabelSchema = z.string().min(1).optional();
+
 export const BeatSchema = z.discriminatedUnion('kind', [
   z.strictObject({
     kind: z.literal('narration'),
@@ -73,12 +76,14 @@ export const BeatSchema = z.discriminatedUnion('kind', [
     visual: CompositionRefSchema.optional(),
     /** Fallback transcript for narration without captions (e.g. not yet supplied). */
     transcript: z.string().optional(),
+    label: BeatLabelSchema,
   }),
-  z.strictObject({ kind: z.literal('video'), mediaId: MediaIdSchema }),
+  z.strictObject({ kind: z.literal('video'), mediaId: MediaIdSchema, label: BeatLabelSchema }),
   z.strictObject({
     kind: z.literal('composition'),
     visual: CompositionRefSchema,
     durationSec: z.number().positive(),
+    label: BeatLabelSchema,
   }),
 ]);
 export type Beat = z.infer<typeof BeatSchema>;

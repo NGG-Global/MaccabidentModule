@@ -19,7 +19,8 @@
             "title": "שתי חוויות",
             "subtitle": "אותו מטופל. אותו תור."
           }
-        }
+        },
+        "label": "פתיחת הפרק"
       },
       {
         "kind": "narration",
@@ -56,19 +57,23 @@
               }
             ]
           }
-        }
+        },
+        "label": "הכירו את יוסי"
       },
       {
         "kind": "video",
-        "mediaId": "VID-COMPARE-A-01"
+        "mediaId": "VID-COMPARE-A-01",
+        "label": "גרסה א"
       },
       {
         "kind": "video",
-        "mediaId": "VID-COMPARE-B-01"
+        "mediaId": "VID-COMPARE-B-01",
+        "label": "גרסה ב"
       },
       {
         "kind": "narration",
-        "audioId": "AUDIO-S02-02"
+        "audioId": "AUDIO-S02-02",
+        "label": "השאלה"
       }
     ],
     "feedback": [
@@ -119,7 +124,8 @@
               "text": "כאן תפיסת השירות מתחילה לקבל משמעות"
             }
           }
-        }
+        },
+        "label": "ההסבר"
       }
     ]
   },

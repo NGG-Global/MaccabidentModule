@@ -31,6 +31,9 @@ export interface StageApi {
   goToBeat(index: number): void;
   registerVideo(mediaId: string, el: HTMLVideoElement | null): void;
   registerPlayer(token: string, ref: PlayerRef | null): void;
+  /** The transcript dialog; opened from the controls or from a "narration missing" notice. */
+  transcriptOpen: boolean;
+  setTranscriptOpen(open: boolean): void;
 }
 
 const StageContext = createContext<StageApi | null>(null);
@@ -48,6 +51,7 @@ export function StageProvider({ screen, children }: { screen: Screen; children: 
   const prefs = useMediaPrefs();
   const [state, dispatch] = useReducer(sequenceReducer, emptySequence);
   const [registryVersion, setRegistryVersion] = useState(0);
+  const [transcriptOpen, setTranscriptOpen] = useState(false);
   const clock = useMemo(() => createClockStore(), []);
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -302,8 +306,10 @@ export function StageProvider({ screen, children }: { screen: Screen; children: 
         else players.current.delete(key);
         setRegistryVersion((v) => v + 1);
       },
+      transcriptOpen,
+      setTranscriptOpen,
     }),
-    [screen, state, token, clock],
+    [screen, state, token, clock, transcriptOpen],
   );
 
   return <StageContext.Provider value={api}>{children}</StageContext.Provider>;

@@ -9,7 +9,7 @@ import { JourneyScreen } from './JourneyScreen';
 import { PendingScreen } from './PendingScreen';
 import { RoleSelectScreen } from './RoleSelectScreen';
 import { ScenarioScreen } from './ScenarioScreen';
-import { ScreenHeading } from './ScreenHeading';
+import { ScreenFrame, ScreenHeading } from './ScreenHeading';
 import { SummaryScreen } from './SummaryScreen';
 import { ValuesScreen } from './ValuesScreen';
 import type { ScreenProps } from './types';
@@ -33,22 +33,22 @@ export function ScreenRenderer(props: ScreenProps) {
 
   if (screen.approvalStatus === 'DRAFT' && !env.showDraftContent) {
     return (
-      <div className="space-y-6">
-        <ScreenHeading screen={screen} />
+      <ScreenFrame heading={<ScreenHeading screen={screen} />}>
         <p data-testid="draft-hidden">{ui.draftHidden}</p>
-      </div>
+      </ScreenFrame>
     );
   }
 
   const Body = registry[screen.interactionType] ?? PendingScreen;
   if (selfContained.includes(screen.interactionType)) return <Body {...props} />;
   return (
-    <div className="space-y-5">
-      {Body !== PendingScreen && <ScreenHeading screen={screen} />}
-      {screen.mediaIds.map((id) => (
-        <MediaSlot key={id} mediaId={id} />
-      ))}
-      <Body {...props} />
-    </div>
+    <ScreenFrame heading={Body !== PendingScreen ? <ScreenHeading screen={screen} /> : undefined}>
+      <div className="space-y-5">
+        {screen.mediaIds.map((id) => (
+          <MediaSlot key={id} mediaId={id} />
+        ))}
+        <Body {...props} />
+      </div>
+    </ScreenFrame>
   );
 }

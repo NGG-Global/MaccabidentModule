@@ -22,7 +22,8 @@
             "title": "מסע המטופל",
             "subtitle": "חמש נקודות מגע בדיאלוג השירותי"
           }
-        }
+        },
+        "label": "פתיחת הפרק"
       },
       {
         "kind": "narration",
@@ -60,7 +61,8 @@
             "active": null,
             "visited": []
           }
-        }
+        },
+        "label": "מפת המסע"
       }
     ],
     "stage:prep": [
@@ -100,7 +102,8 @@
             "active": "prep",
             "visited": []
           }
-        }
+        },
+        "label": "נקודת מגע 1: היערכות לקבלת המטופל"
       }
     ],
     "stage:contact": [
@@ -140,7 +143,8 @@
             "active": "contact",
             "visited": []
           }
-        }
+        },
+        "label": "נקודת מגע 2: יצירת קשר עם המטופל"
       }
     ],
     "stage:communication": [
@@ -180,7 +184,8 @@
             "active": "communication",
             "visited": []
           }
-        }
+        },
+        "label": "נקודת מגע 3: תקשורת עם המטופל"
       }
     ],
     "stage:closing": [
@@ -220,7 +225,8 @@
             "active": "closing",
             "visited": []
           }
-        }
+        },
+        "label": "נקודת מגע 4: סגירת מעגל הטיפול"
       }
     ],
     "stage:followup": [
@@ -260,7 +266,8 @@
             "active": "followup",
             "visited": []
           }
-        }
+        },
+        "label": "נקודת מגע 5: מעקב, בקרה וקשר"
       }
     ],
     "complete": [
@@ -300,7 +307,8 @@
             "active": null,
             "visited": []
           }
-        }
+        },
+        "label": "סיכום הפרק"
       }
     ]
   },
