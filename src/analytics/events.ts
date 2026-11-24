@@ -26,7 +26,7 @@ const envelope = {
 
 const mediaPayload = z.strictObject({ sequence: z.string().max(40) });
 
-/** Local-only event set for the S00–S04 prototype. Nothing is transmitted to a third party. */
+/** Local-only event set for the course. Nothing is transmitted to a third party. */
 const payloads = {
   course_started: z.strictObject({}),
   screen_viewed: z.strictObject({ interactionType: InteractionTypeSchema, resumed: z.boolean() }),
@@ -40,10 +40,21 @@ const payloads = {
     isCorrect: z.boolean(),
     attemptNumber: z.number().int().positive(),
     responseTimeMs: z.number().nonnegative(),
+    /** Practice (scenarios, checks) or a scored assessment attempt. */
+    mode: z.enum(['practice', 'assessment']).optional(),
   }),
   journey_stage_viewed: z.strictObject({ stageId: z.string(), visitedCount: z.number().int().positive() }),
   role_selected: z.strictObject({ role: RoleSchema }),
-  prototype_completed: z.strictObject({ rule: z.string() }),
+  assessment_started: z.strictObject({ attemptNumber: z.number().int().positive(), questionIds: z.array(z.string()).min(1) }),
+  assessment_completed: z.strictObject({
+    attemptNumber: z.number().int().positive(),
+    score: z.number().nonnegative(),
+    maxScore: z.number().positive(),
+    percent: z.number().min(0).max(100),
+    passed: z.boolean(),
+  }),
+  /** Only when the course's completion rule is met: end reached with a passed assessment. */
+  course_completed: z.strictObject({ rule: z.string(), percent: z.number().min(0).max(100) }),
 } as const;
 
 export type EventName = keyof typeof payloads;

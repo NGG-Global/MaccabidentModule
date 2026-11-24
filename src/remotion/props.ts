@@ -49,6 +49,47 @@ export const JourneyProps = z.strictObject({
   visited: z.array(z.string()).default([]),
 });
 
+export const ScenarioIntroProps = z.strictObject({
+  caseLabel: z.string().min(1),
+  place: z.string().min(1),
+  /** Without a photograph the case is set in type alone. */
+  photoId: MediaIdSchema.optional(),
+  lines: z.array(T).min(1),
+});
+
+export const ScenarioFeedbackProps = z.strictObject({
+  verdict: z.enum(['preferred', 'partial', 'undesirable']),
+  headline: T,
+  points: z.array(T).min(1).max(4),
+  /** Value names, revealed when the narration names them. */
+  values: z.strictObject({ at: z.number().nonnegative(), names: z.array(z.string().min(1)).min(1) }).optional(),
+});
+
+export const MeasurementProps = z.strictObject({
+  sections: z
+    .array(z.strictObject({ at: z.number().nonnegative(), kind: z.enum(['survey', 'shopper', 'observation', 'trafficLight']), title: z.string(), lines: z.array(z.string()).min(1) }))
+    .length(4),
+  loop: z.strictObject({ at: z.number().nonnegative(), title: z.string(), line: z.string() }),
+});
+
+export const AssessmentResultProps = z.strictObject({
+  percent: z.number().min(0).max(100),
+  threshold: z.number().min(0).max(100),
+  passed: z.boolean(),
+  correct: z.number().int().nonnegative(),
+  total: z.number().int().positive(),
+  passedText: z.string(),
+  failedText: z.string(),
+});
+
+export const ClosingProps = z.strictObject({
+  photos: z.array(MediaIdSchema).min(1),
+  opener: T,
+  values: z.array(T).length(3),
+  title: T,
+  thanks: T,
+});
+
 export const compositionPropSchemas = {
   opening: OpeningProps,
   chapter: ChapterProps,
@@ -59,6 +100,11 @@ export const compositionPropSchemas = {
   valueAdapting: ValueAdaptingProps,
   valueAccompanying: ValueAccompanyingProps,
   journey: JourneyProps,
+  scenarioIntro: ScenarioIntroProps,
+  scenarioFeedback: ScenarioFeedbackProps,
+  measurement: MeasurementProps,
+  assessmentResult: AssessmentResultProps,
+  closing: ClosingProps,
 } satisfies Record<CompositionId, z.ZodType>;
 
 export type OpeningPropsT = z.infer<typeof OpeningProps>;
@@ -70,6 +116,11 @@ export type ValueSeeingPropsT = z.infer<typeof ValueSeeingProps>;
 export type ValueAdaptingPropsT = z.infer<typeof ValueAdaptingProps>;
 export type ValueAccompanyingPropsT = z.infer<typeof ValueAccompanyingProps>;
 export type JourneyPropsT = z.infer<typeof JourneyProps>;
+export type ScenarioIntroPropsT = z.infer<typeof ScenarioIntroProps>;
+export type ScenarioFeedbackPropsT = z.infer<typeof ScenarioFeedbackProps>;
+export type MeasurementPropsT = z.infer<typeof MeasurementProps>;
+export type AssessmentResultPropsT = z.infer<typeof AssessmentResultProps>;
+export type ClosingPropsT = z.infer<typeof ClosingProps>;
 
 /** Props every composition receives in addition to its own. */
 export interface CommonProps {

@@ -112,7 +112,7 @@ export async function seedProgress(page: Page, state: Record<string, unknown>) {
       'good-hands:progress:v1',
       JSON.stringify({
         courseId: 'good-hands',
-        courseVersion: '0.2.0',
+        courseVersion: '0.3.0',
         state: { role: 'assistant', completed: [], answers: {}, visited: [], attempts: [], startedAt: '2026-11-11T08:00:00.000Z', completedAt: null, ...s },
       }),
     );
@@ -126,3 +126,12 @@ export const DONE_S03 = {
   'S03:adapt-explanation': ['effort-for-you'],
   'S03:next-step': ['with-you'],
 };
+
+export const DONE_S04 = {
+  completed: ['S00', 'S01', 'S02', 'S03', 'S04'],
+  answers: DONE_S03,
+  visited: ['S04:prep', 'S04:contact', 'S04:communication', 'S04:closing', 'S04:followup'],
+};
+
+/** The footer's forward button (its label names the destination). */
+export const footerForward = (page: Page) => page.locator('footer button').last();

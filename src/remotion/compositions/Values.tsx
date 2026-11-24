@@ -4,7 +4,7 @@ import type { CommonProps, ValueAccompanyingPropsT, ValueAdaptingPropsT, ValueSe
 import { color, font } from '../theme';
 
 /** Small emblem per value, reused in the introduction so each treatment is foreshadowed. */
-function Emblem({ index, draw, size }: { index: number; draw: number; size: number }) {
+export function Emblem({ index, draw, size }: { index: number; draw: number; size: number }) {
   const common = { fill: 'none', stroke: color.violet, strokeWidth: 3, strokeLinecap: 'round' as const, pathLength: 1, strokeDasharray: 1, strokeDashoffset: 1 - draw };
   return (
     <svg width={size} height={size} viewBox="0 0 60 60" aria-hidden>

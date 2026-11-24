@@ -1,0 +1,165 @@
+{
+  "scenarioId": "SC-AST-02",
+  "title": "אי-נוחות במהלך הטיפול",
+  "track": "assistant",
+  "caseLabel": "מקרה 2",
+  "place": "במהלך הטיפול",
+  "touchpoint": "תקשורת",
+  "values": [
+    "see-you"
+  ],
+  "skill": "זיהוי צורך ושיקוף לצוות",
+  "scene": "במהלך הטיפול יוסי מסמן באי-נוחות, והרופא מרוכז בפעולה.",
+  "question": "איך תפעלי?",
+  "situation": [
+    {
+      "kind": "narration",
+      "audioId": "AUDIO-S06-AST2-01",
+      "visual": {
+        "id": "scenarioIntro",
+        "props": {
+          "caseLabel": "מקרה 2",
+          "place": "במהלך הטיפול",
+          "lines": [
+            {
+              "at": 0.0,
+              "text": "הטיפול התחיל"
+            },
+            {
+              "at": 1.36,
+              "text": "יוסי מסמן באי-נוחות"
+            },
+            {
+              "at": 6.78,
+              "text": "הרופא מרוכז בפעולה"
+            }
+          ]
+        }
+      },
+      "label": "המצב"
+    }
+  ],
+  "options": [
+    {
+      "id": "A",
+      "text": "להמשיך כרגיל, כדי לא להפריע לרופא באמצע הפעולה.",
+      "rating": "undesirable",
+      "feedback": "התעלמות מסימני אי-נוחות עלולה לפגוע בתחושת הביטחון של יוסי. מתייחסים לצורך ומערבים את הגורם המטפל.",
+      "feedbackBeats": [
+        {
+          "kind": "narration",
+          "audioId": "AUDIO-S06-AST2-FB-A",
+          "visual": {
+            "id": "scenarioFeedback",
+            "props": {
+              "verdict": "undesirable",
+              "headline": {
+                "at": 0.0,
+                "text": "להישאר קשובים גם במהלך הטיפול"
+              },
+              "points": [
+                {
+                  "at": 3.6,
+                  "text": "לא להתעלם מאי-נוחות"
+                },
+                {
+                  "at": 9.66,
+                  "text": "להתייחס לצורך"
+                },
+                {
+                  "at": 11.26,
+                  "text": "לערב את המטפל"
+                }
+              ]
+            }
+          },
+          "label": "משוב"
+        }
+      ]
+    },
+    {
+      "id": "B",
+      "text": "לזהות את הצורך, לשקף אותו לרופא ולהציע סיוע מתאים.",
+      "rating": "preferred",
+      "feedback": "זיהוי הצורך, שיקוף שלו לרופא ומתן סיוע מתאים הם שירות רגיש, יוזם ומקצועי.",
+      "feedbackBeats": [
+        {
+          "kind": "narration",
+          "audioId": "AUDIO-S06-AST2-FB-B",
+          "visual": {
+            "id": "scenarioFeedback",
+            "props": {
+              "verdict": "preferred",
+              "headline": {
+                "at": 0.0,
+                "text": "נכון"
+              },
+              "points": [
+                {
+                  "at": 5.14,
+                  "text": "מזהים את הצורך"
+                },
+                {
+                  "at": 6.4,
+                  "text": "משקפים לרופא"
+                },
+                {
+                  "at": 8.2,
+                  "text": "מסייעים בהתאם"
+                }
+              ],
+              "values": {
+                "at": 11.18,
+                "names": [
+                  "רואים אותך"
+                ]
+              }
+            }
+          },
+          "label": "משוב"
+        }
+      ]
+    },
+    {
+      "id": "C",
+      "text": "להחליט בעצמך על הפסקת הטיפול עד שיוסי ירגיש טוב יותר.",
+      "rating": "undesirable",
+      "feedback": "יוזמה חשובה, אבל בגבולות האחריות המקצועית: מתקשרים עם הגורם המטפל ופועלים לפי הנחיותיו.",
+      "feedbackBeats": [
+        {
+          "kind": "narration",
+          "audioId": "AUDIO-S06-AST2-FB-C",
+          "visual": {
+            "id": "scenarioFeedback",
+            "props": {
+              "verdict": "undesirable",
+              "headline": {
+                "at": 1.28,
+                "text": "גבולות האחריות המקצועית"
+              },
+              "points": [
+                {
+                  "at": 7.76,
+                  "text": "מתקשרים עם המטפל"
+                },
+                {
+                  "at": 9.56,
+                  "text": "פועלים לפי הנחיותיו"
+                }
+              ]
+            }
+          },
+          "label": "משוב"
+        }
+      ]
+    }
+  ],
+  "principle": "קשובים למטופל, משקפים לרופא ופועלים בגבולות התפקיד.",
+  "sourcePages": [
+    14,
+    22,
+    28
+  ],
+  "approvalStatus": "DRAFT",
+  "notes": "Narration supplied (S05-S09.zip). Answer wording follows 03-scenario-bank where it exists and the meaning of each feedback recording; it is proposed development content pending SME approval."
+}

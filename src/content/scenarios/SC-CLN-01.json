@@ -1,0 +1,187 @@
+{
+  "scenarioId": "SC-CLN-01",
+  "title": "הסבר לפני טיפול",
+  "track": "clinician",
+  "caseLabel": "מקרה 1",
+  "place": "כיסא הטיפולים",
+  "touchpoint": "תקשורת",
+  "values": [
+    "effort-for-you"
+  ],
+  "skill": "הסבר ובדיקת הבנה",
+  "scene": "הסברת ליוסי בקצרה על התהליך, אבל הוא עדיין לא בטוח ושואל שאלה.",
+  "question": "איך הייתם מגיבים ליוסי?",
+  "situation": [
+    {
+      "kind": "narration",
+      "audioId": "AUDIO-S06-CLN1-01",
+      "visual": {
+        "id": "scenarioIntro",
+        "props": {
+          "caseLabel": "מקרה 1",
+          "place": "כיסא הטיפולים",
+          "lines": [
+            {
+              "at": 0.0,
+              "text": "בכיסא הטיפולים"
+            },
+            {
+              "at": 2.02,
+              "text": "הסבר קצר כבר ניתן"
+            },
+            {
+              "at": 4.24,
+              "text": "הוא עדיין לא בטוח"
+            }
+          ],
+          "photoId": "STILL-CHAIR-01"
+        }
+      },
+      "label": "המצב"
+    }
+  ],
+  "options": [
+    {
+      "id": "A",
+      "text": "\"כבר הסברתי, זה טיפול פשוט. נמשיך.\"",
+      "rating": "undesirable",
+      "feedback": "גם אם כבר ניתן הסבר, יוסי עדיין לא הבין. מתן מידע לבדו אינו מספיק; מוודאים הבנה ומזמינים שאלות.",
+      "feedbackBeats": [
+        {
+          "kind": "narration",
+          "audioId": "AUDIO-S06-CLN1-FB-A",
+          "visual": {
+            "id": "scenarioFeedback",
+            "props": {
+              "verdict": "undesirable",
+              "headline": {
+                "at": 0.0,
+                "text": "ההסבר עדיין לא ברור לו"
+              },
+              "points": [
+                {
+                  "at": 5.6,
+                  "text": "מידע לבדו אינו מספיק"
+                },
+                {
+                  "at": 8.48,
+                  "text": "מוודאים הבנה"
+                },
+                {
+                  "at": 10.88,
+                  "text": "מזמינים שאלות"
+                }
+              ]
+            }
+          },
+          "label": "משוב"
+        }
+      ]
+    },
+    {
+      "id": "B",
+      "text": "לעצור, לברר מה לא ברור, להסביר במילים פשוטות ולוודא שהשאלות שלו נענו.",
+      "rating": "preferred",
+      "feedback": "הסבר ברור, הקשבה לשאלות ובדיקת הבנה הופכים את יוסי לשותף ומכבדים את צרכיו וחששותיו.",
+      "feedbackBeats": [
+        {
+          "kind": "narration",
+          "audioId": "AUDIO-S06-CLN1-FB-B",
+          "visual": {
+            "id": "scenarioFeedback",
+            "props": {
+              "verdict": "preferred",
+              "headline": {
+                "at": 0.0,
+                "text": "נכון מאוד"
+              },
+              "points": [
+                {
+                  "at": 1.2,
+                  "text": "הסבר ברור"
+                },
+                {
+                  "at": 2.18,
+                  "text": "הקשבה לשאלות"
+                },
+                {
+                  "at": 3.78,
+                  "text": "בדיקת הבנה"
+                }
+              ],
+              "values": {
+                "at": 10.98,
+                "names": [
+                  "מתאמצים למענך"
+                ]
+              }
+            }
+          },
+          "label": "משוב"
+        },
+        {
+          "kind": "video",
+          "mediaId": "VID-CLN-EXPLAIN-01",
+          "label": "כך זה נראה"
+        }
+      ]
+    },
+    {
+      "id": "C",
+      "text": "\"אין מה לדאוג, הכול יהיה בסדר, נגמור מהר.\"",
+      "rating": "undesirable",
+      "feedback": "הרגעה אינה תחליף להסבר מקצועי. נמנעים מהבטחות גורפות, מבררים מה לא הובן ונותנים מידע מדויק.",
+      "feedbackBeats": [
+        {
+          "kind": "narration",
+          "audioId": "AUDIO-S06-CLN1-FB-C",
+          "visual": {
+            "id": "scenarioFeedback",
+            "props": {
+              "verdict": "undesirable",
+              "headline": {
+                "at": 2.3,
+                "text": "הרגעה אינה תחליף להסבר"
+              },
+              "points": [
+                {
+                  "at": 5.02,
+                  "text": "בלי הבטחות גורפות"
+                },
+                {
+                  "at": 7.5,
+                  "text": "מבררים מה לא הובן"
+                },
+                {
+                  "at": 9.3,
+                  "text": "מידע מדויק ומותאם"
+                }
+              ]
+            }
+          },
+          "label": "משוב"
+        }
+      ]
+    }
+  ],
+  "principle": "מסבירים בבהירות, מקשיבים לשאלות ובודקים הבנה.",
+  "sourcePages": [
+    15,
+    23,
+    29
+  ],
+  "approvalStatus": "DRAFT",
+  "patientLine": {
+    "speaker": "יוסי",
+    "text": "רגע, מה בדיוק הולכים לעשות עכשיו?",
+    "proposed": true
+  },
+  "ask": [
+    {
+      "kind": "narration",
+      "audioId": "AUDIO-S05-02",
+      "label": "השאלה"
+    }
+  ],
+  "notes": "Narration supplied (S05-S09.zip). Answer wording follows 03-scenario-bank where it exists and the meaning of each feedback recording; it is proposed development content pending SME approval."
+}

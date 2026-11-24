@@ -1,11 +1,55 @@
 {
   "screenId": "S08",
   "chapter": "אתגר מסכם",
-  "title": "אתגר מסכם",
+  "title": "האתגר המסכם",
+  "eyebrow": "פרק 7",
   "targetMinutes": 4,
+  "learningObjective": "להפעיל את תפיסת השירות בחמש החלטות חדשות: שתיים משותפות ושלוש מהתפקיד.",
   "onScreenText": [],
   "mediaIds": [],
+  "sequences": {
+    "enter": [
+      {
+        "kind": "composition",
+        "durationSec": 2.8,
+        "visual": {
+          "id": "chapter",
+          "props": {
+            "number": "07",
+            "title": "האתגר המסכם",
+            "subtitle": "חמש החלטות, ציון בסוף"
+          }
+        },
+        "label": "פתיחת פרק"
+      }
+    ],
+    "result": [
+      {
+        "kind": "narration",
+        "audioId": "AUDIO-S08",
+        "label": "קריינות התוצאה"
+      }
+    ]
+  },
   "interactionType": "assessment",
+  "interaction": {
+    "type": "assessment",
+    "commonCount": 2,
+    "roleCount": 3,
+    "questionIds": [
+      "Q-S08-01",
+      "Q-S08-02",
+      "Q-S08-03",
+      "Q-S08-04",
+      "Q-S08-05",
+      "Q-S08-06",
+      "Q-S08-07",
+      "Q-S08-08",
+      "Q-S08-09",
+      "Q-S08-10",
+      "Q-S08-11"
+    ]
+  },
   "completion": "interaction",
   "sourcePages": [],
   "approvalStatus": "DRAFT"

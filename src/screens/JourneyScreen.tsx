@@ -109,7 +109,7 @@ export function JourneyScreen({ screen, state, dispatch, done }: ScreenProps) {
               ready: stationEnded || activeId === null,
               hint: stationEnded ? ui.nav.stationEnded : undefined,
             }
-        : { back: goExplore, hint: ui.nav.endOfPrototype },
+        : { back: goExplore, ready: true, hint: ui.nav.introChapterDone },
   );
 
   if (!interaction) return null;

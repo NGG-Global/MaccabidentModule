@@ -1,0 +1,157 @@
+{
+  "scenarioId": "SC-CLN-02",
+  "title": "הנחיות לאחר טיפול",
+  "track": "clinician",
+  "caseLabel": "מקרה 2",
+  "place": "סיום הטיפול",
+  "touchpoint": "סגירת מעגל",
+  "values": [
+    "with-you"
+  ],
+  "skill": "הנחיות להמשך ותיאום ציפיות",
+  "scene": "בסיום הטיפול יוסי אומר שהוא לא בטוח מה עליו לעשות עכשיו.",
+  "question": "מה נכון לעשות?",
+  "situation": [
+    {
+      "kind": "narration",
+      "audioId": "AUDIO-S06-CLN2-01",
+      "visual": {
+        "id": "scenarioIntro",
+        "props": {
+          "caseLabel": "מקרה 2",
+          "place": "סיום הטיפול",
+          "lines": [
+            {
+              "at": 0.0,
+              "text": "הטיפול הסתיים"
+            },
+            {
+              "at": 6.98,
+              "text": "\"אני לא בטוח שאני זוכר מה לעשות עכשיו\""
+            }
+          ]
+        }
+      },
+      "label": "המצב"
+    }
+  ],
+  "options": [
+    {
+      "id": "A",
+      "text": "להניח שההנחיות ברורות, כי הוסברו בתחילת הטיפול, ולסיים.",
+      "rating": "undesirable",
+      "feedback": "יוסי אמר במפורש שהוא לא בטוח. זה הזמן לעצור, להתייחס לשאלה ולוודא שהוא מקבל את המידע הנדרש.",
+      "feedbackBeats": [
+        {
+          "kind": "narration",
+          "audioId": "AUDIO-S06-CLN2-FB-A",
+          "visual": {
+            "id": "scenarioFeedback",
+            "props": {
+              "verdict": "undesirable",
+              "headline": {
+                "at": 0.0,
+                "text": "הוא אמר שהוא לא בטוח"
+              },
+              "points": [
+                {
+                  "at": 4.1,
+                  "text": "לעצור"
+                },
+                {
+                  "at": 5.6,
+                  "text": "לוודא שקיבל את המידע"
+                }
+              ]
+            }
+          },
+          "label": "משוב"
+        }
+      ]
+    },
+    {
+      "id": "B",
+      "text": "לעצור, להסביר שוב את ההנחיות להמשך בשפה מותאמת, לוודא הבנה ולתאם ציפיות.",
+      "rating": "preferred",
+      "feedback": "הסבר מותאם, בדיקת הבנה ותיאום ציפיות עוזרים ליוסי לצאת עם ביטחון ובהירות.",
+      "feedbackBeats": [
+        {
+          "kind": "narration",
+          "audioId": "AUDIO-S06-CLN2-FB-B",
+          "visual": {
+            "id": "scenarioFeedback",
+            "props": {
+              "verdict": "preferred",
+              "headline": {
+                "at": 0.0,
+                "text": "זו התגובה המועדפת"
+              },
+              "points": [
+                {
+                  "at": 1.62,
+                  "text": "הסבר מותאם"
+                },
+                {
+                  "at": 2.9,
+                  "text": "בדיקת הבנה"
+                },
+                {
+                  "at": 4.7,
+                  "text": "תיאום ציפיות"
+                }
+              ],
+              "values": {
+                "at": 10.48,
+                "names": [
+                  "מלווים אותך לאורך הדרך"
+                ]
+              }
+            }
+          },
+          "label": "משוב"
+        }
+      ]
+    },
+    {
+      "id": "C",
+      "text": "\"כל ההנחיות נמצאות באתר, אפשר לקרוא שם.\"",
+      "rating": "undesirable",
+      "feedback": "מידע דיגיטלי יכול לתמוך בהסבר, אבל אינו תחליף להנחיות המקצועיות. מוודאים שיוסי יודע כיצד יפעל בהמשך.",
+      "feedbackBeats": [
+        {
+          "kind": "narration",
+          "audioId": "AUDIO-S06-CLN2-FB-C",
+          "visual": {
+            "id": "scenarioFeedback",
+            "props": {
+              "verdict": "undesirable",
+              "headline": {
+                "at": 2.84,
+                "text": "מידע דיגיטלי אינו תחליף"
+              },
+              "points": [
+                {
+                  "at": 6.86,
+                  "text": "מידע ברור ורלוונטי"
+                },
+                {
+                  "at": 9.26,
+                  "text": "לוודא שהוא יודע איך להמשיך"
+                }
+              ]
+            }
+          },
+          "label": "משוב"
+        }
+      ]
+    }
+  ],
+  "principle": "בסיום: הסבר מותאם, בדיקת הבנה ותיאום ציפיות.",
+  "sourcePages": [
+    15,
+    23,
+    29
+  ],
+  "approvalStatus": "DRAFT",
+  "notes": "Narration supplied (S05-S09.zip). Answer wording follows 03-scenario-bank where it exists and the meaning of each feedback recording; it is proposed development content pending SME approval."
+}

@@ -7,26 +7,46 @@ const screen = (screenId: string, extra: Record<string, unknown> = {}) => ({
   targetMinutes: 1,
   onScreenText: [],
   mediaIds: [],
-  interactionType: 'measurement',
+  interactionType: 'summary',
   completion: 'view',
   sourcePages: [],
   approvalStatus: 'DRAFT',
   ...extra,
 });
 
+const fb = (oid: string) => [{ kind: 'narration', audioId: `AUDIO-FB-${oid}` }];
+
 export const scenario = (scenarioId: string, extra: Record<string, unknown> = {}) => ({
   scenarioId,
   title: scenarioId,
   track: 'common',
+  caseLabel: 'מקרה',
+  place: 'מקום',
   touchpoint: 't',
   values: [],
   skill: 'skill',
   scene: 'scene',
   question: 'question',
+  situation: [{ kind: 'narration', audioId: 'AUDIO-S00-01' }],
   options: [
-    { id: 'A', text: 'a', rating: 'undesirable', feedback: 'fa' },
-    { id: 'B', text: 'b', rating: 'preferred', feedback: 'fb' },
-    { id: 'C', text: 'c', rating: 'partial', feedback: 'fc' },
+    { id: 'A', text: 'a', rating: 'undesirable', feedback: 'fa', feedbackBeats: fb('A') },
+    { id: 'B', text: 'b', rating: 'preferred', feedback: 'fb', feedbackBeats: fb('B') },
+    { id: 'C', text: 'c', rating: 'partial', feedback: 'fc', feedbackBeats: fb('C') },
+  ],
+  principle: 'p',
+  sourcePages: [],
+  approvalStatus: 'DRAFT',
+  ...extra,
+});
+
+const question = (questionId: string, track?: string, extra: Record<string, unknown> = {}) => ({
+  questionId,
+  ...(track ? { track } : {}),
+  prompt: 'p',
+  options: [
+    { id: 'A', text: 'a', correct: true, feedback: 'f' },
+    { id: 'B', text: 'b', correct: false, feedback: 'f' },
+    { id: 'C', text: 'c', correct: false, feedback: 'f' },
   ],
   sourcePages: [],
   approvalStatus: 'DRAFT',
@@ -39,7 +59,8 @@ const journeyStages = stageIds.map((id, i) => ({ id, number: i + 1, title: id })
 
 /**
  * A small course with a role-dependent branch:
- * S00 intro → S01 role → (reception: S02 | assistant: S03 | clinician: S04 practice) → S05 compare → S06 values → S07 journey (end)
+ * S00 intro → S01 role → (reception: S02 | assistant: S03 | clinician: S04 practice) → S05 compare → S06 values
+ * → S07 journey → S08 assessment → S09 summary (end)
  */
 export const branchingRaw = (): RawContent => ({
   course: {
@@ -47,10 +68,10 @@ export const branchingRaw = (): RawContent => ({
     courseVersion: '9.9.9',
     title: 'test',
     assessment: { passThreshold: 80, pointsPerDecision: 20, partialCreditRatio: 0, maxAttempts: null, note: '' },
-    completionRule: 'end-screen-complete',
+    completionRule: 'end-reached-and-assessment-passed',
     flow: {
       start: 'S00',
-      end: 'S07',
+      end: 'S09',
       transitions: {
         S00: 'S01',
         S01: { reception: 'S02', assistant: 'S03', clinician: 'S04' },
@@ -59,6 +80,8 @@ export const branchingRaw = (): RawContent => ({
         S04: 'S05',
         S05: 'S06',
         S06: 'S07',
+        S07: 'S08',
+        S08: 'S09',
       },
     },
   },
@@ -104,6 +127,12 @@ export const branchingRaw = (): RawContent => ({
       ),
       interaction: { type: 'journey', stages: stageIds.map((id, i) => stage(id, i + 1)), completion: { title: 'done', next: 'next' } },
     }),
+    'S08.json': screen('S08', {
+      interactionType: 'assessment',
+      completion: 'interaction',
+      interaction: { type: 'assessment', commonCount: 1, roleCount: 2, questionIds: ['Q-S08-01', 'Q-S08-02', 'Q-S08-03', 'Q-S08-04', 'Q-S08-05', 'Q-S08-06', 'Q-S08-07', 'Q-S08-08'] },
+    }),
+    'S09.json': screen('S09', { interactionType: 'summary' }),
   },
   scenarios: {
     'SC-COM-01.json': scenario('SC-COM-01'),
@@ -125,10 +154,20 @@ export const branchingRaw = (): RawContent => ({
       sourcePages: [],
       approvalStatus: 'DRAFT',
     },
+    // Assessment pool: 2 shared, 2 per role; question 1 is critical.
+    'Q-S08-01.json': question('Q-S08-01', 'common', { critical: true, skill: 'פרטיות' }),
+    'Q-S08-02.json': question('Q-S08-02', 'common'),
+    'Q-S08-03.json': question('Q-S08-03', 'reception'),
+    'Q-S08-04.json': question('Q-S08-04', 'reception'),
+    'Q-S08-05.json': question('Q-S08-05', 'assistant'),
+    'Q-S08-06.json': question('Q-S08-06', 'assistant'),
+    'Q-S08-07.json': question('Q-S08-07', 'clinician'),
+    'Q-S08-08.json': question('Q-S08-08', 'clinician'),
   },
   media: [
     { id: 'AUDIO-S00-01', kind: 'audio', status: 'ready', src: 'a.mp3', alt: 'a', durationSec: 5, captionsId: 'AUDIO-S00-01' },
     { id: 'AUDIO-S07-01', kind: 'audio', status: 'missing', alt: 'a' },
+    ...['A', 'B', 'C'].map((o) => ({ id: `AUDIO-FB-${o}`, kind: 'audio', status: 'missing', alt: o })),
     { id: 'VID-A-01', kind: 'video', status: 'ready', src: 'v.mp4', alt: 'v', durationSec: 10, posterId: 'POSTER-A-01' },
     { id: 'POSTER-A-01', kind: 'image', status: 'ready', src: 'p.jpg', alt: 'p' },
   ],

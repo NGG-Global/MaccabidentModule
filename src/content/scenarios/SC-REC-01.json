@@ -1,0 +1,187 @@
+{
+  "scenarioId": "SC-REC-01",
+  "title": "שאלה אחרי הטיפול",
+  "track": "reception",
+  "caseLabel": "מקרה 1",
+  "place": "דלפק הקבלה",
+  "touchpoint": "סגירת מעגל",
+  "values": [
+    "with-you"
+  ],
+  "skill": "סגירת מעגל",
+  "scene": "יוסי חוזר לדלפק אחרי הטיפול, עם מסמכים ביד, ולא בטוח מה עליו לעשות.",
+  "question": "איך הייתם מגיבים ליוסי?",
+  "situation": [
+    {
+      "kind": "narration",
+      "audioId": "AUDIO-S06-REC1-01",
+      "visual": {
+        "id": "scenarioIntro",
+        "props": {
+          "caseLabel": "מקרה 1",
+          "place": "דלפק הקבלה",
+          "lines": [
+            {
+              "at": 0.0,
+              "text": "אחרי הטיפול, בדלפק הקבלה"
+            },
+            {
+              "at": 3.06,
+              "text": "מסמכים ביד, מעט מבולבל"
+            },
+            {
+              "at": 7.2,
+              "text": "הוא ניגש ושואל"
+            }
+          ],
+          "photoId": "STILL-PREP-01"
+        }
+      },
+      "label": "המצב"
+    }
+  ],
+  "options": [
+    {
+      "id": "A",
+      "text": "\"אני לא בטוחה מה צריך לעשות עם זה. אולי כדאי לשאול מישהו אחר.\"",
+      "rating": "undesirable",
+      "feedback": "התשובה משאירה את יוסי בחוסר ודאות. גם בלי לדעת מיד, אפשר לברר ולהכווין אותו לגורם המתאים.",
+      "feedbackBeats": [
+        {
+          "kind": "narration",
+          "audioId": "AUDIO-S06-REC1-FB-A",
+          "visual": {
+            "id": "scenarioFeedback",
+            "props": {
+              "verdict": "undesirable",
+              "headline": {
+                "at": 0.0,
+                "text": "חוסר ודאות"
+              },
+              "points": [
+                {
+                  "at": 5.9,
+                  "text": "לברר"
+                },
+                {
+                  "at": 7.3,
+                  "text": "להכווין לגורם המתאים"
+                },
+                {
+                  "at": 9.44,
+                  "text": "לא להשאיר שאלות פתוחות"
+                }
+              ]
+            }
+          },
+          "label": "משוב"
+        }
+      ]
+    },
+    {
+      "id": "B",
+      "text": "\"בוא נבדוק יחד מה נדרש. אסביר לך מה השלב הבא ונוודא שהכול ברור.\"",
+      "rating": "preferred",
+      "feedback": "בודקים מה נדרש, מסבירים את המשך התהליך ומוודאים שיוסי יודע מה לעשות.",
+      "feedbackBeats": [
+        {
+          "kind": "narration",
+          "audioId": "AUDIO-S06-REC1-FB-B",
+          "visual": {
+            "id": "scenarioFeedback",
+            "props": {
+              "verdict": "preferred",
+              "headline": {
+                "at": 0.0,
+                "text": "מצוין"
+              },
+              "points": [
+                {
+                  "at": 5.28,
+                  "text": "בודקים מה נדרש"
+                },
+                {
+                  "at": 7.24,
+                  "text": "מסבירים את ההמשך"
+                },
+                {
+                  "at": 9.04,
+                  "text": "מוודאים שהכול ברור"
+                }
+              ],
+              "values": {
+                "at": 0.8,
+                "names": [
+                  "מלווים אותך לאורך הדרך"
+                ]
+              }
+            }
+          },
+          "label": "משוב"
+        },
+        {
+          "kind": "video",
+          "mediaId": "VID-REC-CLOSING-01",
+          "label": "כך זה נראה"
+        }
+      ]
+    },
+    {
+      "id": "C",
+      "text": "\"כל המידע מופיע באפליקציה, אפשר לבדוק שם.\"",
+      "rating": "undesirable",
+      "feedback": "האפליקציה שימושית, אבל הפניה אליה לבדה לא תמיד מספיקה. קודם מבינים מה יוסי צריך ומסבירים את השלב הבא.",
+      "feedbackBeats": [
+        {
+          "kind": "narration",
+          "audioId": "AUDIO-S06-REC1-FB-C",
+          "visual": {
+            "id": "scenarioFeedback",
+            "props": {
+              "verdict": "undesirable",
+              "headline": {
+                "at": 3.22,
+                "text": "האפליקציה לבדה לא מספיקה"
+              },
+              "points": [
+                {
+                  "at": 6.14,
+                  "text": "להבין מה הוא צריך"
+                },
+                {
+                  "at": 8.88,
+                  "text": "להסביר את השלב הבא"
+                },
+                {
+                  "at": 10.68,
+                  "text": "לסייע בערוץ המתאים"
+                }
+              ]
+            }
+          },
+          "label": "משוב"
+        }
+      ]
+    }
+  ],
+  "principle": "סגירת מעגל: בודקים מה נדרש, מסבירים את ההמשך ומוודאים הבנה.",
+  "sourcePages": [
+    13,
+    21,
+    27
+  ],
+  "approvalStatus": "DRAFT",
+  "patientLine": {
+    "speaker": "יוסי",
+    "text": "קיבלתי את המסמכים האלה בחדר הטיפולים. מה אני צריך לעשות איתם עכשיו?",
+    "proposed": true
+  },
+  "ask": [
+    {
+      "kind": "narration",
+      "audioId": "AUDIO-S05-02",
+      "label": "השאלה"
+    }
+  ],
+  "notes": "Narration supplied (S05-S09.zip). Answer wording follows 03-scenario-bank where it exists and the meaning of each feedback recording; it is proposed development content pending SME approval."
+}

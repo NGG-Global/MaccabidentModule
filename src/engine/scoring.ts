@@ -1,7 +1,7 @@
-import type { CourseConfig, Scenario } from '../content/schema';
+import type { CourseConfig, Question } from '../content/schema';
 
 export interface AssessmentAnswer {
-  scenarioId: string;
+  questionId: string;
   optionId: string;
 }
 
@@ -11,35 +11,33 @@ export interface AssessmentResult {
   /** 0–100, rounded to the nearest whole number. */
   percent: number;
   passed: boolean;
-  /** Critical scenarios (e.g. privacy) answered with a non-preferred option. Flag only; not a pass rule. */
+  /** Critical questions (e.g. privacy) answered incorrectly. Flag only; not a pass rule. */
   criticalMisses: string[];
-  perDecision: { scenarioId: string; optionId: string; points: number; isPreferred: boolean }[];
+  perDecision: { questionId: string; optionId: string; points: number; correct: boolean }[];
 }
 
 /**
- * Scores a summative attempt. Threshold, points and partial credit come from
- * course.json so the rule can change without code changes.
+ * Scores an assessment attempt. Threshold and points come from course.json,
+ * so the rule can change without code changes. An unanswered question scores 0.
  */
 export function scoreAssessment(
   answers: AssessmentAnswer[],
-  scenarios: Record<string, Scenario>,
+  questions: Record<string, Question>,
   config: CourseConfig['assessment'],
 ): AssessmentResult {
-  const perDecision = answers.map(({ scenarioId, optionId }) => {
-    const scenario = scenarios[scenarioId];
-    if (!scenario) throw new Error(`Unknown scenario ${scenarioId}`);
-    const option = scenario.options.find((o) => o.id === optionId);
-    if (!option) throw new Error(`Unknown option ${optionId} in ${scenarioId}`);
-    const ratio = option.rating === 'preferred' ? 1 : option.rating === 'partial' ? config.partialCreditRatio : 0;
-    return { scenarioId, optionId, points: config.pointsPerDecision * ratio, isPreferred: option.rating === 'preferred' };
+  const perDecision = answers.map(({ questionId, optionId }) => {
+    const question = questions[questionId];
+    if (!question) throw new Error(`Unknown question ${questionId}`);
+    const option = question.options.find((o) => o.id === optionId);
+    if (optionId && !option) throw new Error(`Unknown option ${optionId} in ${questionId}`);
+    const correct = option?.correct === true;
+    return { questionId, optionId, points: correct ? config.pointsPerDecision : 0, correct };
   });
 
   const score = perDecision.reduce((sum, d) => sum + d.points, 0);
   const maxScore = answers.length * config.pointsPerDecision;
   const percent = maxScore === 0 ? 0 : Math.round((score / maxScore) * 100);
-  const criticalMisses = perDecision
-    .filter((d) => !d.isPreferred && scenarios[d.scenarioId]?.critical)
-    .map((d) => d.scenarioId);
+  const criticalMisses = perDecision.filter((d) => !d.correct && questions[d.questionId]?.critical).map((d) => d.questionId);
 
   return { score, maxScore, percent, passed: maxScore > 0 && percent >= config.passThreshold, criticalMisses, perDecision };
 }

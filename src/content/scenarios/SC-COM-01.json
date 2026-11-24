@@ -2,40 +2,191 @@
   "scenarioId": "SC-COM-01",
   "title": "עיכוב בתור",
   "track": "common",
+  "caseLabel": "מקרה משותף",
+  "place": "אזור ההמתנה",
   "touchpoint": "היערכות / תקשורת",
-  "values": ["see-you", "effort-for-you"],
-  "skill": "empathy-and-expectation-setting",
-  "scene": "מטופל אומר: \"אני מחכה כבר הרבה זמן. למה אף אחד לא מעדכן?\"",
-  "question": "מה כדאי לעשות עכשיו?",
-  "narration": {
-    "audioId": "AUDIO-S05",
-    "transcript": "יוסי ממתין לתור שלו. הזמן עובר, והוא מתחיל להרגיש שאף אחד לא רואה אותו. עכשיו הוא פונה אליך ושואל: למה אף אחד לא מעדכן אותי? מה תהיה התגובה שלך?"
-  },
+  "values": [
+    "see-you",
+    "effort-for-you"
+  ],
+  "skill": "אמפתיה ותיאום ציפיות",
+  "scene": "יוסי ממתין כבר עשרים דקות אחרי מועד התור, ופונה אליך בתסכול.",
+  "question": "איך הייתם מגיבים ליוסי?",
+  "situation": [
+    {
+      "kind": "narration",
+      "audioId": "AUDIO-S05-01",
+      "visual": {
+        "id": "scenarioIntro",
+        "props": {
+          "caseLabel": "מקרה משותף",
+          "place": "אזור ההמתנה",
+          "lines": [
+            {
+              "at": 0.0,
+              "text": "יוסי ממתין לתור שלו"
+            },
+            {
+              "at": 2.3,
+              "text": "התור היה אמור להתחיל לפני 20 דקות"
+            },
+            {
+              "at": 7.74,
+              "text": "הוא קם ופונה אליך"
+            }
+          ],
+          "photoId": "STILL-WAIT-01"
+        }
+      },
+      "label": "המצב"
+    },
+    {
+      "kind": "video",
+      "mediaId": "VID-WAIT-01",
+      "label": "יוסי פונה אליך"
+    }
+  ],
   "options": [
     {
       "id": "A",
       "text": "\"כולם מחכים, אין לי מה לעשות.\"",
       "rating": "undesirable",
-      "feedback": "התגובה מבטלת את תחושת המטופל ואין בה יוזמה. הדגש הוא הכרה בחוויה, יוזמה ומידע מדויק.",
-      "feedbackAudioId": "AUDIO-S05-FB-A"
+      "feedback": "התשובה לא נותנת מענה לתחושה של יוסי. גם בלי לקצר את ההמתנה, אפשר להכיר בתסכול ולברר מה קורה.",
+      "feedbackBeats": [
+        {
+          "kind": "narration",
+          "audioId": "AUDIO-S05-FB-A",
+          "visual": {
+            "id": "scenarioFeedback",
+            "props": {
+              "verdict": "undesirable",
+              "headline": {
+                "at": 0.0,
+                "text": "אין כאן מענה לתחושה של יוסי"
+              },
+              "points": [
+                {
+                  "at": 6.7,
+                  "text": "להכיר בתסכול"
+                },
+                {
+                  "at": 8.3,
+                  "text": "לברר מה קורה"
+                },
+                {
+                  "at": 10.9,
+                  "text": "יוזמה ואמפתיה"
+                }
+              ]
+            }
+          },
+          "label": "משוב"
+        }
+      ]
     },
     {
       "id": "B",
       "text": "\"אני מבין/ה את התסכול. אברר מה מצב התור ואעדכן אותך במה שאדע.\"",
       "rating": "preferred",
-      "feedback": "יש כאן אמפתיה, בירור ועדכון, בלי להבטיח זמן שאינו ידוע.",
-      "feedbackNarration": "זו תגובה טובה. היא מכירה בתחושה של המטופל, ומציעה פעולה ממשית בלי להבטיח דבר שאיננו יודעים. כך אנחנו מראים לו שרואים אותו ומתאמצים למענו.",
-      "feedbackAudioId": "AUDIO-S05-FB-B"
+      "feedback": "מכירים בתחושה של יוסי ומציעים פעולה ממשית, בלי להבטיח משהו שאיננו יודעים.",
+      "feedbackBeats": [
+        {
+          "kind": "narration",
+          "audioId": "AUDIO-S05-FB-B",
+          "visual": {
+            "id": "scenarioFeedback",
+            "props": {
+              "verdict": "preferred",
+              "headline": {
+                "at": 0.0,
+                "text": "זו התגובה המועדפת"
+              },
+              "points": [
+                {
+                  "at": 1.62,
+                  "text": "מכירים בתחושה"
+                },
+                {
+                  "at": 3.88,
+                  "text": "מציעים פעולה ממשית"
+                },
+                {
+                  "at": 5.48,
+                  "text": "לא מבטיחים מה שלא ידוע"
+                }
+              ],
+              "values": {
+                "at": 8.14,
+                "names": [
+                  "רואים אותך",
+                  "מתאמצים למענך"
+                ]
+              }
+            }
+          },
+          "label": "משוב"
+        },
+        {
+          "kind": "video",
+          "mediaId": "VID-CARE-01",
+          "label": "כך זה נראה"
+        }
+      ]
     },
     {
       "id": "C",
       "text": "\"עוד חמש דקות נכנסים, מבטיח/ה.\"",
       "rating": "undesirable",
-      "feedback": "זו הבטחה לא מבוססת. לא ממציאים זמן המתנה; מכירים בחוויה, מבררים ומעדכנים במידע מדויק.",
-      "feedbackAudioId": "AUDIO-S05-FB-C"
+      "feedback": "הבטחת זמן שאין דרך לאמת עלולה ליצור אכזבה ולפגוע באמון. עדיף לברר ולעדכן במידע מדויק.",
+      "feedbackBeats": [
+        {
+          "kind": "narration",
+          "audioId": "AUDIO-S05-FB-C",
+          "visual": {
+            "id": "scenarioFeedback",
+            "props": {
+              "verdict": "undesirable",
+              "headline": {
+                "at": 2.48,
+                "text": "הבטחה שאין דרך לאמת"
+              },
+              "points": [
+                {
+                  "at": 10.12,
+                  "text": "לברר"
+                },
+                {
+                  "at": 11.48,
+                  "text": "למסור מידע מדויק"
+                },
+                {
+                  "at": 13.08,
+                  "text": "לעדכן לפי מה שידוע"
+                }
+              ]
+            }
+          },
+          "label": "משוב"
+        }
+      ]
     }
   ],
-  "sourcePages": [13, 14, 15, 21, 22, 23],
+  "principle": "מכירים בתחושה, מבררים ומעדכנים, בלי להבטיח מה שלא ידוע.",
+  "sourcePages": [
+    13,
+    14,
+    15,
+    21,
+    22,
+    23
+  ],
   "approvalStatus": "DRAFT",
-  "notes": "Proposed development content from 03-scenario-bank, not a quotation from the source deck. Requires SME approval."
+  "ask": [
+    {
+      "kind": "narration",
+      "audioId": "AUDIO-S05-02",
+      "label": "השאלה"
+    }
+  ],
+  "notes": "Narration supplied (S05-S09.zip). Answer wording follows 03-scenario-bank where it exists and the meaning of each feedback recording; it is proposed development content pending SME approval."
 }

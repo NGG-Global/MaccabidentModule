@@ -72,10 +72,10 @@ export function Shell({ screen, chapters, canGoBack, canGoNext, nextLabel, hint,
           <p className="hidden shrink-0 border-s border-ink/15 ps-4 font-display text-lg font-semibold text-navy 2xl:block">{content.course.title}</p>
 
           <nav aria-label={ui.chapters} className="mx-auto hidden min-w-0 flex-1 md:block">
-            <ol className="flex items-center justify-center">
+            <ol className="flex min-w-0 items-center justify-center">
               {chapters.map((c, i) => (
-                <li key={c.screenId} className="flex items-center" aria-current={c.current ? 'step' : undefined}>
-                  {i > 0 && <span aria-hidden className={`mx-1.5 h-px w-3 shrink-0 lg:mx-2 lg:w-5 ${c.complete || c.current ? 'bg-navy/60' : 'bg-ink/15'}`} />}
+                <li key={c.screenId} className="flex items-center" aria-current={c.current ? 'step' : undefined} title={c.label}>
+                  {i > 0 && <span aria-hidden className={`mx-1 h-px w-2.5 shrink-0 lg:mx-1.5 lg:w-4 ${c.complete || c.current ? 'bg-navy/60' : 'bg-ink/15'}`} />}
                   <span
                     aria-hidden
                     className={`grid size-6 shrink-0 place-items-center rounded-full text-xs font-bold ${
@@ -84,7 +84,8 @@ export function Shell({ screen, chapters, canGoBack, canGoNext, nextLabel, hint,
                   >
                     {c.complete && !c.current ? <Icon name="check" className="size-3.5" strokeWidth={3} /> : i + 1}
                   </span>
-                  <span className={`ms-1.5 whitespace-nowrap text-sm ${c.current ? 'font-semibold text-ink' : 'text-ink/55'}`}>
+                  {/* Ten chapters: the current one is named; the others are numbered dots (named on hover, and to screen readers), all named on very wide screens. */}
+                  <span className={`whitespace-nowrap text-sm ${c.current ? 'ms-1.5 font-semibold text-ink' : 'sr-only text-ink/55 min-[1760px]:not-sr-only min-[1760px]:ms-1.5'}`}>
                     {c.label}
                     <span className="sr-only">
                       {' – '}

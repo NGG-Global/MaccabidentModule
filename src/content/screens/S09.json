@@ -1,14 +1,72 @@
 {
   "screenId": "S09",
   "chapter": "סיכום",
-  "title": "סיכום",
-  "targetMinutes": 1,
+  "title": "בידיים טובות",
+  "eyebrow": "סיום",
+  "targetMinutes": 2,
   "onScreenText": [
-    "סיימת את המסלול. הנה תמונת מצב קצרה."
+    "שירות טוב נבנה מהרבה רגעים קטנים, ובכל אחד מהם יש לנו הזדמנות להשפיע."
   ],
   "mediaIds": [],
+  "sequences": {
+    "enter": [
+      {
+        "kind": "video",
+        "mediaId": "VID-SERVICE-01",
+        "label": "יוסי נפרד"
+      },
+      {
+        "kind": "composition",
+        "durationSec": 24,
+        "label": "סיום",
+        "visual": {
+          "id": "closing",
+          "props": {
+            "photos": [
+              "STILL-WELCOME-01",
+              "STILL-EXPLAIN-01",
+              "STILL-CLOSING-01"
+            ],
+            "opener": {
+              "at": 0.6,
+              "text": "מהרגע שיוסי נכנס, ועד שהוא יצא"
+            },
+            "values": [
+              {
+                "at": 6.5,
+                "text": "רואים אותך"
+              },
+              {
+                "at": 9.0,
+                "text": "מתאמצים למענך"
+              },
+              {
+                "at": 11.5,
+                "text": "מלווים אותך לאורך הדרך"
+              }
+            ],
+            "title": {
+              "at": 15.5,
+              "text": "בידיים טובות"
+            },
+            "thanks": {
+              "at": 19.0,
+              "text": "תודה שהצטרפתם"
+            }
+          }
+        }
+      },
+      {
+        "kind": "narration",
+        "audioId": "AUDIO-S09",
+        "label": "קריינות הסיום"
+      }
+    ]
+  },
   "interactionType": "summary",
   "completion": "view",
-  "sourcePages": [],
+  "sourcePages": [
+    8
+  ],
   "approvalStatus": "DRAFT"
 }
