@@ -1,0 +1,1189 @@
+{
+  "source": "S05-S09.zip (29 ElevenLabs MP3 files), received 2026-11-24",
+  "transcription": {
+    "engine": "faster-whisper 1.2.1, run locally in the session",
+    "model": "ivrit-ai/whisper-large-v3-turbo-ct2 (int8, CPU)",
+    "language": "he",
+    "externalServices": "none"
+  },
+  "originalsModified": false,
+  "notes": [
+    "Identification is by spoken content, not by file name or upload order. File names carry only the ElevenLabs generation time.",
+    "No two files are byte-identical; files of equal size have different content.",
+    "All 29 recordings belong to S05 and S06. None is narration for S07, S08 or S09.",
+    "Uncertain words are those the model scored below 0.6 confidence; they are listed, not corrected."
+  ],
+  "recordings": [
+    {
+      "originalFilename": "ElevenLabs_2026-11-24T09_18_38__s0_sim75_v4.mp3",
+      "sha256": "4b45104d97d8880831ba3726fb24242304e454e0ad0c2bfaf8a01ee594765718",
+      "assetId": "AUDIO-S05-01",
+      "projectFile": "public/media/AUDIO-S05-01.mp3",
+      "codec": "mp3",
+      "sampleRateHz": 44100,
+      "channels": 1,
+      "bitRate": 256508,
+      "durationSec": 13.819,
+      "classification": "scenario-introduction",
+      "screen": "S05",
+      "scenario": "SC-COM-01",
+      "answerId": null,
+      "mappingEvidence": "Yossi in the waiting room, 20 minutes past his appointment; \"בואו נשמע מה יש לו לומר\" leads into his complaint (V03)",
+      "transcript": "יוסי כבר יושב באזור ההמתנה. התור שלו היה אמור להתחיל לפני 20 דקות, אבל הוא עדיין לא נקרא להיכנס. הוא מסתכל שוב על השעון, קם מהכיסא ופונה אליך. בואו נשמע מה יש לו לומר.",
+      "segments": [
+        {
+          "start": 0.0,
+          "end": 1.88,
+          "text": "יוסי כבר יושב באזור ההמתנה."
+        },
+        {
+          "start": 2.3,
+          "end": 5.24,
+          "text": "התור שלו היה אמור להתחיל לפני 20 דקות,"
+        },
+        {
+          "start": 5.24,
+          "end": 7.42,
+          "text": "אבל הוא עדיין לא נקרא להיכנס."
+        },
+        {
+          "start": 7.74,
+          "end": 11.56,
+          "text": "הוא מסתכל שוב על השעון, קם מהכיסא ופונה אליך."
+        },
+        {
+          "start": 11.86,
+          "end": 13.42,
+          "text": "בואו נשמע מה יש לו לומר."
+        }
+      ],
+      "uncertainWords": []
+    },
+    {
+      "originalFilename": "ElevenLabs_2026-11-24T09_19_12_לומדה _gen_s0_sim75_v4.mp3",
+      "sha256": "c561ec828078931fd4414f0227890a9f9caf047ad6acf4ba9796870ae4052370",
+      "assetId": "AUDIO-S05-02",
+      "projectFile": "public/media/AUDIO-S05-02.mp3",
+      "codec": "mp3",
+      "sampleRateHz": 44100,
+      "channels": 1,
+      "bitRate": 197161,
+      "durationSec": 1.959,
+      "classification": "question",
+      "screen": "S05, S06",
+      "scenario": "SC-COM-01, SC-REC-01, SC-AST-01, SC-CLN-01",
+      "answerId": null,
+      "mappingEvidence": "Generic question \"איך הייתם מגיבים ליוסי?\"; reused where a situation ends without its own question",
+      "transcript": "איך הייתם מגיבים ליוסי?",
+      "segments": [
+        {
+          "start": 0.0,
+          "end": 1.54,
+          "text": "איך הייתם מגיבים ליוסי?"
+        }
+      ],
+      "uncertainWords": []
+    },
+    {
+      "originalFilename": "ElevenLabs_2026-11-24T09_19_54_לומדה _gen_s0_sim75_v4.mp3",
+      "sha256": "9e2df4a22b8a0f205ebee7f6d7d63e99482407fe5e441c6d00ec43d4731a693c",
+      "assetId": "AUDIO-S05-FB-A",
+      "projectFile": "public/media/AUDIO-S05-FB-A.mp3",
+      "codec": "mp3",
+      "sampleRateHz": 44100,
+      "channels": 1,
+      "bitRate": 137482,
+      "durationSec": 14.289,
+      "classification": "incorrect-answer-feedback",
+      "screen": "S05",
+      "scenario": "SC-COM-01",
+      "answerId": "A",
+      "mappingEvidence": "\"לא נותנת מענה לתחושה של יוסי... יוזמה ואמפתיה\" answers the dismissive reply \"כולם מחכים, אין לי מה לעשות\"",
+      "transcript": "התשובה הזאת לא נותנת מענה לתחושה של יוסי. גם אם אין לנו אפשרות לקצר את זמן ההמתנה, אנחנו עדיין יכולים להכיר בתסכול שלו ולנסות לברר מה קורה. יוזמה ואמפתיה הן חלק חשוב מהשירות.",
+      "segments": [
+        {
+          "start": 0.0,
+          "end": 3.0,
+          "text": "התשובה הזאת לא נותנת מענה לתחושה של יוסי."
+        },
+        {
+          "start": 3.18,
+          "end": 6.02,
+          "text": "גם אם אין לנו אפשרות לקצר את זמן ההמתנה,"
+        },
+        {
+          "start": 6.7,
+          "end": 10.52,
+          "text": "אנחנו עדיין יכולים להכיר בתסכול שלו ולנסות לברר מה קורה."
+        },
+        {
+          "start": 10.9,
+          "end": 13.92,
+          "text": "יוזמה ואמפתיה הן חלק חשוב מהשירות."
+        }
+      ],
+      "uncertainWords": []
+    },
+    {
+      "originalFilename": "ElevenLabs_2026-11-24T09_20_20_לומדה _gen_s0_sim75_v4.mp3",
+      "sha256": "37d0da68f8c1e1213aa6c0679958dc99743c306b79abe07f6ffcfabf964238b3",
+      "assetId": "AUDIO-S05-FB-B",
+      "projectFile": "public/media/AUDIO-S05-FB-B.mp3",
+      "codec": "mp3",
+      "sampleRateHz": 44100,
+      "channels": 1,
+      "bitRate": 137534,
+      "durationSec": 14.211,
+      "classification": "correct-answer-feedback",
+      "screen": "S05",
+      "scenario": "SC-COM-01",
+      "answerId": "B",
+      "mappingEvidence": "\"זו התגובה המועדפת... מציעים פעולה ממשית ולא מבטיחים\"",
+      "transcript": "זו התגובה המועדפת. אנחנו מכירים בתחושה של יוסי, מציעים פעולה ממשית ולא מבטיחים משהו שאנחנו לא יודעים. כך אנחנו מבטאים גם את הערך רואים אותך וגם את הערך מתאמצים למענך.",
+      "segments": [
+        {
+          "start": 0.0,
+          "end": 1.48,
+          "text": "זו התגובה המועדפת."
+        },
+        {
+          "start": 1.62,
+          "end": 3.64,
+          "text": "אנחנו מכירים בתחושה של יוסי,"
+        },
+        {
+          "start": 3.88,
+          "end": 7.92,
+          "text": "מציעים פעולה ממשית ולא מבטיחים משהו שאנחנו לא יודעים."
+        },
+        {
+          "start": 8.14,
+          "end": 13.92,
+          "text": "כך אנחנו מבטאים גם את הערך רואים אותך וגם את הערך מתאמצים למענך."
+        }
+      ],
+      "uncertainWords": []
+    },
+    {
+      "originalFilename": "ElevenLabs_2026-11-24T09_20_46_לומדה _gen_s0_sim75_v4.mp3",
+      "sha256": "e5954afdf353ae4c80ee9f318bc52b122d5fcd375f3111b46b286a58c52535b0",
+      "assetId": "AUDIO-S05-FB-C",
+      "projectFile": "public/media/AUDIO-S05-FB-C.mp3",
+      "codec": "mp3",
+      "sampleRateHz": 44100,
+      "channels": 1,
+      "bitRate": 136489,
+      "durationSec": 15.961,
+      "classification": "incorrect-answer-feedback",
+      "screen": "S05",
+      "scenario": "SC-COM-01",
+      "answerId": "C",
+      "mappingEvidence": "\"כשאנחנו מבטיחים זמן שאין לנו דרך לאמת\" answers the promise \"עוד חמש דקות נכנסים\"",
+      "transcript": "הרצון להרגיע את יוסי הוא מובן, אבל כשאנחנו מבטיחים זמן שאין לנו דרך לאמת, אנחנו עלולים ליצור אכזבה נוספת ולפגוע באמון שלו. עדיף לברר, למסור מידע מדויק ולעדכן אותו בהתאם למה שידוע לנו.",
+      "segments": [
+        {
+          "start": 0.0,
+          "end": 2.24,
+          "text": "הרצון להרגיע את יוסי הוא מובן,"
+        },
+        {
+          "start": 2.48,
+          "end": 5.84,
+          "text": "אבל כשאנחנו מבטיחים זמן שאין לנו דרך לאמת,"
+        },
+        {
+          "start": 6.6,
+          "end": 10.0,
+          "text": "אנחנו עלולים ליצור אכזבה נוספת ולפגוע באמון שלו."
+        },
+        {
+          "start": 10.12,
+          "end": 11.38,
+          "text": "עדיף לברר,"
+        },
+        {
+          "start": 11.48,
+          "end": 15.56,
+          "text": "למסור מידע מדויק ולעדכן אותו בהתאם למה שידוע לנו."
+        }
+      ],
+      "uncertainWords": []
+    },
+    {
+      "originalFilename": "ElevenLabs_2026-11-24T09_21_43_לומדה _gen_s0_sim75_v4.mp3",
+      "sha256": "8fa4d8e7abd89a6b012f10d843860e794c54e7360bf0956460e4dc2b529398a9",
+      "assetId": "AUDIO-S06-REC1-01",
+      "projectFile": "public/media/AUDIO-S06-REC1-01.mp3",
+      "codec": "mp3",
+      "sampleRateHz": 44100,
+      "channels": 1,
+      "bitRate": 142289,
+      "durationSec": 9.482,
+      "classification": "scenario-introduction",
+      "screen": "S06 (reception)",
+      "scenario": "SC-REC-01",
+      "answerId": null,
+      "mappingEvidence": "Yossi back at reception after treatment, holding documents, confused",
+      "transcript": "יוסי סיים את הטיפול וחזר לדלפק הקבלה. הוא מחזיק בידו כמה מסמכים ונראה מעט מבולבל. הוא מתקרב ושואל שאלה.",
+      "segments": [
+        {
+          "start": 0.0,
+          "end": 2.84,
+          "text": "יוסי סיים את הטיפול וחזר לדלפק הקבלה."
+        },
+        {
+          "start": 3.06,
+          "end": 6.92,
+          "text": "הוא מחזיק בידו כמה מסמכים ונראה מעט מבולבל."
+        },
+        {
+          "start": 7.2,
+          "end": 9.22,
+          "text": "הוא מתקרב ושואל שאלה."
+        }
+      ],
+      "uncertainWords": []
+    },
+    {
+      "originalFilename": "ElevenLabs_2026-11-24T09_22_02_לומדה _gen_s0_sim75_v4.mp3",
+      "sha256": "f4070ce1338dd67971ad1d85cc568333cfb23454bf77e73806249a2f39f3722f",
+      "assetId": "AUDIO-S06-REC1-FB-A",
+      "projectFile": "public/media/AUDIO-S06-REC1-FB-A.mp3",
+      "codec": "mp3",
+      "sampleRateHz": 44100,
+      "channels": 1,
+      "bitRate": 137713,
+      "durationSec": 13.949,
+      "classification": "incorrect-answer-feedback",
+      "screen": "S06 (reception)",
+      "scenario": "SC-REC-01",
+      "answerId": "A",
+      "mappingEvidence": "\"משאירה את המטופל בחוסר ודאות... גם אם איננו יודעים מיד מה נדרש\" answers a reply that leaves him without an answer",
+      "transcript": "התשובה הזאת משאירה את המטופל בחוסר ודאות. גם אם איננו יודעים מיד מה נדרש, אפשר לברר ולהכווין אותו לגורם המתאים. סגירת מעגל טובה מתחילה בכך שאנחנו לא משאירים שאלות פתוחות.",
+      "segments": [
+        {
+          "start": 0.0,
+          "end": 3.0,
+          "text": "התשובה הזאת משאירה את המטופל בחוסר ודאות."
+        },
+        {
+          "start": 3.24,
+          "end": 5.78,
+          "text": "גם אם איננו יודעים מיד מה נדרש,"
+        },
+        {
+          "start": 5.9,
+          "end": 8.68,
+          "text": "אפשר לברר ולהכווין אותו לגורם המתאים."
+        },
+        {
+          "start": 9.44,
+          "end": 13.52,
+          "text": "סגירת מעגל טובה מתחילה בכך שאנחנו לא משאירים שאלות פתוחות."
+        }
+      ],
+      "uncertainWords": []
+    },
+    {
+      "originalFilename": "ElevenLabs_2026-11-24T09_22_32_לומדה _gen_s0_sim75_v4.mp3",
+      "sha256": "dfe6f893a69dc04545b84c0f318de0307547127bcefbed015dd285e816f1b76b",
+      "assetId": "AUDIO-S06-REC1-FB-B",
+      "projectFile": "public/media/AUDIO-S06-REC1-FB-B.mp3",
+      "codec": "mp3",
+      "sampleRateHz": 44100,
+      "channels": 1,
+      "bitRate": 136285,
+      "durationSec": 16.353,
+      "classification": "correct-answer-feedback",
+      "screen": "S06 (reception)",
+      "scenario": "SC-REC-01",
+      "answerId": "B",
+      "mappingEvidence": "\"מצוין... בודקים מה נדרש, מסבירים את המשך התהליך\"",
+      "transcript": "מצוין. התגובה הזאת מבטאת את הערך מלווים אותך לאורך הדרך. אנחנו בודקים מה נדרש, מסבירים את המשך התהליך ומוודאים שהמטופל יודע מה לעשות. כך נוצרת רציפות בין הטיפול הרפואי לבין השירות במרפאה.",
+      "segments": [
+        {
+          "start": 0.0,
+          "end": 0.56,
+          "text": "מצוין."
+        },
+        {
+          "start": 0.8,
+          "end": 4.92,
+          "text": "התגובה הזאת מבטאת את הערך מלווים אותך לאורך הדרך."
+        },
+        {
+          "start": 5.28,
+          "end": 7.12,
+          "text": "אנחנו בודקים מה נדרש,"
+        },
+        {
+          "start": 7.24,
+          "end": 11.54,
+          "text": "מסבירים את המשך התהליך ומוודאים שהמטופל יודע מה לעשות."
+        },
+        {
+          "start": 11.92,
+          "end": 16.1,
+          "text": "כך נוצרת רציפות בין הטיפול הרפואי לבין השירות במרפאה."
+        }
+      ],
+      "uncertainWords": []
+    },
+    {
+      "originalFilename": "ElevenLabs_2026-11-24T09_23_04_לומדה _gen_s0_sim75_v4.mp3",
+      "sha256": "ef02ebd479f17c8101f06930c7d8b531152c7893fef7d54e3182558c91d4f764",
+      "assetId": "AUDIO-S06-REC1-FB-C",
+      "projectFile": "public/media/AUDIO-S06-REC1-FB-C.mp3",
+      "codec": "mp3",
+      "sampleRateHz": 44100,
+      "channels": 1,
+      "bitRate": 137936,
+      "durationSec": 13.636,
+      "classification": "incorrect-answer-feedback",
+      "screen": "S06 (reception)",
+      "scenario": "SC-REC-01",
+      "answerId": "C",
+      "mappingEvidence": "\"הפניה אליה [האפליקציה] לבדה לא תמיד מספיקה\" answers a referral to the app only",
+      "transcript": "האפליקציה יכולה להיות כלי שימושי מאוד, אבל הפניה אליה לבדה לא תמיד מספיקה. חשוב קודם להבין מה המטופל צריך, להסביר לו את השלב הבא ולסייע לו להשתמש בערוץ המתאים.",
+      "segments": [
+        {
+          "start": 0.0,
+          "end": 2.56,
+          "text": "האפליקציה יכולה להיות כלי שימושי מאוד,"
+        },
+        {
+          "start": 3.22,
+          "end": 5.8,
+          "text": "אבל הפניה אליה לבדה לא תמיד מספיקה."
+        },
+        {
+          "start": 6.14,
+          "end": 8.88,
+          "text": "חשוב קודם להבין מה המטופל צריך,"
+        },
+        {
+          "start": 8.88,
+          "end": 13.36,
+          "text": "להסביר לו את השלב הבא ולסייע לו להשתמש בערוץ המתאים."
+        }
+      ],
+      "uncertainWords": []
+    },
+    {
+      "originalFilename": "ElevenLabs_2026-11-24T09_23_51_לומדה _gen_s0_sim75_v4.mp3",
+      "sha256": "747282992318740f04582130d0c8c7c8de0c9f15ad6b16f830df8162bf7744cd",
+      "assetId": "AUDIO-S06-REC2-01",
+      "projectFile": "public/media/AUDIO-S06-REC2-01.mp3",
+      "codec": "mp3",
+      "sampleRateHz": 44100,
+      "channels": 1,
+      "bitRate": 137936,
+      "durationSec": 13.636,
+      "classification": "scenario-introduction+question",
+      "screen": "S06 (reception)",
+      "scenario": "SC-REC-02",
+      "answerId": null,
+      "mappingEvidence": "Follow-up task: a patient who missed an appointment; ends \"מה נכון לעשות עכשיו?\"",
+      "transcript": "במהלך העבודה את עוברת על משימות המעקב. את מבחינה במטופל שלא הגיע לתור שנקבע לו. את יודעת שמעקב אחר מטופלים הוא חלק מהשמירה על רציפות השירות. מה נכון לעשות עכשיו?",
+      "segments": [
+        {
+          "start": 0.0,
+          "end": 3.1,
+          "text": "במהלך העבודה את עוברת על משימות המעקב."
+        },
+        {
+          "start": 3.34,
+          "end": 6.62,
+          "text": "את מבחינה במטופל שלא הגיע לתור שנקבע לו."
+        },
+        {
+          "start": 6.88,
+          "end": 11.38,
+          "text": "את יודעת שמעקב אחר מטופלים הוא חלק מהשמירה על רציפות השירות."
+        },
+        {
+          "start": 12.18,
+          "end": 13.18,
+          "text": "מה נכון לעשות עכשיו?"
+        }
+      ],
+      "uncertainWords": [
+        {
+          "word": "את",
+          "start": 1.06,
+          "confidence": 0.427
+        }
+      ]
+    },
+    {
+      "originalFilename": "ElevenLabs_2026-11-24T09_24_42_לומדה _gen_s0_sim75_v4.mp3",
+      "sha256": "97866ecaff61086174e7fe3336a8c51fe0d4409ba67a830da20d2db19dc91180",
+      "assetId": "AUDIO-S06-REC2-FB-A",
+      "projectFile": "public/media/AUDIO-S06-REC2-FB-A.mp3",
+      "codec": "mp3",
+      "sampleRateHz": 44100,
+      "channels": 1,
+      "bitRate": 138353,
+      "durationSec": 13.087,
+      "classification": "incorrect-answer-feedback",
+      "screen": "S06 (reception)",
+      "scenario": "SC-REC-02",
+      "answerId": "A",
+      "mappingEvidence": "\"התעלמות ממשימה פתוחה עלולה לפגוע ברציפות\" answers ignoring the task",
+      "transcript": "מעקב אחר מטופלים הוא חלק מתפיסת השירות של מכבידנט. התעלמות ממשימה פתוחה עלולה לפגוע ברציפות השירות. חשוב לבדוק מה נדרש במסגרת התפקיד ולפעול בהתאם לנהלים.",
+      "segments": [
+        {
+          "start": 0.0,
+          "end": 3.82,
+          "text": "מעקב אחר מטופלים הוא חלק מתפיסת השירות של מכבידנט."
+        },
+        {
+          "start": 4.06,
+          "end": 7.84,
+          "text": "התעלמות ממשימה פתוחה עלולה לפגוע ברציפות השירות."
+        },
+        {
+          "start": 8.14,
+          "end": 12.72,
+          "text": "חשוב לבדוק מה נדרש במסגרת התפקיד ולפעול בהתאם לנהלים."
+        }
+      ],
+      "uncertainWords": []
+    },
+    {
+      "originalFilename": "ElevenLabs_2026-11-24T09_25_01_לומדה _gen_s0_sim75_v4.mp3",
+      "sha256": "a0a28f6331c6ad4f131461f138fb337173b25f002657a5c33ca790c4ec6f7e7c",
+      "assetId": "AUDIO-S06-REC2-FB-B",
+      "projectFile": "public/media/AUDIO-S06-REC2-FB-B.mp3",
+      "codec": "mp3",
+      "sampleRateHz": 44100,
+      "channels": 1,
+      "bitRate": 137659,
+      "durationSec": 14.028,
+      "classification": "correct-answer-feedback",
+      "screen": "S06 (reception)",
+      "scenario": "SC-REC-02",
+      "answerId": "B",
+      "mappingEvidence": "\"נכון, מעקב יזום... להקפיד על נהלי הפניה, ההרשאות והפרטיות ולתעד\"",
+      "transcript": "נכון, מעקב יזום יכול לעזור לשמור על רציפות הטיפול והשירות. יחד עם זאת, חשוב להקפיד על נהלי הפניה, ההרשאות והפרטיות ולתעד את הטיפול במשימה בהתאם להנחיות הארגון.",
+      "segments": [
+        {
+          "start": 0.0,
+          "end": 0.42,
+          "text": "נכון,"
+        },
+        {
+          "start": 0.62,
+          "end": 4.66,
+          "text": "מעקב יזום יכול לעזור לשמור על רציפות הטיפול והשירות."
+        },
+        {
+          "start": 4.98,
+          "end": 6.02,
+          "text": "יחד עם זאת,"
+        },
+        {
+          "start": 6.02,
+          "end": 8.18,
+          "text": "חשוב להקפיד על נהלי הפניה,"
+        },
+        {
+          "start": 8.28,
+          "end": 13.72,
+          "text": "ההרשאות והפרטיות ולתעד את הטיפול במשימה בהתאם להנחיות הארגון."
+        }
+      ],
+      "uncertainWords": []
+    },
+    {
+      "originalFilename": "ElevenLabs_2026-11-24T09_25_20_לומדה _gen_s0_sim75_v4.mp3",
+      "sha256": "9c28aaa2e8b1d152291901b79d756f2c27a2f92db38fc04dd80622338ee5a7e0",
+      "assetId": "AUDIO-S06-REC2-FB-C",
+      "projectFile": "public/media/AUDIO-S06-REC2-FB-C.mp3",
+      "codec": "mp3",
+      "sampleRateHz": 44100,
+      "channels": 1,
+      "bitRate": 136943,
+      "durationSec": 15.151,
+      "classification": "incorrect-answer-feedback",
+      "screen": "S06 (reception)",
+      "scenario": "SC-REC-02",
+      "answerId": "C",
+      "mappingEvidence": "\"אסור לנו להתעלם מפרטיות המטופל... רק בערוצי תקשורת מאושרים\" answers sending details through an unapproved channel",
+      "transcript": "גם כאשר אנחנו פועלים מתוך רצון לסייע, אסור לנו להתעלם מפרטיות המטופל. יש להשתמש רק בערוצי תקשורת מאושרים ולמסור מידע בהתאם לנהלים. שירות טוב משלב יוזמה עם אחריות מקצועית.",
+      "segments": [
+        {
+          "start": 0.0,
+          "end": 2.68,
+          "text": "גם כאשר אנחנו פועלים מתוך רצון לסייע,"
+        },
+        {
+          "start": 2.86,
+          "end": 5.42,
+          "text": "אסור לנו להתעלם מפרטיות המטופל."
+        },
+        {
+          "start": 5.72,
+          "end": 10.94,
+          "text": "יש להשתמש רק בערוצי תקשורת מאושרים ולמסור מידע בהתאם לנהלים."
+        },
+        {
+          "start": 11.36,
+          "end": 14.76,
+          "text": "שירות טוב משלב יוזמה עם אחריות מקצועית."
+        }
+      ],
+      "uncertainWords": []
+    },
+    {
+      "originalFilename": "ElevenLabs_2026-11-24T09_25_52_לומדה _gen_s0_sim75_v4.mp3",
+      "sha256": "f1f2e9860b5d24a4eb79d3214d5ca0336552ca35786aed9b12572df80b4ee08c",
+      "assetId": "AUDIO-S06-AST1-01",
+      "projectFile": "public/media/AUDIO-S06-AST1-01.mp3",
+      "codec": "mp3",
+      "sampleRateHz": 44100,
+      "channels": 1,
+      "bitRate": 141065,
+      "durationSec": 10.371,
+      "classification": "scenario-introduction",
+      "screen": "S06 (assistants)",
+      "scenario": "SC-AST-01",
+      "answerId": null,
+      "mappingEvidence": "Dana brings Yossi into the treatment room; he is tense and speaks quietly (V06)",
+      "transcript": "דנה, הסייעת, מכניסה את יוסי לחדר הטיפול. הוא מתיישב בכיסא, אבל נראה מתוח. לפני שהטיפול מתחיל, הוא פונה אליה בשקט.",
+      "segments": [
+        {
+          "start": 0.0,
+          "end": 3.36,
+          "text": "דנה, הסייעת, מכניסה את יוסי לחדר הטיפול."
+        },
+        {
+          "start": 3.6,
+          "end": 6.44,
+          "text": "הוא מתיישב בכיסא, אבל נראה מתוח."
+        },
+        {
+          "start": 6.94,
+          "end": 9.86,
+          "text": "לפני שהטיפול מתחיל, הוא פונה אליה בשקט."
+        }
+      ],
+      "uncertainWords": []
+    },
+    {
+      "originalFilename": "ElevenLabs_2026-11-24T09_26_08_לומדה _gen_s0_sim75_v4.mp3",
+      "sha256": "1021f0b529623d7cb745ac53fe9e4a2009d53ccbcd67fff79f351824e540b686",
+      "assetId": "AUDIO-S06-AST1-FB-A",
+      "projectFile": "public/media/AUDIO-S06-AST1-FB-A.mp3",
+      "codec": "mp3",
+      "sampleRateHz": 44100,
+      "channels": 1,
+      "bitRate": 139475,
+      "durationSec": 11.807,
+      "classification": "incorrect-answer-feedback",
+      "screen": "S06 (assistants)",
+      "scenario": "SC-AST-01",
+      "answerId": "A",
+      "mappingEvidence": "\"נועדה להרגיע... להרגיש שלא באמת מקשיבים לו\" answers \"אין סיבה להילחץ\"",
+      "transcript": "התגובה נועדה להרגיע, אבל היא עלולה לגרום ליוסי להרגיש שלא באמת מקשיבים לו. עדיף להכיר בתחושה שלו, לתת לו מקום ולסייע לו לקבל את המענה המתאים.",
+      "segments": [
+        {
+          "start": 0.0,
+          "end": 1.46,
+          "text": "התגובה נועדה להרגיע,"
+        },
+        {
+          "start": 1.62,
+          "end": 5.36,
+          "text": "אבל היא עלולה לגרום ליוסי להרגיש שלא באמת מקשיבים לו."
+        },
+        {
+          "start": 5.76,
+          "end": 7.64,
+          "text": "עדיף להכיר בתחושה שלו,"
+        },
+        {
+          "start": 7.84,
+          "end": 11.48,
+          "text": "לתת לו מקום ולסייע לו לקבל את המענה המתאים."
+        }
+      ],
+      "uncertainWords": []
+    },
+    {
+      "originalFilename": "ElevenLabs_2026-11-24T09_26_27_לומדה _gen_s0_sim75_v4.mp3",
+      "sha256": "8c60b363d503e0ba69bfbdbaa352c3e378cc73a2f77d6c169f75cb89a1cd7ecd",
+      "assetId": "AUDIO-S06-AST1-FB-B",
+      "projectFile": "public/media/AUDIO-S06-AST1-FB-B.mp3",
+      "codec": "mp3",
+      "sampleRateHz": 44100,
+      "channels": 1,
+      "bitRate": 137229,
+      "durationSec": 14.681,
+      "classification": "correct-answer-feedback",
+      "screen": "S06 (assistants)",
+      "scenario": "SC-AST-01",
+      "answerId": "B",
+      "mappingEvidence": "\"זו התגובה המועדפת... להעביר לצוות המטפל מידע\"",
+      "transcript": "זו התגובה המועדפת. היא מבטאת אמפתיה ורגישות לצורך האישי של המטופל. בנוסף, היא מאפשרת להעביר לצוות המטפל מידע חשוב על התחושות של יוסי, כדי שיוכל לקבל מענה מתאים במסגרת הטיפול.",
+      "segments": [
+        {
+          "start": 0.0,
+          "end": 1.36,
+          "text": "זו התגובה המועדפת."
+        },
+        {
+          "start": 1.96,
+          "end": 5.38,
+          "text": "היא מבטאת אמפתיה ורגישות לצורך האישי של המטופל."
+        },
+        {
+          "start": 5.76,
+          "end": 6.6,
+          "text": "בנוסף,"
+        },
+        {
+          "start": 6.8,
+          "end": 11.12,
+          "text": "היא מאפשרת להעביר לצוות המטפל מידע חשוב על התחושות של יוסי,"
+        },
+        {
+          "start": 11.24,
+          "end": 14.38,
+          "text": "כדי שיוכל לקבל מענה מתאים במסגרת הטיפול."
+        }
+      ],
+      "uncertainWords": []
+    },
+    {
+      "originalFilename": "ElevenLabs_2026-11-24T09_26_45_לומדה _gen_s0_sim75_v4.mp3",
+      "sha256": "d9d9c1277c18d5304d08f028561c705a6c11f147248c7af1508bdcf98e357d1c",
+      "assetId": "AUDIO-S06-AST1-FB-C",
+      "projectFile": "public/media/AUDIO-S06-AST1-FB-C.mp3",
+      "codec": "mp3",
+      "sampleRateHz": 44100,
+      "channels": 1,
+      "bitRate": 138353,
+      "durationSec": 13.087,
+      "classification": "incorrect-answer-feedback",
+      "screen": "S06 (assistants)",
+      "scenario": "SC-AST-01",
+      "answerId": "C",
+      "mappingEvidence": "\"הבטחה לגבי תחושת הכאב או תוצאות הטיפול אינה מתאימה\" answers a no-pain promise",
+      "transcript": "הרצון להרגיע הוא חיובי, אבל הבטחה לגבי תחושת הכאב או תוצאות הטיפול אינה מתאימה. חשוב להישאר בגבולות התפקיד, לגלות אמפתיה ולערב את הגורם המטפל כשנדרש.",
+      "segments": [
+        {
+          "start": 0.0,
+          "end": 1.74,
+          "text": "הרצון להרגיע הוא חיובי,"
+        },
+        {
+          "start": 1.96,
+          "end": 6.46,
+          "text": "אבל הבטחה לגבי תחושת הכאב או תוצאות הטיפול אינה מתאימה."
+        },
+        {
+          "start": 6.78,
+          "end": 9.02,
+          "text": "חשוב להישאר בגבולות התפקיד,"
+        },
+        {
+          "start": 9.16,
+          "end": 12.64,
+          "text": "לגלות אמפתיה ולערב את הגורם המטפל כשנדרש."
+        }
+      ],
+      "uncertainWords": []
+    },
+    {
+      "originalFilename": "ElevenLabs_2026-11-24T09_27_32_לומדה _gen_s0_sim75_v4.mp3",
+      "sha256": "7c44bf65189b9eaee1bf62fcdce5fd85280ad07b149bd5ad260a292e8115c769",
+      "assetId": "AUDIO-S06-AST2-01",
+      "projectFile": "public/media/AUDIO-S06-AST2-01.mp3",
+      "codec": "mp3",
+      "sampleRateHz": 44100,
+      "channels": 1,
+      "bitRate": 140589,
+      "durationSec": 10.762,
+      "classification": "scenario-introduction+question",
+      "screen": "S06 (assistants)",
+      "scenario": "SC-AST-02",
+      "answerId": null,
+      "mappingEvidence": "During treatment Yossi signals discomfort while the dentist is focused; ends \"איך תפעלי?\"",
+      "transcript": "הטיפול התחיל. במהלכו את מבחינה שיוסי נע באי-נוחות ומנסה לסמן משהו בידו. הרופא מרוכז בפעולה שהוא מבצע. איך תפעלי?",
+      "segments": [
+        {
+          "start": 0.0,
+          "end": 0.98,
+          "text": "הטיפול התחיל."
+        },
+        {
+          "start": 1.36,
+          "end": 6.48,
+          "text": "במהלכו את מבחינה שיוסי נע באי-נוחות ומנסה לסמן משהו בידו."
+        },
+        {
+          "start": 6.78,
+          "end": 9.36,
+          "text": "הרופא מרוכז בפעולה שהוא מבצע."
+        },
+        {
+          "start": 9.54,
+          "end": 10.5,
+          "text": "איך תפעלי?"
+        }
+      ],
+      "uncertainWords": []
+    },
+    {
+      "originalFilename": "ElevenLabs_2026-11-24T09_27_56_לומדה _gen_s0_sim75_v4.mp3",
+      "sha256": "d7bce277733857af515ff2c0402bb7c770e7c8b9989c5b938aeb2282860b77b9",
+      "assetId": "AUDIO-S06-AST2-FB-A",
+      "projectFile": "public/media/AUDIO-S06-AST2-FB-A.mp3",
+      "codec": "mp3",
+      "sampleRateHz": 44100,
+      "channels": 1,
+      "bitRate": 137605,
+      "durationSec": 14.106,
+      "classification": "incorrect-answer-feedback",
+      "screen": "S06 (assistants)",
+      "scenario": "SC-AST-02",
+      "answerId": "A",
+      "mappingEvidence": "\"התעלמות מסימני אי-נוחות\" answers carrying on without responding",
+      "transcript": "חשוב להישאר קשובים למטופל גם במהלך הטיפול. התעלמות מסימני אי-נוחות עלולה לפגוע בתחושת הביטחון שלו. כאשר מתעורר צורך, יש להתייחס אליו ולערב את הגורם המטפל בהתאם למצב.",
+      "segments": [
+        {
+          "start": 0.0,
+          "end": 3.34,
+          "text": "חשוב להישאר קשובים למטופל גם במהלך הטיפול."
+        },
+        {
+          "start": 3.6,
+          "end": 7.82,
+          "text": "התעלמות מסימני אי-נוחות עלולה לפגוע בתחושת הביטחון שלו."
+        },
+        {
+          "start": 8.02,
+          "end": 9.66,
+          "text": "כאשר מתעורר צורך,"
+        },
+        {
+          "start": 9.66,
+          "end": 13.72,
+          "text": "יש להתייחס אליו ולערב את הגורם המטפל בהתאם למצב."
+        }
+      ],
+      "uncertainWords": []
+    },
+    {
+      "originalFilename": "ElevenLabs_2026-11-24T09_28_11_לומדה _gen_s0_sim75_v4.mp3",
+      "sha256": "6491829c6be0651eed1843043629e6cd92e91685b228d59a17b8f95738cf30d7",
+      "assetId": "AUDIO-S06-AST2-FB-B",
+      "projectFile": "public/media/AUDIO-S06-AST2-FB-B.mp3",
+      "codec": "mp3",
+      "sampleRateHz": 44100,
+      "channels": 1,
+      "bitRate": 138694,
+      "durationSec": 12.669,
+      "classification": "correct-answer-feedback",
+      "screen": "S06 (assistants)",
+      "scenario": "SC-AST-02",
+      "answerId": "B",
+      "mappingEvidence": "\"נכון... זיהוי הצורך, שיקוף שלו לרופא ומתן סיוע מתאים\"",
+      "transcript": "נכון, הסייעת היא חלק משמעותי מחוויית המטופל בחדר הטיפול. זיהוי הצורך, שיקוף שלו לרופא ומתן סיוע מתאים הם דוגמה לשירות רגיש, יוזם ומקצועי.",
+      "segments": [
+        {
+          "start": 0.0,
+          "end": 0.48,
+          "text": "נכון,"
+        },
+        {
+          "start": 0.94,
+          "end": 4.8,
+          "text": "הסייעת היא חלק משמעותי מחוויית המטופל בחדר הטיפול."
+        },
+        {
+          "start": 5.14,
+          "end": 6.4,
+          "text": "זיהוי הצורך,"
+        },
+        {
+          "start": 6.4,
+          "end": 11.06,
+          "text": "שיקוף שלו לרופא ומתן סיוע מתאים הם דוגמה לשירות רגיש,"
+        },
+        {
+          "start": 11.18,
+          "end": 12.44,
+          "text": "יוזם ומקצועי."
+        }
+      ],
+      "uncertainWords": []
+    },
+    {
+      "originalFilename": "ElevenLabs_2026-11-24T09_28_29_לומדה _gen_s0_sim75_v4.mp3",
+      "sha256": "6b7a8d9102ffd9a7c19b43f5d7ecb75c446ac0f3ce74e63413e26c1892cca709",
+      "assetId": "AUDIO-S06-AST2-FB-C",
+      "projectFile": "public/media/AUDIO-S06-AST2-FB-C.mp3",
+      "codec": "mp3",
+      "sampleRateHz": 44100,
+      "channels": 1,
+      "bitRate": 138828,
+      "durationSec": 12.513,
+      "classification": "incorrect-answer-feedback",
+      "screen": "S06 (assistants)",
+      "scenario": "SC-AST-02",
+      "answerId": "C",
+      "mappingEvidence": "\"לשמור על גבולות האחריות המקצועית... לפעול בהתאם להנחיותיו\" answers acting alone",
+      "transcript": "חשוב לגלות יוזמה, אבל גם לשמור על גבולות האחריות המקצועית. כאשר מתעורר צורך במהלך הטיפול, יש לתקשר עם הגורם המטפל ולפעול בהתאם להנחיותיו ולנהלים.",
+      "segments": [
+        {
+          "start": 0.0,
+          "end": 1.26,
+          "text": "חשוב לגלות יוזמה,"
+        },
+        {
+          "start": 1.28,
+          "end": 4.16,
+          "text": "אבל גם לשמור על גבולות האחריות המקצועית."
+        },
+        {
+          "start": 4.54,
+          "end": 7.22,
+          "text": "כאשר מתעורר צורך במהלך הטיפול,"
+        },
+        {
+          "start": 7.76,
+          "end": 12.2,
+          "text": "יש לתקשר עם הגורם המטפל ולפעול בהתאם להנחיותיו ולנהלים."
+        }
+      ],
+      "uncertainWords": []
+    },
+    {
+      "originalFilename": "ElevenLabs_2026-11-24T09_29_17_לומדה _gen_s0_sim75_v4.mp3",
+      "sha256": "695ad7e237f9946b39f6e9a258b57bdba94b2f7274b538882e9250ae0b02dd2a",
+      "assetId": "AUDIO-S06-CLN1-01",
+      "projectFile": "public/media/AUDIO-S06-CLN1-01.mp3",
+      "codec": "mp3",
+      "sampleRateHz": 44100,
+      "channels": 1,
+      "bitRate": 141507,
+      "durationSec": 10.031,
+      "classification": "scenario-introduction",
+      "screen": "S06 (clinicians)",
+      "scenario": "SC-CLN-01",
+      "answerId": null,
+      "mappingEvidence": "Yossi in the chair, still unsure after a brief explanation, asks a question",
+      "transcript": "יוסי יושב בכיסא הטיפולים. הסברת לו בקצרה על התהליך, אבל הוא עדיין נראה לא בטוח. רגע לפני שממשיכים, הוא שואל אותך שאלה.",
+      "segments": [
+        {
+          "start": 0.0,
+          "end": 1.78,
+          "text": "יוסי יושב בכיסא הטיפולים."
+        },
+        {
+          "start": 2.02,
+          "end": 4.04,
+          "text": "הסברת לו בקצרה על התהליך,"
+        },
+        {
+          "start": 4.24,
+          "end": 6.4,
+          "text": "אבל הוא עדיין נראה לא בטוח."
+        },
+        {
+          "start": 6.82,
+          "end": 9.8,
+          "text": "רגע לפני שממשיכים, הוא שואל אותך שאלה."
+        }
+      ],
+      "uncertainWords": []
+    },
+    {
+      "originalFilename": "ElevenLabs_2026-11-24T09_29_30_לומדה _gen_s0_sim75_v4.mp3",
+      "sha256": "2e4ce306f684780a5ebeabbfe170b0a4f79cdeea65b51205d6e841befe417442",
+      "assetId": "AUDIO-S06-CLN1-FB-A",
+      "projectFile": "public/media/AUDIO-S06-CLN1-FB-A.mp3",
+      "codec": "mp3",
+      "sampleRateHz": 44100,
+      "channels": 1,
+      "bitRate": 138052,
+      "durationSec": 13.479,
+      "classification": "incorrect-answer-feedback",
+      "screen": "S06 (clinicians)",
+      "scenario": "SC-CLN-01",
+      "answerId": "A",
+      "mappingEvidence": "\"גם אם כבר ניתן הסבר... מתן מידע אינו מספיק\" answers \"I already explained\"",
+      "transcript": "גם אם כבר ניתן הסבר, חשוב להתייחס לכך שהמטופל עדיין לא הבין. מתן מידע אינו מספיק כשלעצמו. אנחנו רוצים לוודא שהמטופל מבין את המידע הרלוונטי ויכול לשאול שאלות.",
+      "segments": [
+        {
+          "start": 0.0,
+          "end": 1.46,
+          "text": "גם אם כבר ניתן הסבר,"
+        },
+        {
+          "start": 1.62,
+          "end": 4.76,
+          "text": "חשוב להתייחס לכך שהמטופל עדיין לא הבין."
+        },
+        {
+          "start": 5.6,
+          "end": 7.74,
+          "text": "מתן מידע אינו מספיק כשלעצמו."
+        },
+        {
+          "start": 8.48,
+          "end": 13.08,
+          "text": "אנחנו רוצים לוודא שהמטופל מבין את המידע הרלוונטי ויכול לשאול שאלות."
+        }
+      ],
+      "uncertainWords": []
+    },
+    {
+      "originalFilename": "ElevenLabs_2026-11-24T09_29_46_לומדה _gen_s0_sim75_v4.mp3",
+      "sha256": "2b9c5f22a7aa4dec69389da2987632e38c2dc0bfa517aaf7ffb9663cf9eef2bf",
+      "assetId": "AUDIO-S06-CLN1-FB-B",
+      "projectFile": "public/media/AUDIO-S06-CLN1-FB-B.mp3",
+      "codec": "mp3",
+      "sampleRateHz": 44100,
+      "channels": 1,
+      "bitRate": 137994,
+      "durationSec": 13.557,
+      "classification": "correct-answer-feedback",
+      "screen": "S06 (clinicians)",
+      "scenario": "SC-CLN-01",
+      "answerId": "B",
+      "mappingEvidence": "\"נכון מאוד, הסבר ברור, הקשבה לשאלות ובדיקת הבנה\"",
+      "transcript": "נכון מאוד, הסבר ברור, הקשבה לשאלות ובדיקת הבנה הם חלק משמעותי מחוויית המטופל. הם מאפשרים לו להיות שותף לתהליך ולהרגיש שמכבדים את הצרכים והחששות שלו.",
+      "segments": [
+        {
+          "start": 0.0,
+          "end": 2.12,
+          "text": "נכון מאוד, הסבר ברור,"
+        },
+        {
+          "start": 2.18,
+          "end": 7.18,
+          "text": "הקשבה לשאלות ובדיקת הבנה הם חלק משמעותי מחוויית המטופל."
+        },
+        {
+          "start": 7.44,
+          "end": 10.98,
+          "text": "הם מאפשרים לו להיות שותף לתהליך ולהרגיש"
+        },
+        {
+          "start": 10.98,
+          "end": 13.32,
+          "text": "שמכבדים את הצרכים והחששות שלו."
+        }
+      ],
+      "uncertainWords": []
+    },
+    {
+      "originalFilename": "ElevenLabs_2026-11-24T09_30_07_לומדה _gen_s0_sim75_v4.mp3",
+      "sha256": "7a182a7019aabade76b38a7b93f48b22328394e585045b8baa6b9f5d39a1a7ff",
+      "assetId": "AUDIO-S06-CLN1-FB-C",
+      "projectFile": "public/media/AUDIO-S06-CLN1-FB-C.mp3",
+      "codec": "mp3",
+      "sampleRateHz": 44100,
+      "channels": 1,
+      "bitRate": 139107,
+      "durationSec": 12.199,
+      "classification": "incorrect-answer-feedback",
+      "screen": "S06 (clinicians)",
+      "scenario": "SC-CLN-01",
+      "answerId": "C",
+      "mappingEvidence": "\"הרגעה... אינה תחליף להסבר מקצועי... להימנע מהבטחות גורפות\" answers a sweeping reassurance",
+      "transcript": "הרגעה היא חלק חשוב מהמפגש, אבל היא אינה תחליף להסבר מקצועי. כדאי להימנע מהבטחות גורפות, לברר מה המטופל לא הבין ולספק מידע מדויק ומותאם.",
+      "segments": [
+        {
+          "start": 0.0,
+          "end": 2.3,
+          "text": "הרגעה היא חלק חשוב מהמפגש,"
+        },
+        {
+          "start": 2.3,
+          "end": 4.74,
+          "text": "אבל היא אינה תחליף להסבר מקצועי."
+        },
+        {
+          "start": 5.02,
+          "end": 7.34,
+          "text": "כדאי להימנע מהבטחות גורפות,"
+        },
+        {
+          "start": 7.5,
+          "end": 11.9,
+          "text": "לברר מה המטופל לא הבין ולספק מידע מדויק ומותאם."
+        }
+      ],
+      "uncertainWords": []
+    },
+    {
+      "originalFilename": "ElevenLabs_2026-11-24T09_30_40_לומדה _gen_s0_sim75_v4.mp3",
+      "sha256": "6701001ade3602e418556a67fb5f997b87961e38dd67321e620b6e6c3f7649ba",
+      "assetId": "AUDIO-S06-CLN2-01",
+      "projectFile": "public/media/AUDIO-S06-CLN2-01.mp3",
+      "codec": "mp3",
+      "sampleRateHz": 44100,
+      "channels": 1,
+      "bitRate": 139399,
+      "durationSec": 11.886,
+      "classification": "scenario-introduction+question",
+      "screen": "S06 (clinicians)",
+      "scenario": "SC-CLN-02",
+      "answerId": null,
+      "mappingEvidence": "After treatment Yossi says he is not sure what to do next; ends \"מה נכון לעשות?\"",
+      "transcript": "הטיפול הסתיים. יוסי מתארגן לצאת מחדר הטיפולים, אבל לפני שהוא קם, הוא אומר, אני לא בטוח שאני זוכר מה אני צריך לעשות עכשיו. מה נכון לעשות?",
+      "segments": [
+        {
+          "start": 0.0,
+          "end": 1.06,
+          "text": "הטיפול הסתיים."
+        },
+        {
+          "start": 1.4,
+          "end": 3.82,
+          "text": "יוסי מתארגן לצאת מחדר הטיפולים,"
+        },
+        {
+          "start": 4.46,
+          "end": 6.26,
+          "text": "אבל לפני שהוא קם, הוא אומר,"
+        },
+        {
+          "start": 6.98,
+          "end": 9.98,
+          "text": "אני לא בטוח שאני זוכר מה אני צריך לעשות עכשיו."
+        },
+        {
+          "start": 10.14,
+          "end": 11.4,
+          "text": "מה נכון לעשות?"
+        }
+      ],
+      "uncertainWords": []
+    },
+    {
+      "originalFilename": "ElevenLabs_2026-11-24T09_31_02_לומדה _gen_s0_sim75_v4.mp3",
+      "sha256": "7b2ff74b8a6220b2d6582b07333497378d13ad4eb4cbeabb681e1d64cbd5de1d",
+      "assetId": "AUDIO-S06-CLN2-FB-A",
+      "projectFile": "public/media/AUDIO-S06-CLN2-FB-A.mp3",
+      "codec": "mp3",
+      "sampleRateHz": 44100,
+      "channels": 1,
+      "bitRate": 137768,
+      "durationSec": 13.871,
+      "classification": "incorrect-answer-feedback",
+      "screen": "S06 (clinicians)",
+      "scenario": "SC-CLN-02",
+      "answerId": "A",
+      "mappingEvidence": "\"המטופל אומר במפורש שהוא אינו בטוח... זה הזמן לעצור\" answers assuming he knows",
+      "transcript": "המטופל אומר במפורש שהוא אינו בטוח מה עליו לעשות. זה הזמן לעצור, להתייחס לשאלה ולוודא שהוא מקבל את המידע הנדרש. סיום הטיפול הוא חלק חשוב מחוויית השירות.",
+      "segments": [
+        {
+          "start": 0.0,
+          "end": 3.68,
+          "text": "המטופל אומר במפורש שהוא אינו בטוח מה עליו לעשות."
+        },
+        {
+          "start": 4.1,
+          "end": 5.52,
+          "text": "זה הזמן לעצור,"
+        },
+        {
+          "start": 5.6,
+          "end": 9.64,
+          "text": "להתייחס לשאלה ולוודא שהוא מקבל את המידע הנדרש."
+        },
+        {
+          "start": 10.76,
+          "end": 13.46,
+          "text": "סיום הטיפול הוא חלק חשוב מחוויית השירות."
+        }
+      ],
+      "uncertainWords": []
+    },
+    {
+      "originalFilename": "ElevenLabs_2026-11-24T09_31_21_לומדה _gen_s0_sim75_v4.mp3",
+      "sha256": "b1d844ea62659974df379b1f7e6516d0bdf556a2272a42825705c044ff1dafec",
+      "assetId": "AUDIO-S06-CLN2-FB-B",
+      "projectFile": "public/media/AUDIO-S06-CLN2-FB-B.mp3",
+      "codec": "mp3",
+      "sampleRateHz": 44100,
+      "channels": 1,
+      "bitRate": 137084,
+      "durationSec": 14.916,
+      "classification": "correct-answer-feedback",
+      "screen": "S06 (clinicians)",
+      "scenario": "SC-CLN-02",
+      "answerId": "B",
+      "mappingEvidence": "\"זו התגובה המועדפת. הסבר מותאם, בדיקת הבנה ותיאום ציפיות\"",
+      "transcript": "זו התגובה המועדפת. הסבר מותאם, בדיקת הבנה ותיאום ציפיות לגבי ההמשך עוזרים למטופל לצאת מהמרפאה עם תחושת ביטחון ובהירות. כך אנחנו מבטאים את הערך מלווים אותך לאורך הדרך.",
+      "segments": [
+        {
+          "start": 0.0,
+          "end": 1.46,
+          "text": "זו התגובה המועדפת."
+        },
+        {
+          "start": 1.62,
+          "end": 2.8,
+          "text": "הסבר מותאם,"
+        },
+        {
+          "start": 2.9,
+          "end": 7.2,
+          "text": "בדיקת הבנה ותיאום ציפיות לגבי ההמשך עוזרים למטופל"
+        },
+        {
+          "start": 7.2,
+          "end": 10.14,
+          "text": "לצאת מהמרפאה עם תחושת ביטחון ובהירות."
+        },
+        {
+          "start": 10.48,
+          "end": 14.34,
+          "text": "כך אנחנו מבטאים את הערך מלווים אותך לאורך הדרך."
+        }
+      ],
+      "uncertainWords": []
+    },
+    {
+      "originalFilename": "ElevenLabs_2026-11-24T09_31_45_לומדה _gen_s0_sim75_v4.mp3",
+      "sha256": "4d7f69d0439e1188bf803e5e4113ec33e5cbc4b73383eb28b1404e4e681e3215",
+      "assetId": "AUDIO-S06-CLN2-FB-C",
+      "projectFile": "public/media/AUDIO-S06-CLN2-FB-C.mp3",
+      "codec": "mp3",
+      "sampleRateHz": 44100,
+      "channels": 1,
+      "bitRate": 138170,
+      "durationSec": 13.322,
+      "classification": "incorrect-answer-feedback",
+      "screen": "S06 (clinicians)",
+      "scenario": "SC-CLN-02",
+      "answerId": "C",
+      "mappingEvidence": "\"מידע דיגיטלי... אינו תחליף להנחיות המקצועיות\" answers a referral to digital information only",
+      "transcript": "מידע דיגיטלי יכול לתמוך בהסברים, אבל הוא אינו תחליף להנחיות המקצועיות שהמטופל צריך לקבל. חשוב לספק מידע ברור ורלוונטי ולוודא שהמטופל יודע כיצד יפעול בהמשך.",
+      "segments": [
+        {
+          "start": 0.0,
+          "end": 2.26,
+          "text": "מידע דיגיטלי יכול לתמוך בהסברים,"
+        },
+        {
+          "start": 2.84,
+          "end": 6.62,
+          "text": "אבל הוא אינו תחליף להנחיות המקצועיות שהמטופל צריך לקבל."
+        },
+        {
+          "start": 6.86,
+          "end": 12.92,
+          "text": "חשוב לספק מידע ברור ורלוונטי ולוודא שהמטופל יודע כיצד יפעול בהמשך."
+        }
+      ],
+      "uncertainWords": []
+    }
+  ]
+}
