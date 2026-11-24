@@ -17,7 +17,7 @@ import {
 } from './helpers';
 
 /**
- * The S00–S04 prototype in a real browser, on desktop and at 360px.
+ * The introduction chapter, S00–S04, in a real browser, on desktop and at 360px. S05–S09: course.spec.ts.
  * Runs against the dev server: DRAFT content visible, console analytics adapter on.
  */
 
@@ -153,7 +153,8 @@ test('a new employee completes the introduction chapter, S00 to S04', async ({ p
   expect(count('narration_started')).toBeGreaterThanOrEqual(12);
   expect(count('question_answered')).toBe(6);
   expect(count('journey_stage_viewed')).toBe(5);
-  expect(count('prototype_completed')).toBe(1);
+  // Finishing the introduction chapter does not complete the course.
+  expect(count('course_completed')).toBe(0);
   expect(new Set(events.map((e) => e.eventId)).size, 'event ids are unique').toBe(events.length);
   expect(events.find((e) => e.eventName === 'role_selected')?.payload).toEqual({ role: 'clinician' });
   const answers = events.filter((e) => e.eventName === 'question_answered' && e.payload.questionId === 'Q-S02-01');
@@ -161,7 +162,7 @@ test('a new employee completes the introduction chapter, S00 to S04', async ({ p
     ['B', false, 1],
     ['A', true, 2],
   ]);
-  for (const event of events) expect(event).toMatchObject({ courseVersion: '0.2.0', schemaVersion: '1' });
+  for (const event of events) expect(event).toMatchObject({ courseVersion: '0.3.0', schemaVersion: '1' });
 });
 
 test('progress survives a refresh: same screen, nothing plays until the learner presses play', async ({ page }) => {

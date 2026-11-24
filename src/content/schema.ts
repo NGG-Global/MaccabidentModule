@@ -45,6 +45,11 @@ export const COMPOSITION_IDS = [
   'valueAdapting',
   'valueAccompanying',
   'journey',
+  'scenarioIntro',
+  'scenarioFeedback',
+  'measurement',
+  'assessmentResult',
+  'closing',
 ] as const;
 export const CompositionIdSchema = z.enum(COMPOSITION_IDS);
 export type CompositionId = z.infer<typeof CompositionIdSchema>;
@@ -95,14 +100,24 @@ const OptionIdSchema = z.enum(['A', 'B', 'C']);
 export const QuestionSchema = z
   .strictObject({
     questionId: QuestionIdSchema,
+    /** Assessment questions: which learners see it. */
+    track: z.union([z.literal('common'), RoleSchema]).optional(),
+    /** Area the question checks; failed areas are listed after the assessment. */
+    skill: z.string().optional(),
+    /** A miss is highlighted for review (e.g. privacy). It does not change the pass rule. */
+    critical: z.boolean().optional(),
     prompt: z.string().min(1),
     options: z
       .array(z.strictObject({ id: OptionIdSchema, text: z.string().min(1), correct: z.boolean(), feedback: z.string().min(1) }))
       .length(3),
+    /** Why the correct answer is correct; shown in the assessment review. */
+    explanation: z.string().optional(),
     /** Sequence key on the owning screen played after any answer. */
     feedbackSequence: z.string().optional(),
     sourcePages: SourcePagesSchema,
     approvalStatus: ApprovalStatusSchema,
+    /** Content written for the build rather than taken from approved material. */
+    proposed: z.boolean().optional(),
   })
   .refine((q) => q.options.filter((o) => o.correct).length === 1, {
     message: 'exactly one option must be correct',
@@ -135,6 +150,19 @@ export const InteractionSchema = z.discriminatedUnion('type', [
     items: z
       .array(z.strictObject({ id: z.string().regex(/^[a-z-]+$/), text: z.string().min(1), valueId: z.string(), feedback: z.string().min(1) }))
       .min(1),
+  }),
+  z.strictObject({
+    type: z.literal('measurement'),
+    /** Parts of the explainer, for the index beside the frame (beat 0 of "enter" is the explainer). */
+    chapters: z.array(z.strictObject({ label: z.string(), at: z.number().nonnegative() })).min(1),
+    questionIds: z.array(QuestionIdSchema).min(1),
+  }),
+  z.strictObject({
+    type: z.literal('assessment'),
+    /** Questions drawn per attempt: this many shared, plus this many for the learner's role. */
+    commonCount: z.number().int().positive(),
+    roleCount: z.number().int().positive(),
+    questionIds: z.array(QuestionIdSchema).min(1),
   }),
   z.strictObject({
     type: z.literal('journey'),
@@ -190,10 +218,10 @@ export const ScenarioOptionSchema = z.strictObject({
   id: OptionIdSchema,
   text: z.string().min(1),
   rating: OptionRatingSchema,
+  /** Short written feedback; the full explanation is the narrated feedback. */
   feedback: z.string().min(1),
-  /** Longer spoken version of the feedback; falls back to `feedback`. */
-  feedbackNarration: z.string().optional(),
-  feedbackAudioId: MediaIdSchema.optional(),
+  /** Played after this answer: its own narrated feedback, then an optional consequence clip. */
+  feedbackBeats: z.array(BeatSchema).min(1),
 });
 export type ScenarioOption = z.infer<typeof ScenarioOptionSchema>;
 
@@ -202,13 +230,23 @@ export const ScenarioSchema = z
     scenarioId: ScenarioIdSchema,
     title: z.string().min(1),
     track: z.union([z.literal('common'), RoleSchema]),
+    caseLabel: z.string().min(1),
+    place: z.string().min(1),
     touchpoint: z.string().min(1),
     values: z.array(z.string()),
     skill: z.string().min(1),
+    /** One-line summary shown while deciding. */
     scene: z.string().min(1),
+    /** What the patient says, when it is not heard in a recording. */
+    patientLine: z.strictObject({ speaker: z.string(), text: z.string().min(1), proposed: z.boolean() }).optional(),
     question: z.string().min(1),
-    narration: NarrationSchema.optional(),
+    /** The situation: narration, and video where suitable footage exists. */
+    situation: z.array(BeatSchema).min(1),
+    /** The question asked aloud, when the situation does not end with it. */
+    ask: z.array(BeatSchema).optional(),
     options: z.array(ScenarioOptionSchema).length(3),
+    /** The service principle behind the preferred response. */
+    principle: z.string().min(1),
     /** Flags a miss for mandatory review (e.g. privacy). The pass rule itself needs SME approval. */
     critical: z.boolean().optional(),
     sourcePages: SourcePagesSchema,
@@ -285,12 +323,12 @@ export const CourseConfigSchema = z.strictObject({
     maxAttempts: z.number().int().positive().nullable(),
     note: z.string(),
   }),
-  /** Business rule behind the prototype_completed event. */
-  completionRule: z.literal('end-screen-complete'),
+  /** Business rule behind the course_completed event: reach the end screen with a passed assessment. */
+  completionRule: z.literal('end-reached-and-assessment-passed'),
   /** Explicit navigation graph: each screen names its successor, optionally per role. */
   flow: z.strictObject({
     start: ScreenIdSchema,
-    /** Last screen of the current build; completing its interaction completes the prototype. */
+    /** Last screen of the course. */
     end: ScreenIdSchema,
     transitions: z.record(ScreenIdSchema, TransitionSchema),
   }),

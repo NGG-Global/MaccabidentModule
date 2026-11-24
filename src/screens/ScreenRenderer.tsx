@@ -10,8 +10,10 @@ import { PendingScreen } from './PendingScreen';
 import { RoleSelectScreen } from './RoleSelectScreen';
 import { ScenarioScreen } from './ScenarioScreen';
 import { ScreenFrame, ScreenHeading } from './ScreenHeading';
-import { SummaryScreen } from './SummaryScreen';
 import { ValuesScreen } from './ValuesScreen';
+import { AssessmentScreen } from './AssessmentScreen';
+import { ConclusionScreen } from './ConclusionScreen';
+import { MeasurementScreen } from './MeasurementScreen';
 import type { ScreenProps } from './types';
 
 /** interactionType → screen component. Types without an entry fall back to PendingScreen. */
@@ -22,11 +24,13 @@ const registry: Partial<Record<InteractionType, ComponentType<ScreenProps>>> = {
   valuesMatch: ValuesScreen,
   journey: JourneyScreen,
   scenario: ScenarioScreen,
-  summary: SummaryScreen,
+  measurement: MeasurementScreen,
+  assessment: AssessmentScreen,
+  summary: ConclusionScreen,
 };
 
 /** Screens that lay out their own heading and media. Older screen types get a generic frame. */
-const selfContained: InteractionType[] = ['intro', 'roleSelect', 'compare', 'valuesMatch', 'journey'];
+const selfContained: InteractionType[] = ['intro', 'roleSelect', 'compare', 'valuesMatch', 'journey', 'scenario', 'measurement', 'assessment', 'summary'];
 
 export function ScreenRenderer(props: ScreenProps) {
   const { screen } = props;

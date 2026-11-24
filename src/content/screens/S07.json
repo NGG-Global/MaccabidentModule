@@ -1,18 +1,130 @@
 {
   "screenId": "S07",
   "chapter": "מדידה",
-  "title": "איך אנחנו לומדים ממשוב",
-  "targetMinutes": 2,
+  "title": "איך אנחנו לומדים ומשתפרים",
+  "eyebrow": "פרק 6",
+  "targetMinutes": 3,
   "learningObjective": "להסביר בקצרה כיצד משוב מטופלים ותצפיות מסייעים לשיפור.",
   "onScreenText": [],
   "mediaIds": [],
+  "sequences": {
+    "enter": [
+      {
+        "kind": "composition",
+        "durationSec": 2.8,
+        "visual": {
+          "id": "chapter",
+          "props": {
+            "number": "06",
+            "title": "מדידת השירות",
+            "subtitle": "כלים ללמידה ולשיפור"
+          }
+        },
+        "label": "פתיחת פרק"
+      },
+      {
+        "kind": "composition",
+        "durationSec": 41,
+        "label": "כלי המדידה",
+        "visual": {
+          "id": "measurement",
+          "props": {
+            "sections": [
+              {
+                "at": 0.4,
+                "kind": "survey",
+                "title": "סקר שביעות רצון",
+                "lines": [
+                  "נשלח למטופל לאחר הביקור",
+                  "מסייע בלמידה ובשיפור"
+                ]
+              },
+              {
+                "at": 8.6,
+                "kind": "shopper",
+                "title": "לקוח סמוי",
+                "lines": [
+                  "מדמה ביקור רגיל במרפאה",
+                  "משקף את ההתרשמות מהשירות"
+                ]
+              },
+              {
+                "at": 16.8,
+                "kind": "observation",
+                "title": "תצפיות ומשוב",
+                "lines": [
+                  "דפי תצפית לפי תפקיד",
+                  "עוצמות והזדמנויות לשיפור"
+                ]
+              },
+              {
+                "at": 25.0,
+                "kind": "trafficLight",
+                "title": "רמזור ליישום",
+                "lines": [
+                  "אדום: לא מתקיים · צהוב: לפעמים",
+                  "ירוק: באופן שוטף"
+                ]
+              }
+            ],
+            "loop": {
+              "at": 33.2,
+              "title": "למידה ושיפור מתמיד",
+              "line": "כל כלי מוסיף זווית, ויחד הם מראים מה עובד ומה אפשר לשפר"
+            }
+          }
+        }
+      },
+      {
+        "kind": "narration",
+        "audioId": "AUDIO-S07",
+        "label": "קריינות"
+      }
+    ]
+  },
   "interactionType": "measurement",
-  "completion": "view",
+  "interaction": {
+    "type": "measurement",
+    "chapters": [
+      {
+        "label": "סקר שביעות רצון",
+        "at": 0.4
+      },
+      {
+        "label": "לקוח סמוי",
+        "at": 8.6
+      },
+      {
+        "label": "תצפיות ומשוב",
+        "at": 16.8
+      },
+      {
+        "label": "רמזור ליישום",
+        "at": 25.0
+      },
+      {
+        "label": "למידה ושיפור מתמיד",
+        "at": 33.2
+      }
+    ],
+    "questionIds": [
+      "Q-S07-01",
+      "Q-S07-02"
+    ]
+  },
+  "completion": "interaction",
   "sourcePages": [
     17,
     18,
     19,
-    20
+    20,
+    21,
+    22,
+    23,
+    26,
+    27,
+    28,
+    29
   ],
   "approvalStatus": "DRAFT"
 }

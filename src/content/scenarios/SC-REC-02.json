@@ -1,0 +1,170 @@
+{
+  "scenarioId": "SC-REC-02",
+  "title": "מטופל שלא הגיע לתור",
+  "track": "reception",
+  "caseLabel": "מקרה 2",
+  "place": "משימות המעקב",
+  "touchpoint": "מעקב, בקרה וקשר",
+  "values": [
+    "with-you"
+  ],
+  "skill": "מעקב ופרטיות",
+  "scene": "ברשימת המעקב מופיע מטופל שלא הגיע לתור שנקבע לו.",
+  "question": "מה נכון לעשות עכשיו?",
+  "situation": [
+    {
+      "kind": "narration",
+      "audioId": "AUDIO-S06-REC2-01",
+      "visual": {
+        "id": "scenarioIntro",
+        "props": {
+          "caseLabel": "מקרה 2",
+          "place": "משימות המעקב",
+          "lines": [
+            {
+              "at": 0.0,
+              "text": "במהלך העבודה השוטפת"
+            },
+            {
+              "at": 3.34,
+              "text": "מטופל שלא הגיע לתור"
+            },
+            {
+              "at": 6.88,
+              "text": "מעקב שומר על רציפות השירות"
+            }
+          ]
+        }
+      },
+      "label": "המצב"
+    }
+  ],
+  "options": [
+    {
+      "id": "A",
+      "text": "לא לעשות דבר: התור כבר עבר, והמשימה תיסגר מעצמה.",
+      "rating": "undesirable",
+      "feedback": "התעלמות ממשימה פתוחה עלולה לפגוע ברציפות השירות. בודקים מה נדרש במסגרת התפקיד ופועלים לפי הנהלים.",
+      "feedbackBeats": [
+        {
+          "kind": "narration",
+          "audioId": "AUDIO-S06-REC2-FB-A",
+          "visual": {
+            "id": "scenarioFeedback",
+            "props": {
+              "verdict": "undesirable",
+              "headline": {
+                "at": 4.06,
+                "text": "משימה פתוחה פוגעת ברציפות"
+              },
+              "points": [
+                {
+                  "at": 8.14,
+                  "text": "לבדוק מה נדרש"
+                },
+                {
+                  "at": 10.34,
+                  "text": "לפעול לפי הנהלים"
+                }
+              ]
+            }
+          },
+          "label": "משוב"
+        }
+      ]
+    },
+    {
+      "id": "B",
+      "text": "לבדוק מה נדרש לפי נוהל המעקב, ליצור קשר בערוץ המאושר ולתעד את הטיפול במשימה.",
+      "rating": "preferred",
+      "feedback": "מעקב יזום שומר על רציפות הטיפול והשירות, תוך הקפדה על נהלי הפנייה, ההרשאות, הפרטיות והתיעוד.",
+      "feedbackBeats": [
+        {
+          "kind": "narration",
+          "audioId": "AUDIO-S06-REC2-FB-B",
+          "visual": {
+            "id": "scenarioFeedback",
+            "props": {
+              "verdict": "preferred",
+              "headline": {
+                "at": 0.0,
+                "text": "נכון"
+              },
+              "points": [
+                {
+                  "at": 0.62,
+                  "text": "מעקב יזום"
+                },
+                {
+                  "at": 6.02,
+                  "text": "נהלי הפנייה"
+                },
+                {
+                  "at": 8.28,
+                  "text": "הרשאות ופרטיות"
+                },
+                {
+                  "at": 10.48,
+                  "text": "תיעוד המשימה"
+                }
+              ],
+              "values": {
+                "at": 0.62,
+                "names": [
+                  "מלווים אותך לאורך הדרך"
+                ]
+              }
+            }
+          },
+          "label": "משוב"
+        }
+      ]
+    },
+    {
+      "id": "C",
+      "text": "לשלוח למטופל הודעה עם פרטי הטיפול לכל מספר טלפון שמופיע בתיק.",
+      "rating": "undesirable",
+      "feedback": "גם מתוך רצון לעזור, אסור להתעלם מפרטיות המטופל. משתמשים רק בערוצים מאושרים ומוסרים מידע לפי הנהלים.",
+      "feedbackBeats": [
+        {
+          "kind": "narration",
+          "audioId": "AUDIO-S06-REC2-FB-C",
+          "visual": {
+            "id": "scenarioFeedback",
+            "props": {
+              "verdict": "undesirable",
+              "headline": {
+                "at": 2.86,
+                "text": "פרטיות המטופל קודמת"
+              },
+              "points": [
+                {
+                  "at": 5.72,
+                  "text": "ערוצים מאושרים בלבד"
+                },
+                {
+                  "at": 7.92,
+                  "text": "מידע לפי הנהלים"
+                },
+                {
+                  "at": 11.36,
+                  "text": "יוזמה עם אחריות"
+                }
+              ]
+            }
+          },
+          "label": "משוב"
+        }
+      ]
+    }
+  ],
+  "principle": "מעקב יזום, בערוצים מאושרים ובהתאם לנהלים.",
+  "sourcePages": [
+    13,
+    21,
+    27
+  ],
+  "approvalStatus": "DRAFT",
+  "critical": true,
+  "notes": "Narration supplied (S05-S09.zip). Answer wording follows 03-scenario-bank where it exists and the meaning of each feedback recording; it is proposed development content pending SME approval."
+}

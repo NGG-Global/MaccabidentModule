@@ -1,11 +1,44 @@
 {
   "screenId": "S06",
   "chapter": "תרחישי תפקיד",
-  "title": "תרחישים לפי תפקיד",
+  "title": "תרחישים מהעבודה שלך",
+  "eyebrow": "פרק 5",
   "targetMinutes": 8,
+  "learningObjective": "לבחור תגובה שירותית מקצועית במצבים מהתפקיד, בגבולות האחריות של התפקיד.",
   "onScreenText": [],
   "mediaIds": [],
+  "sequences": {
+    "enter": [
+      {
+        "kind": "composition",
+        "durationSec": 2.8,
+        "visual": {
+          "id": "chapter",
+          "props": {
+            "number": "05",
+            "title": "תרחישים מהשטח",
+            "subtitle": "מצבים מתוך התפקיד שבחרתם"
+          }
+        },
+        "label": "פתיחת פרק"
+      }
+    ]
+  },
   "interactionType": "scenario",
+  "scenarioIds": {
+    "reception": [
+      "SC-REC-01",
+      "SC-REC-02"
+    ],
+    "assistant": [
+      "SC-AST-01",
+      "SC-AST-02"
+    ],
+    "clinician": [
+      "SC-CLN-01",
+      "SC-CLN-02"
+    ]
+  },
   "completion": "interaction",
   "sourcePages": [
     13,

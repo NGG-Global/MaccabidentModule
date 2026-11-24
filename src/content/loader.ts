@@ -137,7 +137,7 @@ export function buildContent(raw: RawContent): Content {
     };
 
     const interaction = screen.interaction;
-    const expected = { compare: 'compare', valuesMatch: 'valuesMatch', journey: 'journey' } as const;
+    const expected = { compare: 'compare', valuesMatch: 'valuesMatch', journey: 'journey', measurement: 'measurement', assessment: 'assessment' } as const;
     const expectedType = expected[screen.interactionType as keyof typeof expected];
     if (expectedType && interaction?.type !== expectedType)
       problems.push(`${where}: interactionType ${screen.interactionType} needs an interaction of type ${expectedType}`);
@@ -158,6 +158,20 @@ export function buildContent(raw: RawContent): Content {
       for (const item of interaction.items)
         if (!valueIds.has(item.valueId)) problems.push(`${where}: item ${item.id} refers to unknown value ${item.valueId}`);
       needsSequence(interaction.feedbackSequence, 'feedbackSequence');
+    }
+    if (interaction?.type === 'measurement') {
+      for (const id of interaction.questionIds) if (!questions[id]) problems.push(`${where}: unknown question ${id}`);
+    }
+    if (interaction?.type === 'assessment') {
+      const pool = interaction.questionIds.map((id) => questions[id]);
+      interaction.questionIds.forEach((id, i) => {
+        if (!pool[i]) problems.push(`${where}: unknown question ${id}`);
+        else if (!pool[i]!.track) problems.push(`${where}: assessment question ${id} needs a track`);
+      });
+      const count = (track: string) => pool.filter((q) => q?.track === track).length;
+      if (count('common') < interaction.commonCount) problems.push(`${where}: needs at least ${interaction.commonCount} shared questions`);
+      for (const role of ROLES)
+        if (count(role) < interaction.roleCount) problems.push(`${where}: needs at least ${interaction.roleCount} questions for role ${role}`);
     }
     if (interaction?.type === 'journey') {
       const ids = interaction.stages.map((s) => s.id);
@@ -191,9 +205,18 @@ export function buildContent(raw: RawContent): Content {
 
   for (const scenario of Object.values(scenarios)) {
     const where = `scenario ${scenario.scenarioId}`;
-    if (scenario.narration) requireMedia(scenario.narration.audioId, 'audio', where);
-    for (const option of scenario.options)
-      if (option.feedbackAudioId) requireMedia(option.feedbackAudioId, 'audio', where);
+    scenario.situation.forEach((beat, i) => checkBeat(beat, `${where} situation beat ${i}`));
+    scenario.ask?.forEach((beat, i) => checkBeat(beat, `${where} ask beat ${i}`));
+    for (const option of scenario.options) {
+      option.feedbackBeats.forEach((beat, i) => checkBeat(beat, `${where} option ${option.id} feedback beat ${i}`));
+      // Each answer must open with its own spoken feedback, so the learner hears why.
+      const first = option.feedbackBeats[0];
+      if (first?.kind !== 'narration') problems.push(`${where}: option ${option.id} feedback must start with narration`);
+    }
+    const feedbackAudio = scenario.options.map((o) => (o.feedbackBeats[0]?.kind === 'narration' ? o.feedbackBeats[0].audioId : null));
+    if (new Set(feedbackAudio.filter(Boolean)).size !== feedbackAudio.filter(Boolean).length)
+      problems.push(`${where}: two options share the same feedback narration`);
+    for (const value of scenario.values) if (!valueIds.has(value)) problems.push(`${where}: unknown value ${value}`);
   }
 
   if (course) {

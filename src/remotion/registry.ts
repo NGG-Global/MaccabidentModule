@@ -1,6 +1,7 @@
 import type { ComponentType } from 'react';
 import type { CompositionId } from '../content/schema';
 import { Chapter } from './compositions/Chapter';
+import { AssessmentResult, Closing, Measurement, ScenarioFeedback, ScenarioIntro } from './compositions/Course';
 import { CompareFeedback } from './compositions/CompareFeedback';
 import { Journey } from './compositions/Journey';
 import { MeetYossi } from './compositions/MeetYossi';
@@ -20,6 +21,11 @@ export const compositions: Record<CompositionId, ComponentType<any>> = {
   valueAdapting: ValueAdapting,
   valueAccompanying: ValueAccompanying,
   journey: Journey,
+  scenarioIntro: ScenarioIntro,
+  scenarioFeedback: ScenarioFeedback,
+  measurement: Measurement,
+  assessmentResult: AssessmentResult,
+  closing: Closing,
 };
 
 export function parseCompositionProps(id: CompositionId, props: unknown): Record<string, unknown> {

@@ -24,18 +24,26 @@
     }
   },
   "scenario": {
-    "counter": "תרחיש {current} מתוך {total}",
-    "optionsLegend": "אפשרויות תגובה",
+    "steps": [
+      "המצב",
+      "ההחלטה",
+      "המשוב"
+    ],
+    "caseOf": "מקרה {current} מתוך {total}",
     "check": "בדיקה",
-    "retry": "ניסיון נוסף",
-    "nextScenario": "לתרחיש הבא",
-    "feedbackTitle": "משוב",
-    "ratings": {
-      "preferred": "תגובה מועדפת",
+    "retry": "לנסות תגובה אחרת",
+    "listen": "האזנה לשאלה",
+    "replaySituation": "צפייה חוזרת במצב",
+    "verdict": {
+      "preferred": "התגובה המועדפת",
       "partial": "תגובה חלקית",
-      "undesirable": "תגובה לא רצויה"
+      "undesirable": "כדאי לחשוב שוב"
     },
-    "practiceNote": "זהו תרגול ללא ציון. אפשר לנסות שוב."
+    "principle": "העיקרון",
+    "yourAnswer": "התגובה שבחרתם",
+    "practiceNote": "זהו תרגול ללא ציון. אפשר לנסות תגובה אחרת.",
+    "patientSays": "{speaker} אומר:",
+    "proposedLine": "נוסח מוצע, טרם הוקלט"
   },
   "summary": {
     "role": "המסלול שלך",
@@ -167,6 +175,77 @@
     "activityDone": "כל הכבוד. אפשר להמשיך.",
     "stationEnded": "אפשר להמשיך לנקודת המגע הבאה.",
     "allStations": "ביקרתם בכל נקודות המגע.",
-    "endOfPrototype": "זהו סוף הגרסה הנוכחית."
+    "introChapterDone": "פרק ההיכרות הושלם. בהמשך: מתרגלים שירות.",
+    "toDecision": "להחלטה",
+    "toFeedback": "למשוב",
+    "nextCase": "למקרה הבא",
+    "decide": "בחרו תגובה ולחצו על \"בדיקה\".",
+    "caseDone": "אפשר להמשיך למקרה הבא.",
+    "casesDone": "השלמתם את המקרים. אפשר להמשיך.",
+    "toCheck": "לבדיקת הבנה",
+    "checkAll": "ענו על שתי השאלות כדי להמשיך.",
+    "startAssessment": "להתחלת האתגר",
+    "assessmentNext": "לשאלה הבאה",
+    "submit": "להגשה",
+    "answerAll": "ענו על כל השאלות כדי להגיש.",
+    "assessmentPassed": "עברתם את האתגר. אפשר להמשיך לסיום.",
+    "assessmentFailed": "אפשר לנסות שוב, או להמשיך ולחזור לאתגר מאוחר יותר.",
+    "toConclusion": "לסיום"
+  },
+  "measure": {
+    "steps": [
+      "כלי המדידה",
+      "בדיקת הבנה"
+    ],
+    "index": "הכלים",
+    "checkTitle": "בדיקת הבנה קצרה",
+    "check": "בדיקה",
+    "retry": "ניסיון נוסף",
+    "correct": "נכון",
+    "incorrect": "לא בדיוק"
+  },
+  "assessment": {
+    "steps": [
+      "הנחיות",
+      "שאלות",
+      "תוצאה"
+    ],
+    "introTitle": "חמש החלטות, ציון בסוף",
+    "rules": [
+      "{count} שאלות: {common} משותפות ו-{role} מהתפקיד שלך",
+      "{points} נקודות לכל שאלה; ציון עובר: {threshold}",
+      "המשוב יוצג רק אחרי ההגשה"
+    ],
+    "questionOf": "שאלה {current} מתוך {total}",
+    "previous": "לשאלה הקודמת",
+    "next": "לשאלה הבאה",
+    "submit": "הגשה",
+    "unanswered": "נותרו {count} שאלות ללא תשובה.",
+    "scoreLabel": "הציון שלך",
+    "passed": "עברתם את האתגר",
+    "failed": "עוד לא הפעם",
+    "threshold": "ציון עובר: {threshold}",
+    "review": "סקירת התשובות",
+    "yourAnswer": "התשובה שלך",
+    "correctAnswer": "התשובה הנכונה",
+    "noAnswer": "לא נבחרה תשובה",
+    "improve": "נושאים לחיזוק",
+    "critical": "נושא שחשוב לחזור עליו",
+    "retry": "ניסיון נוסף",
+    "attempt": "ניסיון {n}",
+    "proposedNote": "שאלות האתגר נכתבו לצורך הפיתוח וממתינות לאישור מקצועי.",
+    "resultPassed": "עברתם את האתגר",
+    "resultFailed": "עוד לא הפעם"
+  },
+  "conclusion": {
+    "statusComplete": "הלומדה הושלמה",
+    "statusIncomplete": "הלומדה טרם הושלמה",
+    "needAssessment": "כדי להשלים את הלומדה צריך לעבור את האתגר המסכם.",
+    "toAssessment": "חזרה לאתגר המסכם",
+    "score": "ציון באתגר",
+    "role": "מסלול",
+    "completedOn": "הושלם בתאריך",
+    "values": "שלושת הערכים",
+    "localNote": "ההתקדמות נשמרת בדפדפן במכשיר זה בלבד. היא אינה רישום ארגוני של השלמה."
   }
 }

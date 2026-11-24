@@ -16,22 +16,56 @@ const problemsOf = (run: () => unknown): string[] => {
 };
 
 describe('shipped content', () => {
-  it('passes validation, keeps S00–S09 and runs S00–S04 in this build', () => {
+  it('passes validation and runs S00–S09 for every role', () => {
     expect(Object.keys(content.screens).sort()).toEqual(['S00', 'S01', 'S02', 'S03', 'S04', 'S05', 'S06', 'S07', 'S08', 'S09']);
-    for (const role of ROLES) expect(resolvePath(content.course, role)).toEqual(['S00', 'S01', 'S02', 'S03', 'S04']);
+    for (const role of ROLES) expect(resolvePath(content.course, role)).toEqual(['S00', 'S01', 'S02', 'S03', 'S04', 'S05', 'S06', 'S07', 'S08', 'S09']);
   });
 
-  it('gives every narration and video used in S00–S04 a measured duration and captions', () => {
-    for (const id of ['S00', 'S01', 'S02', 'S03']) {
-      for (const beats of Object.values(content.screens[id]!.sequences))
-        for (const beat of beats) {
-          if (beat.kind === 'composition') continue;
-          const asset = content.media[beat.kind === 'narration' ? beat.audioId : beat.mediaId]!;
-          expect(asset.status, asset.id).toBe('ready');
-          expect(asset.durationSec, asset.id).toBeGreaterThan(0);
-          expect(content.captions[asset.captionsId!]?.cues.length, asset.id).toBeGreaterThan(0);
-        }
+  it('gives every narration and video used in S00–S06 a measured duration and captions', () => {
+    const beats = [
+      ...['S00', 'S01', 'S02', 'S03', 'S04'].flatMap((id) => Object.values(content.screens[id]!.sequences).flat()),
+      ...Object.values(content.scenarios).flatMap((s) => [...s.situation, ...(s.ask ?? []), ...s.options.flatMap((o) => o.feedbackBeats)]),
+    ];
+    for (const beat of beats) {
+      if (beat.kind === 'composition') continue;
+      const asset = content.media[beat.kind === 'narration' ? beat.audioId : beat.mediaId]!;
+      expect(asset.status, asset.id).toBe('ready');
+      expect(asset.durationSec, asset.id).toBeGreaterThan(0);
+      expect(content.captions[asset.captionsId!]?.cues.length, asset.id).toBeGreaterThan(0);
     }
+  });
+
+  it('gives each scenario answer its own feedback recording, matching the answer id', () => {
+    for (const s of Object.values(content.scenarios)) {
+      const prefix = s.track === 'common' ? 'AUDIO-S05' : `AUDIO-S06-${{ reception: 'REC', assistant: 'AST', clinician: 'CLN' }[s.track]}${s.scenarioId.at(-1)}`;
+      for (const o of s.options) {
+        const first = o.feedbackBeats[0]!;
+        expect(first.kind === 'narration' && first.audioId, `${s.scenarioId} ${o.id}`).toBe(`${prefix}-FB-${o.id}`);
+      }
+      // In every scenario the preferred response is the one whose feedback recording says so (B).
+      expect(s.options.find((o) => o.rating === 'preferred')?.id, s.scenarioId).toBe('B');
+    }
+  });
+
+  it('shows each role only its own S06 scenarios, two per role', () => {
+    for (const role of ROLES) {
+      const ids = scenarioIdsFor(content.screens.S06!, role);
+      expect(ids).toHaveLength(2);
+      expect(ids.every((id) => content.scenarios[id]!.track === role)).toBe(true);
+    }
+  });
+
+  it('names S07–S09 narration as not supplied rather than inventing it', () => {
+    for (const id of ['AUDIO-S07', 'AUDIO-S08', 'AUDIO-S09']) expect(content.media[id]?.status).toBe('missing');
+  });
+
+  it('marks every assessment question as proposed and checks enough questions per role', () => {
+    const s08 = content.screens.S08!.interaction;
+    expect(s08?.type).toBe('assessment');
+    if (s08?.type !== 'assessment') return;
+    for (const id of s08.questionIds) expect(content.questions[id]?.proposed, id).toBe(true);
+    expect(s08.commonCount + s08.roleCount).toBe(5);
+    expect(content.course.assessment.pointsPerDecision * 5).toBe(100);
   });
 
   it('times every animated line within its narration', () => {
@@ -65,6 +99,22 @@ describe('shipped content', () => {
 describe('content validation', () => {
   it('accepts the fixture course', () => {
     expect(() => buildContent(branchingRaw())).not.toThrow();
+  });
+
+  it('rejects a scenario in which two answers share one feedback recording', () => {
+    const raw = branchingRaw();
+    const bad = scenario('SC-COM-01');
+    bad.options[2]!.feedbackBeats = bad.options[0]!.feedbackBeats;
+    raw.scenarios['SC-COM-01.json'] = bad;
+    expect(problemsOf(() => buildContent(raw)).join('\n')).toContain('two options share the same feedback narration');
+  });
+
+  it('rejects an assessment pool without enough questions for a role', () => {
+    const raw = branchingRaw();
+    delete raw.questions['Q-S08-08.json'];
+    const s08 = raw.screens['S08.json'] as { interaction: { questionIds: string[] } };
+    s08.interaction.questionIds = s08.interaction.questionIds.filter((id) => id !== 'Q-S08-08');
+    expect(problemsOf(() => buildContent(raw)).join('\n')).toContain('needs at least 2 questions for role clinician');
   });
 
   it('rejects a scenario with two preferred options', () => {

@@ -1,0 +1,178 @@
+{
+  "scenarioId": "SC-AST-01",
+  "title": "מטופל לחוץ לפני טיפול",
+  "track": "assistant",
+  "caseLabel": "מקרה 1",
+  "place": "חדר הטיפולים",
+  "touchpoint": "תקשורת",
+  "values": [
+    "effort-for-you"
+  ],
+  "skill": "אמפתיה בגבולות התפקיד",
+  "scene": "יוסי מתיישב בכיסא ומשתף בשקט שהוא לחוץ לפני הטיפול.",
+  "question": "איך הייתם מגיבים ליוסי?",
+  "situation": [
+    {
+      "kind": "narration",
+      "audioId": "AUDIO-S06-AST1-01",
+      "visual": {
+        "id": "scenarioIntro",
+        "props": {
+          "caseLabel": "מקרה 1",
+          "place": "חדר הטיפולים",
+          "lines": [
+            {
+              "at": 0.0,
+              "text": "דנה מכניסה את יוסי לחדר"
+            },
+            {
+              "at": 3.6,
+              "text": "הוא מתיישב, אבל נראה מתוח"
+            },
+            {
+              "at": 6.94,
+              "text": "הוא פונה אלייך בשקט"
+            }
+          ],
+          "photoId": "STILL-CHAIR-01"
+        }
+      },
+      "label": "המצב"
+    },
+    {
+      "kind": "video",
+      "mediaId": "VID-AST-ANXIETY-01",
+      "label": "יוסי משתף"
+    }
+  ],
+  "options": [
+    {
+      "id": "A",
+      "text": "\"אין סיבה להילחץ, זה טיפול רגיל.\" ולהמשיך בהכנות.",
+      "rating": "undesirable",
+      "feedback": "התגובה נועדה להרגיע, אבל עלולה לגרום ליוסי להרגיש שלא מקשיבים לו. עדיף להכיר בתחושה ולתת לה מקום.",
+      "feedbackBeats": [
+        {
+          "kind": "narration",
+          "audioId": "AUDIO-S06-AST1-FB-A",
+          "visual": {
+            "id": "scenarioFeedback",
+            "props": {
+              "verdict": "undesirable",
+              "headline": {
+                "at": 1.62,
+                "text": "הרגעה שלא מקשיבה"
+              },
+              "points": [
+                {
+                  "at": 5.76,
+                  "text": "להכיר בתחושה"
+                },
+                {
+                  "at": 7.84,
+                  "text": "לתת לה מקום"
+                },
+                {
+                  "at": 9.44,
+                  "text": "לסייע לקבל מענה"
+                }
+              ]
+            }
+          },
+          "label": "משוב"
+        }
+      ]
+    },
+    {
+      "id": "B",
+      "text": "\"אני מבינה שזה לא פשוט. אסביר לך מה קורה עכשיו, ואעדכן את הרופא שאתה מרגיש כך.\"",
+      "rating": "preferred",
+      "feedback": "אמפתיה ורגישות לצורך האישי, ומעבר מידע חשוב לצוות המטפל כדי שיוסי יקבל מענה מתאים.",
+      "feedbackBeats": [
+        {
+          "kind": "narration",
+          "audioId": "AUDIO-S06-AST1-FB-B",
+          "visual": {
+            "id": "scenarioFeedback",
+            "props": {
+              "verdict": "preferred",
+              "headline": {
+                "at": 0.0,
+                "text": "זו התגובה המועדפת"
+              },
+              "points": [
+                {
+                  "at": 1.96,
+                  "text": "אמפתיה ורגישות"
+                },
+                {
+                  "at": 6.8,
+                  "text": "מעבירים מידע לצוות המטפל"
+                }
+              ],
+              "values": {
+                "at": 1.96,
+                "names": [
+                  "מתאמצים למענך"
+                ]
+              }
+            }
+          },
+          "label": "משוב"
+        }
+      ]
+    },
+    {
+      "id": "C",
+      "text": "\"אל תדאג, אני מבטיחה שלא יכאב בכלל.\"",
+      "rating": "undesirable",
+      "feedback": "הבטחה לגבי כאב או תוצאות הטיפול אינה מתאימה. נשארים בגבולות התפקיד ומערבים את הגורם המטפל.",
+      "feedbackBeats": [
+        {
+          "kind": "narration",
+          "audioId": "AUDIO-S06-AST1-FB-C",
+          "visual": {
+            "id": "scenarioFeedback",
+            "props": {
+              "verdict": "undesirable",
+              "headline": {
+                "at": 1.96,
+                "text": "בלי הבטחות על כאב או תוצאות"
+              },
+              "points": [
+                {
+                  "at": 6.78,
+                  "text": "בגבולות התפקיד"
+                },
+                {
+                  "at": 9.16,
+                  "text": "אמפתיה"
+                },
+                {
+                  "at": 10.76,
+                  "text": "מערבים את המטפל"
+                }
+              ]
+            }
+          },
+          "label": "משוב"
+        }
+      ]
+    }
+  ],
+  "principle": "מכירים בתחושה, מסבירים בגבולות התפקיד ומעדכנים את הצוות המטפל.",
+  "sourcePages": [
+    14,
+    22,
+    28
+  ],
+  "approvalStatus": "DRAFT",
+  "ask": [
+    {
+      "kind": "narration",
+      "audioId": "AUDIO-S05-02",
+      "label": "השאלה"
+    }
+  ],
+  "notes": "Narration supplied (S05-S09.zip). Answer wording follows 03-scenario-bank where it exists and the meaning of each feedback recording; it is proposed development content pending SME approval."
+}

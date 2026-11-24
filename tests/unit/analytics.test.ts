@@ -27,14 +27,16 @@ const make = (adapter: AnalyticsAdapter, onProblem = vi.fn()) => ({
 const fields = { role: 'reception' as const, screenId: 'S05' };
 
 describe('event schema', () => {
-  it('defines the ten local-only prototype events', () => {
+  it('defines the local-only course events', () => {
     expect([...EVENT_NAMES].sort()).toEqual(
       [
+        'assessment_completed',
+        'assessment_started',
+        'course_completed',
         'course_started',
         'journey_stage_viewed',
         'narration_completed',
         'narration_started',
-        'prototype_completed',
         'question_answered',
         'role_selected',
         'screen_viewed',

@@ -10,7 +10,7 @@ import { ROLES, RoleSchema, scenarioIdsFor, type Content, type CourseConfig, typ
 export const AssessmentAttemptSchema = z.strictObject({
   attemptId: z.string(),
   attemptNumber: z.number().int().positive(),
-  answers: z.array(z.strictObject({ scenarioId: z.string(), optionId: z.string() })),
+  answers: z.array(z.strictObject({ questionId: z.string(), optionId: z.string() })),
   score: z.number(),
   maxScore: z.number(),
   percent: z.number(),
@@ -43,7 +43,7 @@ export type FlowAction =
   | { type: 'MATCH_VALUE'; itemId: string; valueId: string }
   | { type: 'VISIT_STAGE'; stageId: string; at: string }
   | { type: 'ANSWER_PRACTICE'; scenarioId: string; optionId: string }
-  | { type: 'NEXT' }
+  | { type: 'NEXT'; at?: string }
   | { type: 'BACK' }
   | { type: 'GOTO'; screenId: string }
   | { type: 'RECORD_ATTEMPT'; attempt: AssessmentAttempt }
@@ -105,6 +105,11 @@ export function createFlow(content: Content) {
         return state.role !== null;
       case 'compare':
         return interaction?.type === 'compare' && (state.answers[interaction.questionId]?.length ?? 0) > 0;
+      case 'measurement':
+        return interaction?.type === 'measurement' && interaction.questionIds.every((id) => (state.answers[id]?.length ?? 0) > 0);
+      case 'assessment':
+        // Submitting an attempt completes the screen; passing is what completes the course.
+        return state.attempts.length > 0;
       case 'valuesMatch':
         // Each item must eventually be matched to its value; wrong tries are allowed and recorded.
         return (
@@ -166,7 +171,10 @@ export function createFlow(content: Content) {
       case 'SELECT_ROLE':
         return screen.interactionType === 'roleSelect' ? { ...state, role: action.role } : state;
       case 'ANSWER_QUESTION': {
-        if (interaction?.type !== 'compare' || interaction.questionId !== action.questionId) return state;
+        const owns =
+          (interaction?.type === 'compare' && interaction.questionId === action.questionId) ||
+          (interaction?.type === 'measurement' && interaction.questionIds.includes(action.questionId));
+        if (!owns) return state;
         if (!questions[action.questionId]?.options.some((o) => o.id === action.optionId)) return state;
         return { ...state, answers: append(state.answers, action.questionId, action.optionId) };
       }
@@ -198,17 +206,19 @@ export function createFlow(content: Content) {
       case 'GOTO':
         return canVisit(state, action.screenId) ? { ...state, currentScreenId: action.screenId } : state;
       case 'RECORD_ATTEMPT':
-        return { ...state, attempts: [...state.attempts, action.attempt] };
+        return screen.interactionType === 'assessment' ? { ...state, attempts: [...state.attempts, action.attempt] } : state;
       case 'RESET':
         return initialState();
     }
   };
 
+  /** The course is complete on reaching the end screen with the latest assessment attempt passed. */
+  const meetsCompletion = (state: FlowState) => state.currentScreenId === course.flow.end && state.attempts.at(-1)?.passed === true;
+
   const reducer = (state: FlowState, action: FlowAction): FlowState => {
     const next = step(state, action);
-    // The prototype is complete the first time the end screen's activity is done.
-    if (next !== state && !next.completedAt && next.currentScreenId === course.flow.end && isScreenComplete(next, course.flow.end)) {
-      return { ...next, completedAt: 'at' in action ? action.at : new Date().toISOString() };
+    if (next !== state && !next.completedAt && meetsCompletion(next)) {
+      return { ...next, completedAt: ('at' in action && action.at) || new Date().toISOString() };
     }
     return next;
   };
@@ -225,7 +235,9 @@ export function createFlow(content: Content) {
     return state;
   };
 
-  return { initialState, reducer, canAdvance, canVisit, previousOf, chapters, isScreenComplete, isActivityDone, restore, screenOf };
+  const resolveNextScreen = (state: FlowState) => resolveNext(course, state.currentScreenId, state.role);
+
+  return { initialState, reducer, resolveNextScreen, canAdvance, canVisit, previousOf, chapters, isScreenComplete, isActivityDone, restore, screenOf, meetsCompletion };
 }
 
 export type Flow = ReturnType<typeof createFlow>;

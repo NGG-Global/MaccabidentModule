@@ -1,4 +1,4 @@
-# Media audit — S00–S04 prototype
+# Media audit
 
 Generated from `src/content/media-manifest.json` and `src/content/captions.json`. Every file was identified by its content, not by its file name or upload order: speech was transcribed locally (faster-whisper, ivrit-ai/whisper-large-v3-turbo-ct2, run in the session; nothing was sent to an external service) and each video was reviewed frame by frame.
 
@@ -17,13 +17,13 @@ Generated from `src/content/media-manifest.json` and `src/content/captions.json`
 | `VID-INTRO-01` | S00 | ready | 10.042 | lv_0_20261111233252.mp4 (corrected V01) | Corrected version: the meaningless wall sign of the first V01 is gone. Dialogue is shorter than the first version ("שלום, בוקר טוב. יש לי תור לעשר."). The logo on the wall is AI-generated; confirm it is acceptable to Maccabident. |
 | `VID-COMPARE-A-01` | S02 | ready | 10.026 | V02A_Reception_Distracted_Service.mp4 |  |
 | `VID-COMPARE-B-01` | S02 | ready | 10.026 | 1064077222_1794425076924453.mp4 (V02B) | Uploaded under a numeric file name; identified as V02B by its dialogue and framing, which match V02A. The earlier upload named V02B was a byte-identical copy of V04B. |
-| `VID-WAIT-01` | later chapters | blocked |  | V03_Yossi_Waiting_Complaint.mp4 | Burned-in Hebrew subtitle is garbled ("שמחון בזת לאינוי של?"). Not usable; needs regeneration without subtitles. |
-| `VID-CARE-01` | later chapters | ready | 10.026 | V04B_Reception_Empathetic_Response.mp4 |  |
-| `VID-SERVICE-01` | later chapters | ready | 10.026 | V04_Reception_Service_Conversation.mp4 | Dialogue transcript has low confidence; check against the script. |
-| `VID-AST-WELCOME-01` | later chapters | ready | 10.026 | V05_Assistant_Welcomes_Yossi.mp4 | Yossi wears a different outfit than in the other clips. |
-| `VID-AST-ANXIETY-01` | later chapters | ready | 10.026 | V06_Yossi_Dental_Anxiety.mp4 |  |
-| `VID-CLN-EXPLAIN-01` | later chapters | ready | 10.026 | V07_Dentist_Explains_Treatment.mp4 | AI-generated dental image on the tablet needs clinical review; check that Yossi is the same character. |
-| `VID-REC-CLOSING-01` | later chapters | ready | 10.026 | V10_Reception_Followup_Closing.mp4 | Yossi puts a card in his wallet; confirm it does not imply a payment step. |
+| `VID-WAIT-01` | S05 | ready | 10.026 | V03_Yossi_Waiting_Complaint.mp4 | Web copy cropped to the top 600 rows and letterboxed to 16:9 to remove the garbled burned-in subtitle ("שמחון בזת לאינוי של?"); a clean regeneration is still preferable. |
+| `VID-CARE-01` | S05 | ready | 10.026 | V04B_Reception_Empathetic_Response.mp4 |  |
+| `VID-SERVICE-01` | S09 | ready | 10.026 | V04_Reception_Service_Conversation.mp4 | Dialogue transcript has low confidence; check against the script. |
+| `VID-AST-WELCOME-01` | — | ready | 10.026 | V05_Assistant_Welcomes_Yossi.mp4 | Yossi wears a different outfit than in the other clips. |
+| `VID-AST-ANXIETY-01` | S06 | ready | 10.026 | V06_Yossi_Dental_Anxiety.mp4 |  |
+| `VID-CLN-EXPLAIN-01` | S06 | ready | 10.026 | V07_Dentist_Explains_Treatment.mp4 | AI-generated dental image on the tablet needs clinical review; check that Yossi is the same character. |
+| `VID-REC-CLOSING-01` | S06 | ready | 10.026 | V10_Reception_Followup_Closing.mp4 | Yossi puts a card in his wallet; confirm it does not imply a payment step. |
 | `AUDIO-S00-01` | S00 | ready | 50.678 | S00_01_Welcome.mp3 |  |
 | `AUDIO-S01-01` | S01 | ready | 24.189 | S01_01_Role_Selection.mp3 |  |
 | `AUDIO-S02-01` | S02 | ready | 16.771 | S02_01_Introduction.mp3 |  |
@@ -41,6 +41,10 @@ Generated from `src/content/media-manifest.json` and `src/content/captions.json`
 | `AUDIO-S04-05` | S04 | ready | 28.839 | ElevenLabs upload 5b17c10b |  |
 | `AUDIO-S04-06` | S04 | ready | 15.882 | ElevenLabs upload f865d408 |  |
 | `AUDIO-S03-FB-01` | S03 | ready | 16.117 | ElevenLabs upload 60731d8f |  |
+| `AUDIO-S07` | S07 | missing |  | — | Not supplied. The S05-S09 archive contains narration for S05 and S06 only. |
+| `AUDIO-S08` | S08 | missing |  | — | Not supplied. The S05-S09 archive contains narration for S05 and S06 only. |
+| `AUDIO-S09` | S09 | missing |  | — | Not supplied. The S05-S09 archive contains narration for S05 and S06 only. |
+| `AUDIO-S05-*`, `AUDIO-S06-*` (29 files) | S05, S06 | ready | | S05-S09.zip | See [`audio/s05-s06-report.md`](audio/s05-s06-report.md) |
 
 ## Findings
 
@@ -49,9 +53,9 @@ Generated from `src/content/media-manifest.json` and `src/content/captions.json`
 3. **S04 and exercise narration — supplied separately.** The first narration archive contained S00–S03 only. Eight further ElevenLabs files arrived later under generated names; each was identified by its content (the upload order did not match the station order): the journey introduction, five stations, the chapter closing, and the S03 exercise feedback.
 8. **Station 3 recording names the wrong station.** `AUDIO-S04-03` opens with "התחנה השישית" ("the sixth station"), transcribed with 94% confidence; it is station 3. It is used because the rest of the content is correct, and the caption shows what is actually said. Re-record the opening line ("התחנה השלישית").
 4. **V01 wall sign — resolved.** The first V01 showed a meaningless sign under the logo ("הפנידיה משיבידנט"). A corrected version (`lv_0_20261111233252.mp4`) replaced it in S00: the sign now shows the logo only, and Yossi matches the other clips. Its dialogue is shorter than the first version: "שלום, בוקר טוב. יש לי תור לעשר." The logo itself is still AI-generated and should be confirmed with Maccabident.
-5. **V03 burned-in subtitle.** The subtitle reads "שמחון בזת לאינוי של?" (garbled). V03 is blocked; one still frame from before the subtitle appears is used in the compositions.
+5. **V03 burned-in subtitle — worked around.** The subtitle reads "שמחון בזת לאינוי של?" (garbled). The web copy is cropped to the top 600 rows and letterboxed to 16:9, which removes it completely; V03 now plays in S05. A clean regeneration is still preferable.
 6. **Bitstream defect.** The delivered H.264 streams failed to decode in Chromium when seeked. The web copies were re-encoded to clean 720p H.264 (keyframe every second, AAC 160 kb/s); the original uploads are unchanged.
-7. **Consistency.** In V05 Yossi wears a different outfit; in V07 the actor may differ and the tablet shows an AI-generated dental image that needs clinical review. V10 shows a card going into a wallet; confirm it does not imply payment. None of these clips is used in S00–S04.
+7. **Consistency.** In V05 Yossi wears a different outfit (V05 is not used). V07 now plays after the preferred answer in SC-CLN-01: the actor may differ and the tablet shows an AI-generated dental image that needs clinical review. V10 plays after the preferred answer in SC-REC-01 and shows a card going into a wallet; confirm it does not imply payment.
 
 ## Captions
 
@@ -60,3 +64,4 @@ Captions and transcripts are the machine transcription, corrected by hand only w
 ## Brand
 
 The logo (`LOGO-MACCABIDENT-01.png`) was supplied directly. Interface colours are sampled from it: violet `#7F68D7`, navy `#02428E`, blue `#0090D2`. No official brand guide was supplied; fonts (Frank Ruhl Libre, Heebo) are an interim choice.
+9. **S05–S09 narration.** 29 recordings arrived in `S05-S09.zip`; all belong to S05 and S06. S07, S08 and S09 have no narration yet. Mapping, transcripts and report: [`audio/s05-s06-report.md`](audio/s05-s06-report.md).

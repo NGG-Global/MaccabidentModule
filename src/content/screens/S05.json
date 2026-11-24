@@ -1,11 +1,29 @@
 {
   "screenId": "S05",
-  "chapter": "תרגול",
+  "chapter": "תרגול משותף",
   "title": "תרחיש: עיכוב בתור",
+  "eyebrow": "פרק 4",
   "targetMinutes": 3,
-  "learningObjective": "לבחור תגובה שירותית מתאימה למצב שכיח, תוך אמפתיה, יוזמה ותיאום ציפיות.",
+  "learningObjective": "לבחור תגובה שירותית למצב שכיח: עיכוב בתור, תוך אמפתיה, יוזמה ותיאום ציפיות.",
   "onScreenText": [],
   "mediaIds": [],
+  "sequences": {
+    "enter": [
+      {
+        "kind": "composition",
+        "durationSec": 2.8,
+        "visual": {
+          "id": "chapter",
+          "props": {
+            "number": "04",
+            "title": "מתרגלים שירות",
+            "subtitle": "מצב שכל איש צוות פוגש"
+          }
+        },
+        "label": "פתיחת פרק"
+      }
+    ]
+  },
   "interactionType": "scenario",
   "scenarioIds": {
     "common": [

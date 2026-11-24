@@ -8,6 +8,8 @@ import { Icon } from './components/Icon';
 import { ScreenNavProvider, type ScreenNav } from './components/ScreenNav';
 import { Shell } from './components/Shell';
 import { createFlow } from './engine/flow';
+import { NoopLms, type LmsAdapter } from './lms/adapter';
+import { prefetchScreen } from './media/prefetch';
 import type { ProgressStore } from './engine/progress';
 import { ScreenRenderer } from './screens/ScreenRenderer';
 import { StageProvider } from './stage/StageProvider';
@@ -21,9 +23,13 @@ const focusNewHeading = () => document.querySelector<HTMLElement>('#main h1')?.f
 interface Props {
   store: ProgressStore;
   tracker: Tracker;
+  /** LMS seam; defaults to none (plain static site). */
+  lms?: LmsAdapter;
 }
 
-export function App({ store, tracker }: Props) {
+const noLms = new NoopLms();
+
+export function App({ store, tracker, lms = noLms }: Props) {
   const [boot] = useState(() => {
     const restored = store.load();
     return { initial: restored ?? flow.initialState(), resumed: restored?.startedAt != null };
@@ -48,7 +54,22 @@ export function App({ store, tracker }: Props) {
     [tracker, state.role, state.currentScreenId],
   );
 
-  useEffect(() => store.save(state), [store, state]);
+  useEffect(() => {
+    store.save(state);
+    lms.setProgress({ location: state.currentScreenId, suspendData: JSON.stringify({ v: content.course.courseVersion, state }) });
+  }, [store, state, lms]);
+
+  // A new assessment attempt is reported to the LMS once.
+  const attemptsSeen = useRef(boot.initial.attempts.length);
+  useEffect(() => {
+    if (state.attempts.length <= attemptsSeen.current) return;
+    attemptsSeen.current = state.attempts.length;
+    const a = state.attempts.at(-1)!;
+    lms.setScore({ raw: a.score, max: a.maxScore, scaled: a.maxScore ? a.score / a.maxScore : 0, passed: a.passed });
+  }, [state.attempts, lms]);
+
+  // Fetch the next screen's opening media ahead of time.
+  useEffect(() => prefetchScreen(flow.resolveNextScreen(state)), [state]);
 
   // Refs make each event fire once per real occurrence, not once per render or effect re-run.
   const lastViewed = useRef<string | null>(null);
@@ -63,8 +84,11 @@ export function App({ store, tracker }: Props) {
   useEffect(() => {
     if (state.completedAt === completionSeen.current) return;
     completionSeen.current = state.completedAt;
-    if (state.completedAt) track('prototype_completed', { rule: content.course.completionRule });
-  }, [state.completedAt, track]);
+    if (state.completedAt) {
+      track('course_completed', { rule: content.course.completionRule, percent: state.attempts.at(-1)?.percent ?? 0 });
+      lms.setCompleted();
+    }
+  }, [state.completedAt, state.attempts, track, lms]);
 
   const next = () => {
     setResumeNotice(false);
@@ -92,6 +116,7 @@ export function App({ store, tracker }: Props) {
     store.clear();
     setDirection(-1);
     lastViewed.current = null;
+    attemptsSeen.current = 0;
     dispatch({ type: 'RESET' });
   };
 
