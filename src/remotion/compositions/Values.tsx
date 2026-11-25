@@ -105,7 +105,7 @@ export function ValueSeeing(props: ValueSeeingPropsT & CommonProps) {
           bottom: 0,
           right: 0,
           width: portrait ? '100%' : '50%',
-          padding: `${(portrait ? 640 : 110) * u}px ${(portrait ? 70 : 100) * u}px ${70 * u}px`,
+          padding: `${(portrait ? 560 : 110) * u}px ${(portrait ? 70 : 100) * u}px ${70 * u}px`,
           display: 'flex',
           flexDirection: 'column',
           gap: 30 * u,

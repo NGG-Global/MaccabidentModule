@@ -275,9 +275,10 @@
       {
         "start": 13.3,
         "end": 16.46,
-        "text": "בואו נראה איך כל אחד מהם מתבטא בעבודה שלנו."
+        "text": "בואו נראה איך כל אחד מהם בא לידי ביטוי בעבודה שלנו."
       }
-    ]
+    ],
+    "note": "Captions follow the updated script (values wording, 25.11); the recording must be re-recorded to match (docs/narration-changes-values.md)."
   },
   "AUDIO-S03-02": {
     "status": "machine-transcribed",
@@ -290,17 +291,17 @@
       {
         "start": 1.08,
         "end": 4.98,
-        "text": "המשמעות היא שאנחנו לא מחכים תמיד שהמטופל יבקש עזרה."
+        "text": "המשמעות היא שאנחנו מזהים מראש את הצרכים של המטופל, גם כשהוא לא אומר אותם."
       },
       {
         "start": 5.7,
         "end": 7.62,
-        "text": "אנחנו שמים לב למה שקורה סביבנו,"
+        "text": "אנחנו מתייחסים אליו באופן אישי ומותאם,"
       },
       {
         "start": 7.74,
         "end": 9.9,
-        "text": "מזהים צרכים ופועלים ביוזמה."
+        "text": "פונים אליו בכבוד ומגלים חמלה במידת הצורך."
       },
       {
         "start": 10.22,
@@ -337,7 +338,8 @@
         "end": 27.68,
         "text": "עצם הידיעה שמישהו שם לב אליך עושה הבדל גדול."
       }
-    ]
+    ],
+    "note": "Captions follow the updated script (values wording, 25.11); the recording must be re-recorded to match (docs/narration-changes-values.md)."
   },
   "AUDIO-S03-03": {
     "status": "machine-transcribed",
@@ -610,7 +612,7 @@
       {
         "start": 6.12,
         "end": 8.22,
-        "text": "לתת הסברים ולהפגין אמפתיה."
+        "text": "לתת הסברים ולהפגין אמפתיה וחמלה."
       },
       {
         "start": 8.52,
@@ -638,7 +640,7 @@
         "text": "לברר ולסייע למטופל להבין מה אפשר לעשות בהמשך."
       }
     ],
-    "note": "Opening words are as recorded (\"התחנה השישית\"); the recording should say \"השלישית\"."
+    "note": "Opening words are as recorded (\"התחנה השישית\"); the recording should say \"השלישית\". Captions follow the updated script (values wording, 25.11); the recording must be re-recorded to match (docs/narration-changes-values.md)."
   },
   "AUDIO-S04-04": {
     "status": "machine-transcribed",

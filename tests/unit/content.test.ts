@@ -234,3 +234,20 @@ describe('scenarioIdsFor', () => {
     expect(scenarioIdsFor(screens.S04!, null)).toEqual(['SC-COM-01']);
   });
 });
+
+describe('values wording (client request)', () => {
+  const text = (id: string) => JSON.stringify(content.screens[id]);
+
+  it('names compassion on the "רואים אותך" screen and in the communication behaviours', () => {
+    const s03 = text('S03');
+    expect(s03).toContain('אנחנו מזהים מראש את הצרכים של המטופל, גם כשהוא לא אומר אותם');
+    expect(s03).toContain('מגלים חמלה במידת הצורך');
+    expect(text('S04')).toContain('הסברים, אמפתיה וחמלה');
+  });
+
+  it('describes how the values show at work with "בא לידי ביטוי", not "מתבטא"', () => {
+    for (const id of Object.keys(content.screens)) expect(text(id)).not.toContain('מתבטא');
+    expect(JSON.stringify(content.captions)).not.toContain('מתבטא');
+    expect(text('S03')).toContain('בא לידי ביטוי');
+  });
+});
