@@ -329,3 +329,28 @@ test('the transcript opens in a dialog and closes with Escape', async ({ page })
   await expect(page.getByRole('dialog')).toHaveCount(0);
   await expect(toggle).toBeFocused();
 });
+
+test('the journey touchpoints form a cycle: numbered 1–5 on one ring, 5 leading back to 1, the active one marked', async ({ page }) => {
+  await seedProgress(page, { currentScreenId: 'S04', completed: ['S00', 'S01', 'S02', 'S03'], answers: DONE_S03, visited: ['S04:prep'] });
+  const cycle = page.getByTestId('journey-cycle');
+  await expect(cycle).toBeVisible();
+  const ids = ['prep', 'contact', 'communication', 'closing', 'followup'];
+  const centres = [];
+  for (const id of ids) {
+    const b = (await page.getByTestId(`stage-${id}`).boundingBox())!;
+    centres.push({ x: b.x + b.width / 2, y: b.y + b.height / 2 });
+  }
+  const cx = centres.reduce((s, p) => s + p.x, 0) / 5;
+  const cy = centres.reduce((s, p) => s + p.y, 0) / 5;
+  const radii = centres.map((p) => Math.hypot(p.x - cx, p.y - cy));
+  for (const r of radii) expect(Math.abs(r - radii[0]!)).toBeLessThan(radii[0]! * 0.06);
+  // Step 1 at the top; the next step to its left (right-to-left order).
+  expect(Math.min(...centres.map((p) => p.y))).toBe(centres[0]!.y);
+  expect(centres[1]!.x).toBeLessThan(centres[0]!.x);
+  // Five arcs, the fifth closing the loop back to step 1.
+  await expect(cycle.locator('[data-testid^="cycle-arc-"]')).toHaveCount(5);
+  await page.getByTestId('stage-contact').click();
+  await expect(page.getByTestId('stage-contact')).toHaveAttribute('aria-current', 'step');
+  await expect(page.getByTestId('stage-prep')).not.toHaveAttribute('aria-current', 'step');
+  await expect(page.getByTestId('stage-detail')).toBeVisible();
+});

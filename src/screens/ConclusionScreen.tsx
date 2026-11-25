@@ -38,7 +38,7 @@ export function ConclusionScreen({ screen, state, dispatch }: ScreenProps) {
           aria-live="polite"
         >
           <p className="flex items-center gap-3 font-display text-2xl font-bold sm:text-3xl">
-            <span aria-hidden className={`grid size-9 shrink-0 place-items-center rounded-full ${complete ? 'bg-violet text-white' : 'border-2 border-ink/30 text-ink/60'}`}>
+            <span aria-hidden className={`grid size-9 shrink-0 place-items-center rounded-full ${complete ? 'bg-violet-ink text-white' : 'border-2 border-ink/30 text-ink/60'}`}>
               <Icon name={complete ? 'check' : 'restart'} className="size-5" strokeWidth={3} />
             </span>
             {complete ? ui.conclusion.statusComplete : ui.conclusion.statusIncomplete}
@@ -71,7 +71,7 @@ export function ConclusionScreen({ screen, state, dispatch }: ScreenProps) {
             </div>
           )}
           <div>
-            <p className={`mb-2 text-xs font-semibold ${complete ? 'text-mist' : 'text-violet'}`}>{ui.conclusion.values}</p>
+            <p className={`mb-2 text-xs font-semibold ${complete ? 'text-mist' : 'text-violet-ink'}`}>{ui.conclusion.values}</p>
             <ul className="flex flex-wrap gap-2">
               {content.values.values.map((v) => (
                 <li key={v.id} className={`rounded-full px-3 py-1 text-sm font-medium ${complete ? 'bg-white/10' : 'bg-paper'}`}>

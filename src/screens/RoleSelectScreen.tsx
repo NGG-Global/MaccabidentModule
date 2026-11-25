@@ -39,7 +39,7 @@ export function RoleSelectScreen({ screen, state, dispatch, done }: ScreenProps)
                         onChange={() => dispatch({ type: 'SELECT_ROLE', role: RoleSchema.parse(role.id) })}
                         className="peer sr-only"
                       />
-                      <span className={`font-display text-2xl tabular-nums ${checked ? 'text-violet' : 'text-ink/25'}`} aria-hidden>
+                      <span className={`font-display text-2xl tabular-nums ${checked ? 'text-violet-ink' : 'text-ink/25'}`} aria-hidden>
                         {String(i + 1).padStart(2, '0')}
                       </span>
                       <span className="min-w-0 flex-1">

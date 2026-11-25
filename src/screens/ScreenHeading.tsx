@@ -17,6 +17,7 @@ export function ScreenHeading({
   steps,
   step,
   onStep,
+  brand,
   className = '',
 }: {
   screen: Screen;
@@ -24,15 +25,20 @@ export function ScreenHeading({
   steps?: StepInfo[];
   step?: number;
   onStep?: (index: number) => void;
+  /** Optional brand mark shown beside the title (e.g. the service-concept logo). */
+  brand?: ReactNode;
   className?: string;
 }) {
   // Phones: the steps share the first row with the eyebrow, so the heading stays two rows tall.
   return (
     <div className={`grid shrink-0 grid-cols-[minmax(0,1fr)_auto] items-center gap-x-4 sm:gap-x-6 ${className}`}>
-      <p className="col-start-1 row-start-1 min-h-5 whitespace-nowrap text-xs font-semibold tracking-wide text-violet sm:text-sm">{screen.eyebrow}</p>
-      <h1 tabIndex={-1} className="col-span-2 row-start-2 font-display text-2xl font-bold leading-tight text-navy outline-none sm:col-span-1 sm:text-3xl lg:text-4xl lg:[@media(max-height:42rem)]:text-3xl">
-        {screen.title}
-      </h1>
+      <p className="col-start-1 row-start-1 min-h-5 whitespace-nowrap text-xs font-semibold tracking-wide text-violet-ink sm:text-sm">{screen.eyebrow}</p>
+      <div className="col-span-2 row-start-2 flex items-center gap-3 sm:col-span-1 sm:gap-4">
+        {brand}
+        <h1 tabIndex={-1} className="min-w-0 font-display text-2xl font-bold leading-tight text-navy outline-none sm:text-3xl lg:text-4xl lg:[@media(max-height:42rem)]:text-3xl">
+          {screen.title}
+        </h1>
+      </div>
       {lead && <p className="col-start-1 row-start-3 hidden max-w-2xl pt-1 text-base leading-snug text-ink/70 lg:[@media(min-height:46rem)]:block">{lead}</p>}
       {steps && step !== undefined && (
         <div className="col-start-2 row-start-1 justify-self-end sm:row-span-3 sm:self-end">

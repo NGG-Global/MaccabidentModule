@@ -35,7 +35,7 @@ export function ScenarioIntro(props: ScenarioIntroPropsT & CommonProps) {
             fontSize: (portrait ? 220 : 300) * u,
             lineHeight: 1,
             color: 'transparent',
-            WebkitTextStroke: `${1.5 * u}px rgba(127,104,215,0.45)`,
+            WebkitTextStroke: `${1.5 * u}px ${color.violet}73`,
             opacity: c.enter(0.2),
             transform: `translateX(${(c.reducedMotion ? 0 : c.progress(0, durationInFrames / fps)) * -3}%)`,
           }}

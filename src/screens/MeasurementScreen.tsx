@@ -79,7 +79,7 @@ export function MeasurementScreen({ screen, state, dispatch, done }: ScreenProps
                   aria-current={i === activeChapter ? 'true' : undefined}
                   className={`flex items-center gap-3 rounded-xl px-3 py-2.5 transition ${i === activeChapter ? 'bg-ink text-white' : i < activeChapter || learnEnded ? 'text-ink' : 'text-ink/50'}`}
                 >
-                  <span className={`font-display text-xl tabular-nums ${i === activeChapter ? 'text-violet' : 'text-ink/30'}`}>{String(i + 1).padStart(2, '0')}</span>
+                  <span className={`font-display text-xl tabular-nums ${i === activeChapter ? 'text-violet-ink' : 'text-ink/30'}`}>{String(i + 1).padStart(2, '0')}</span>
                   <span className="font-semibold leading-tight">{ch.label}</span>
                 </li>
               ))}
@@ -88,7 +88,7 @@ export function MeasurementScreen({ screen, state, dispatch, done }: ScreenProps
         </motion.div>
       ) : (
         <motion.section key="check" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="mx-auto flex w-full max-w-3xl min-h-0 flex-col gap-4 overflow-y-auto" data-testid="knowledge-check">
-          <p className="text-sm font-semibold text-violet">{ui.measure.checkTitle}</p>
+          <p className="text-sm font-semibold text-violet-ink">{ui.measure.checkTitle}</p>
           {questions.map((q) => (
             <CheckQuestion key={q.questionId} question={q} history={state.answers[q.questionId] ?? []} onAnswer={(optionId) => dispatch({ type: 'ANSWER_QUESTION', questionId: q.questionId, optionId })} />
           ))}

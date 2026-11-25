@@ -13,6 +13,7 @@ import { useStage } from '../stage/StageProvider';
 import { StageViewport } from '../stage/StageViewport';
 import { unlockPlayback } from '../stage/session';
 import { useStageTime } from '../stage/useStageTime';
+import { JourneyCycle } from './JourneyCycle';
 import { ScreenFrame, ScreenHeading, type StepInfo } from './ScreenHeading';
 import { useEnterSequence } from './useEnterSequence';
 import { useSteps } from './useSteps';
@@ -139,53 +140,28 @@ export function JourneyScreen({ screen, state, dispatch, done }: ScreenProps) {
       )}
 
       {step === 'explore' && (
-        <motion.div key="explore" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex min-h-0 flex-1 flex-col gap-3 sm:gap-4">
-          <nav aria-label={ui.journey.route}>
-            <div className="mb-1 flex items-baseline justify-between gap-3">
-              <h3 className="text-sm font-semibold text-ink/70">{ui.journey.stages}</h3>
-              <p className="text-sm text-ink/65" aria-live="polite" data-testid="journey-progress">
-                {fill(ui.journey.progress, { done: visitedIds.length, total: stages.length })}
-              </p>
-            </div>
-            <ol className="relative grid grid-cols-5 gap-1.5 sm:gap-2">
-              {stages.map((s) => {
-                const visited = visitedIds.includes(s.id);
-                const isActive = s.id === activeId;
-                return (
-                  <li key={s.id}>
-                    <button
-                      type="button"
-                      onClick={() => open(s.id)}
-                      aria-current={isActive ? 'step' : undefined}
-                      aria-label={`${s.number}. ${s.title} – ${visited ? ui.journey.visited : ui.journey.notVisited}`}
-                      data-testid={`stage-${s.id}`}
-                      data-visited={visited}
-                      className={`flex h-full min-h-12 w-full flex-col items-center gap-1 rounded-xl border-2 p-1.5 text-center transition sm:flex-row sm:items-center sm:gap-2.5 sm:p-2.5 sm:text-start ${
-                        isActive ? 'border-violet bg-white shadow-lg' : visited ? 'border-navy/25 bg-white' : 'border-dashed border-ink/25 hover:border-ink/50'
-                      }`}
-                    >
-                      <span
-                        className={`grid size-8 shrink-0 place-items-center rounded-full font-display font-bold sm:size-9 sm:text-lg ${
-                          isActive ? 'bg-violet text-white' : visited ? 'bg-navy text-white' : 'border-2 border-ink/25 text-ink/60'
-                        }`}
-                        aria-hidden
-                      >
-                        {visited && !isActive ? <Icon name="check" className="size-4" strokeWidth={3} /> : s.number}
-                      </span>
-                      <span aria-hidden className="hidden min-w-0 md:block">
-                        <span className="block text-sm font-semibold leading-tight">{s.title}</span>
-                        <span className={`text-xs ${visited ? 'text-navy' : 'text-ink/55'}`}>{visited ? ui.journey.visited : ui.journey.notVisited}</span>
-                      </span>
-                    </button>
-                  </li>
-                );
-              })}
-            </ol>
-          </nav>
-
-          <div className="grid min-h-0 flex-1 gap-4 lg:grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)] lg:gap-6">
-            {isWide && <StageViewport label={screen.title} fallback={<JourneyPrompt />} />}
-            <div className="flex min-h-0 flex-col gap-2">
+        <motion.div key="explore" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="grid min-h-0 flex-1 grid-rows-[auto_minmax(0,1fr)] gap-2 sm:gap-4 lg:grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)] lg:grid-rows-1 lg:gap-6">
+          {/* The touchpoints as a cycle: on phones a compact ring beside the count; on wide screens the ring with titles, captions and controls under it. */}
+          <div className="flex min-h-0 flex-col gap-3">
+            <nav aria-label={ui.journey.route} className="flex min-h-0 items-center gap-3 lg:flex-1 lg:flex-col lg:items-stretch lg:rounded-2xl lg:bg-white/70 lg:p-5">
+              <div className="min-w-0 flex-1 lg:flex lg:flex-none lg:items-baseline lg:justify-between lg:gap-3">
+                <h3 className="text-sm font-semibold text-ink/70">{ui.journey.stages}</h3>
+                <p className="text-sm text-ink/65" aria-live="polite" data-testid="journey-progress">
+                  {fill(ui.journey.progress, { done: visitedIds.length, total: stages.length })}
+                </p>
+              </div>
+              <div className="size-28 shrink-0 sm:size-36 lg:size-auto lg:min-h-0 lg:w-full lg:flex-1 lg:px-36 xl:px-40" data-testid="journey-cycle">
+                <JourneyCycle stages={stages} activeId={activeId} visitedIds={visitedIds} onOpen={open} labels={isWide} nodeFraction={isWide ? 0.17 : 0.28} />
+              </div>
+            </nav>
+            {isWide && (
+              <div className="flex shrink-0 flex-col gap-2">
+                <MiniCaption />
+                <StageControls />
+              </div>
+            )}
+          </div>
+          <div className="flex min-h-0 flex-col gap-2">
               <AnimatePresence mode="wait" initial={false}>
                 {active ? (
                   <motion.article
@@ -194,21 +170,21 @@ export function JourneyScreen({ screen, state, dispatch, done }: ScreenProps) {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -8 }}
                     transition={{ type: 'spring', damping: 30, stiffness: 180 }}
-                    className="flex min-h-0 flex-1 flex-col gap-2 overflow-hidden rounded-2xl bg-white p-4 sm:p-6"
+                    className="flex min-h-0 flex-1 flex-col gap-1 overflow-hidden rounded-2xl bg-white p-3 sm:gap-2 sm:p-6"
                     data-testid="stage-detail"
                   >
                     <div className="flex items-start gap-3">
                       <div className="min-w-0 flex-1">
-                        <p className="text-sm font-semibold text-violet">
+                        <p className="text-sm font-semibold text-violet-ink">
                           {ui.journey.stage} {active.number}
                         </p>
                         <h3 className="font-display text-2xl font-bold leading-tight text-navy sm:text-3xl">{active.title}</h3>
                       </div>
-                      {image?.status === 'ready' && <img src={image.url} alt={image.alt} className="size-16 shrink-0 rounded-xl object-cover sm:size-20" />}
+                      {image?.status === 'ready' && <img src={image.url} alt={image.alt} className="size-12 shrink-0 rounded-xl object-cover sm:size-20" />}
                     </div>
                     <p className="text-base leading-snug sm:text-lg">{active.summary}</p>
                     <h4 className="pt-1 text-sm font-semibold text-ink/60">{ui.journey.points}</h4>
-                    <ul className="space-y-1.5" aria-live="polite">
+                    <ul className="space-y-0.5 sm:space-y-1.5" aria-live="polite">
                       {active.points
                         // While the station is narrated, each point appears as it is spoken; otherwise all are shown.
                         .filter((point) => narrationTime === null || point.at === undefined || point.at <= narrationTime + 0.1)
@@ -234,7 +210,6 @@ export function JourneyScreen({ screen, state, dispatch, done }: ScreenProps) {
                 )}
               </AnimatePresence>
               {!isWide && <StageControls />}
-            </div>
           </div>
         </motion.div>
       )}
@@ -288,7 +263,7 @@ function MiniCaption({ dark = false }: { dark?: boolean }) {
   const text = useLiveCaption();
   if (!captions || (stage.state.status !== 'playing' && stage.state.status !== 'paused')) return null;
   return (
-    <p aria-hidden data-testid="caption" className={`relative mt-auto min-h-10 rounded-lg px-3 py-2 text-sm leading-snug ${dark ? 'mt-4 bg-white/10 text-white/90' : 'bg-ink text-white'}`}>
+    <p aria-hidden data-testid="caption" className={`relative mt-auto min-h-10 shrink-0 rounded-lg px-3 py-1.5 text-sm sm:py-2 leading-snug ${dark ? 'mt-4 bg-white/10 text-white/90' : 'bg-ink text-white'}`}>
       {text}
     </p>
   );

@@ -195,7 +195,7 @@ export function ScenarioScreen({ screen, state, dispatch, done }: ScreenProps) {
           >
             <div className="flex flex-wrap items-center justify-between gap-2 text-sm">
               <p className="text-ink/70">
-                <span className="font-semibold text-violet">{sc.place}</span> · {sc.scene}
+                <span className="font-semibold text-violet-ink">{sc.place}</span> · {sc.scene}
               </p>
               <div className="flex gap-1.5">
                 <button type="button" onClick={goSituation} className="inline-flex min-h-10 items-center gap-1.5 rounded-full px-3 text-ink/70 hover:bg-ink/5">
@@ -258,7 +258,7 @@ export function ScenarioScreen({ screen, state, dispatch, done }: ScreenProps) {
                 </div>
                 <p className="leading-relaxed sm:text-lg">{option.feedback}</p>
                 <div className="rounded-xl bg-paper p-3">
-                  <p className="text-xs font-semibold text-violet">{ui.scenario.principle}</p>
+                  <p className="text-xs font-semibold text-violet-ink">{ui.scenario.principle}</p>
                   <p className="font-semibold leading-snug text-navy">{sc.principle}</p>
                 </div>
                 {option.rating !== 'preferred' && (
