@@ -15,15 +15,15 @@ Generated from `src/content/media-manifest.json` and `src/content/captions.json`
 | Asset | Screen | Status | Duration (s) | Source file | Notes |
 |---|---|---|---:|---|---|
 | `VID-INTRO-01` | S00 | ready | 10.042 | lv_0_20261111233252.mp4 (corrected V01) | Corrected version: the meaningless wall sign of the first V01 is gone. Dialogue is shorter than the first version ("שלום, בוקר טוב. יש לי תור לעשר."). The logo on the wall is AI-generated; confirm it is acceptable to Maccabident. |
-| `VID-COMPARE-A-01` | S02 | ready | 10.026 | V02A_Reception_Distracted_Service.mp4 |  |
-| `VID-COMPARE-B-01` | S02 | ready | 10.026 | 1064077222_1794425076924453.mp4 (V02B) | Uploaded under a numeric file name; identified as V02B by its dialogue and framing, which match V02A. The earlier upload named V02B was a byte-identical copy of V04B. |
-| `VID-WAIT-01` | S05 | ready | 10.026 | V03_Yossi_Waiting_Complaint.mp4 | Web copy cropped to the top 600 rows and letterboxed to 16:9 to remove the garbled burned-in subtitle ("שמחון בזת לאינוי של?"); a clean regeneration is still preferable. |
+| `VID-COMPARE-A-01` | S02 | ready | 10.0 | 994060083_1795623433679414.mp4 (V02A, regenerated 2026-11-25) | Same dialogue and framing; the receptionist no longer wears a headset. |
+| `VID-COMPARE-B-01` | S02 | ready | 10.0 | 1049011081_1795623998507569.mp4 (V02B, regenerated 2026-11-25) | Same dialogue and framing; no headset. Last line heard as "בוא נבדוק יחד"; check against the script. |
+| `VID-WAIT-01` | S05 | ready | 10.0 | 868972630_1795623773319311.mp4 (V03, regenerated 2026-11-25) | No burned-in subtitles, so the web copy is no longer cropped or letterboxed. |
 | `VID-CARE-01` | S05 | ready | 10.026 | V04B_Reception_Empathetic_Response.mp4 |  |
-| `VID-SERVICE-01` | S09 | ready | 10.026 | V04_Reception_Service_Conversation.mp4 | Dialogue transcript has low confidence; check against the script. |
-| `VID-AST-WELCOME-01` | — | archived | 10.026 | V05_Assistant_Welcomes_Yossi.mp4 | Not used by any screen; moved to `archive/media/`. Yossi wears a different outfit than in the other clips. |
+| `VID-SERVICE-01` | S09 | ready | 10.0 | 536701790_1795625272900431.mp4 (regenerated 2026-11-25) | Same dialogue and framing; no headset. Verify the wording against the script. |
+| `VID-AST-WELCOME-01` | S06 (SC-AST-01) | ready | 10.0 | 394552575_1795624683021405.mp4 (V05, regenerated 2026-11-25) | Yossi now wears the same denim shirt as elsewhere; restored from the archive as the opening beat of SC-AST-01. |
 | `VID-AST-ANXIETY-01` | S06 | ready | 10.026 | V06_Yossi_Dental_Anxiety.mp4 |  |
 | `VID-CLN-EXPLAIN-01` | S06 | ready | 10.026 | V07_Dentist_Explains_Treatment.mp4 | AI-generated dental image on the tablet needs clinical review; check that Yossi is the same character. |
-| `VID-REC-CLOSING-01` | S06 | ready | 10.026 | V10_Reception_Followup_Closing.mp4 | Yossi puts a card in his wallet; confirm it does not imply a payment step. |
+| `VID-REC-CLOSING-01` | S06 | ready | 10.0 | 361941669_1795624308574749.mp4 (V10, regenerated 2026-11-25) | Same dialogue; no headset. Yossi takes a card and puts it in his wallet; confirm it does not imply a payment step. |
 | `AUDIO-S00-01` | S00 | ready | 50.678 | S00_01_Welcome.mp3 |  |
 | `AUDIO-S01-01` | S01 | ready | 24.189 | S01_01_Role_Selection.mp3 |  |
 | `AUDIO-S02-01` | S02 | ready | 16.771 | S02_01_Introduction.mp3 |  |
@@ -55,7 +55,7 @@ Generated from `src/content/media-manifest.json` and `src/content/captions.json`
 4. **V01 wall sign — resolved.** The first V01 showed a meaningless sign under the logo ("הפנידיה משיבידנט"). A corrected version (`lv_0_20261111233252.mp4`) replaced it in S00: the sign now shows the logo only, and Yossi matches the other clips. Its dialogue is shorter than the first version: "שלום, בוקר טוב. יש לי תור לעשר." The logo itself is still AI-generated and should be confirmed with Maccabident.
 5. **V03 burned-in subtitle — worked around.** The subtitle reads "שמחון בזת לאינוי של?" (garbled). The web copy is cropped to the top 600 rows and letterboxed to 16:9, which removes it completely; V03 now plays in S05. A clean regeneration is still preferable.
 6. **Bitstream defect.** The delivered H.264 streams failed to decode in Chromium when seeked. The web copies were re-encoded to clean 720p H.264 (keyframe every second, AAC 160 kb/s); the original uploads are unchanged.
-7. **Consistency.** In V05 Yossi wears a different outfit (V05 is not used). V07 now plays after the preferred answer in SC-CLN-01: the actor may differ and the tablet shows an AI-generated dental image that needs clinical review. V10 plays after the preferred answer in SC-REC-01 and shows a card going into a wallet; confirm it does not imply payment.
+7. **Consistency.** The regenerated reception clips (V02A, V02B, V10 and the farewell VID-SERVICE-01) show the receptionist without a headset; VID-CARE-01 still shows her with one. V07 now plays after the preferred answer in SC-CLN-01: the actor may differ and the tablet shows an AI-generated dental image that needs clinical review. V10 plays after the preferred answer in SC-REC-01 and shows a card going into a wallet; confirm it does not imply payment.
 
 ## Captions
 
@@ -67,3 +67,4 @@ The logo (`LOGO-MACCABIDENT-01.png`) was supplied directly. Interface colours ar
 9. **S05–S09 narration.** 29 recordings arrived in `S05-S09.zip`; all belong to S05 and S06. S08 and S09 have no narration yet (S07 was later removed from the course). Mapping, transcripts and report: [`audio/s05-s06-report.md`](audio/s05-s06-report.md).
 10. **Archived (2026-11-25).** Three files not used by any screen were moved to `archive/media/`, outside the build: `VID-AST-WELCOME-01.mp4` (V05), `POSTER-VID-AST-WELCOME-01.jpg` and `STILL-CORRIDOR-01.jpg` (2.35 MB). Their manifest entries are kept with status `archived`; see `archive/README.md` to restore.
 11. **AUDIO-S04-05 needs re-recording** to include the sentence about the satisfaction survey now shown in journey station 5 (`docs/narration-changes.md`).
+12. **Regenerated clips (2026-11-25).** V02A, V02B, V03, V05, V10 and the farewell clip (VID-SERVICE-01) were replaced by regenerated versions with the same dialogue. V05 returned from the archive to SC-AST-01; its poster came back with it, and the old still `STILL-CORRIDOR-01.jpg` stays archived.
