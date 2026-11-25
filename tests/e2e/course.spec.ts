@@ -1,10 +1,9 @@
 import { expect, test, type Page } from '@playwright/test';
-import { collectEvents, DONE_S04, expectFitsWindow, expectNoBrokenLayout, finishBeat, footerForward, heading, seedProgress, stageStatus, waitForStage } from './helpers';
+import { collectEvents, DONE_S04, expectFitsWindow, expectNoBrokenLayout, finishBeat, finishSequence, footerForward, forward, heading, next, seedProgress, stageStatus, waitForStage } from './helpers';
 
 /**
  * S05–S09 in a real browser, for each role, on desktop and at 360px: the
- * scenarios with answer-specific narrated feedback, the measurement screen,
- * the scored assessment with review and retry, and the conclusion.
+ * scenarios with answer-specific narrated feedback, the scored assessment with review and retry, and the conclusion.
  */
 
 type Role = 'reception' | 'assistant' | 'clinician';
@@ -98,20 +97,7 @@ for (const role of ['reception', 'assistant', 'clinician'] as Role[]) {
       await footerForward(page).click();
     }
 
-    // S07 — explainer, then the knowledge check.
-    await expect(heading(page, 'איך אנחנו לומדים ומשתפרים')).toBeVisible();
-    await waitForStage(page, (s) => s.key === 'enter' && s.started === true);
-    await expect(page.getByTestId('composition')).toBeVisible();
-    await footerForward(page).click();
-    for (const q of ['Q-S07-01', 'Q-S07-02']) {
-      const box = page.getByTestId(`check-${q}`);
-      await box.locator(`[data-option="${await correctOption(page, q)}"]`).click();
-      await box.getByRole('button', { name: 'בדיקה' }).click();
-      await expect(box.getByTestId('check-feedback')).toHaveAttribute('data-correct', 'true');
-    }
-    await expectFitsWindow(page, 'S07 check');
-    await footerForward(page).click();
-
+    // S07 ("איך אנחנו לומדים ומשתפרים") was removed: S06 leads straight to the assessment.
     // S08 — fail first (3 of 5 = 60), review, retry and pass (4 of 5 = 80, the threshold).
     await expect(heading(page, 'האתגר המסכם')).toBeVisible();
     await takeAssessment(page, [0, 3]);
@@ -157,7 +143,7 @@ test('the end screen does not report completion without a passed assessment, and
     criticalMisses: ['Q-S08-01'],
     completedAt: '2026-11-24T09:00:00.000Z',
   };
-  await seedProgress(page, { role: 'clinician', currentScreenId: 'S09', ...DONE_S04, completed: [...DONE_S04.completed, 'S05', 'S06', 'S07', 'S08'], answers: { ...DONE_S04.answers, 'SC-COM-01': ['B'], 'SC-CLN-01': ['B'], 'SC-CLN-02': ['B'], 'Q-S07-01': ['A'], 'Q-S07-02': ['A'] }, attempts: [failedAttempt] });
+  await seedProgress(page, { role: 'clinician', currentScreenId: 'S09', ...DONE_S04, completed: [...DONE_S04.completed, 'S05', 'S06', 'S08'], answers: { ...DONE_S04.answers, 'SC-COM-01': ['B'], 'SC-CLN-01': ['B'], 'SC-CLN-02': ['B'] }, attempts: [failedAttempt] });
   await expect(page.getByTestId('completion-status')).toHaveAttribute('data-complete', 'false');
   await page.getByTestId('back-to-assessment').click();
   await expect(heading(page, 'האתגר המסכם')).toBeVisible();
@@ -169,4 +155,101 @@ test('progress inside S06 survives a refresh: answered cases stay answered', asy
   await expect(page.getByTestId('scenario')).toHaveAttribute('data-scenario-id', 'SC-AST-02');
   await expect(page.getByTestId('case-counter')).toContainText('מקרה 2 מתוך 2');
   expect((await stageStatus(page))?.status).toBe('ready'); // nothing plays after a refresh until the learner presses play
+});
+
+/** A screen is not empty: it has its heading and real content, and the header shows the nine chapters. */
+async function expectFilledScreen(page: Page, title: string) {
+  await expect(page.locator('#main h1').first()).toHaveText(title);
+  const text = (await page.locator('#main').innerText()).replace(/\s+/g, ' ').trim();
+  expect(text.length, `${title}: the screen has content`).toBeGreaterThan(60);
+  await expect(page.getByTestId('stage-empty')).toHaveCount(0);
+  // Wide screens list the chapters; phones show "פרק X מתוך 9".
+  if ((page.viewportSize()?.width ?? 0) >= 768) await expect(page.getByRole('navigation', { name: 'התקדמות בפרקים' }).getByRole('listitem')).toHaveCount(9);
+  else await expect(page.getByTestId('progress-label')).toContainText('מתוך 9');
+}
+
+test('the whole course in one run, S00 to S09: nine chapters, no S07, assessment scored, no errors', async ({ page }) => {
+  test.setTimeout(240_000);
+  const events = collectEvents(page);
+  const problems: string[] = [];
+  // In development only, React StrictMode makes the Remotion Player report "Cannot suspend a closed AudioContext"
+  // (documented in the README; the production build is checked separately and shows no errors).
+  const devOnly = /Cannot suspend a closed AudioContext/;
+  page.on('pageerror', (e) => !devOnly.test(e.message) && problems.push(`pageerror: ${e.message}`));
+  page.on('console', (m) => m.type() === 'error' && !devOnly.test(m.text()) && problems.push(`console: ${m.text()}`));
+  page.on('response', (r) => r.status() >= 400 && problems.push(`${r.status()} ${r.url()}`));
+  const titles: string[] = [];
+  const seen = async (title: string) => {
+    await expectFilledScreen(page, title);
+    titles.push(title);
+  };
+
+  await page.goto('/');
+  await page.getByRole('button', { name: 'התחלה', exact: true }).click();
+  await waitForStage(page, (s) => s.status === 'playing');
+  await seen('בידיים טובות');
+  await next(page).click();
+
+  await seen('מה התפקיד שלך במרפאה?');
+  await page.getByText('סייעות', { exact: true }).click();
+  await next(page).click();
+
+  await seen('שתי חוויות של אותו מטופל');
+  await forward(page, 'לשאלה').click();
+  await page.getByText('יחס אישי, הכוונה ברורה').click();
+  await page.getByRole('button', { name: 'בדיקה' }).click();
+  await forward(page, 'להסבר').click();
+  await next(page).click();
+
+  await seen('שלושת ערכי השירות');
+  await forward(page, 'לתרגול').click();
+  await page.getByTestId('match-delay-update').getByRole('button', { name: 'רואים אותך' }).click();
+  await page.getByTestId('match-adapt-explanation').getByRole('button', { name: 'מתאמצים למענך' }).click();
+  await page.getByTestId('match-next-step').getByRole('button', { name: 'מלווים אותך לאורך הדרך' }).click();
+  await next(page).click();
+
+  await seen('מסע המטופל');
+  await forward(page, 'לנקודות המגע').click();
+  for (const id of ['prep', 'contact', 'communication', 'closing', 'followup']) await page.getByTestId(`stage-${id}`).click();
+  // Station 5 carries the one statement about the satisfaction survey (shown once its narration has played).
+  await finishSequence(page);
+  await expect(page.getByTestId('stage-detail')).toContainText('בסיום הביקור נשלח למטופל סקר שביעות רצון, שעוזר לנו להמשיך ולשפר את השירות.');
+  await forward(page, 'לסיכום הפרק').click();
+  await next(page).click();
+
+  await seen('תרחיש: עיכוב בתור');
+  await toDecision(page);
+  await page.getByTestId('decision').locator('[data-option="B"]').click();
+  await page.getByRole('button', { name: 'בדיקה' }).click();
+  await footerForward(page).click();
+
+  await seen('תרחישים מהעבודה שלך');
+  for (const id of CASES.assistant) {
+    await expect(page.getByTestId('scenario')).toHaveAttribute('data-scenario-id', id);
+    await toDecision(page);
+    await page.getByTestId('decision').locator('[data-option="B"]').click();
+    await page.getByRole('button', { name: 'בדיקה' }).click();
+    await footerForward(page).click();
+  }
+
+  // Straight from the role scenarios to the assessment: the removed chapter does not appear.
+  await seen('האתגר המסכם');
+  await expect(page.locator('#main')).not.toContainText('איך אנחנו לומדים ומשתפרים');
+  await expect(page.locator('#main')).toContainText('פרק 6');
+  await takeAssessment(page, []);
+  await expect(page.getByTestId('assessment-score')).toHaveAttribute('data-passed', 'true');
+  await expect(page.getByTestId('assessment-score')).toContainText('100');
+  await footerForward(page).click();
+
+  await seen('בידיים טובות');
+  await expect(page.getByTestId('completion-status')).toHaveAttribute('data-complete', 'true');
+  await expect(page.getByTestId('final-score')).toHaveText('100');
+  await expectNoBrokenLayout(page);
+
+  expect(titles).toHaveLength(9);
+  expect(events.names().filter((n) => n === 'screen_viewed')).toHaveLength(9);
+  expect(events.events.some((e) => e.screenId === 'S07'), 'no event from the removed screen').toBe(false);
+  expect(events.names().filter((n) => n === 'course_completed')).toHaveLength(1);
+  expect(events.dropped).toEqual([]);
+  expect(problems, 'no errors and no failed requests').toEqual([]);
 });

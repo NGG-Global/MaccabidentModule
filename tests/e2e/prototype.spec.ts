@@ -162,7 +162,7 @@ test('a new employee completes the introduction chapter, S00 to S04', async ({ p
     ['B', false, 1],
     ['A', true, 2],
   ]);
-  for (const event of events) expect(event).toMatchObject({ courseVersion: '0.3.0', schemaVersion: '1' });
+  for (const event of events) expect(event).toMatchObject({ courseVersion: '0.4.0', schemaVersion: '1' });
 });
 
 test('progress survives a refresh: same screen, nothing plays until the learner presses play', async ({ page }) => {

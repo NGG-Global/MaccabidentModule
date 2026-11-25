@@ -2,7 +2,7 @@
   "screenId": "S08",
   "chapter": "אתגר מסכם",
   "title": "האתגר המסכם",
-  "eyebrow": "פרק 7",
+  "eyebrow": "פרק 6",
   "targetMinutes": 4,
   "learningObjective": "להפעיל את תפיסת השירות בחמש החלטות חדשות: שתיים משותפות ושלוש מהתפקיד.",
   "onScreenText": [],
@@ -15,7 +15,7 @@
         "visual": {
           "id": "chapter",
           "props": {
-            "number": "07",
+            "number": "06",
             "title": "האתגר המסכם",
             "subtitle": "חמש החלטות, ציון בסוף"
           }

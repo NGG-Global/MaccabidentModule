@@ -1,3 +1,5 @@
+import fs from 'node:fs';
+import path from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { content } from '../../src/content';
 import { buildContent, ContentValidationError } from '../../src/content/loader';
@@ -17,8 +19,9 @@ const problemsOf = (run: () => unknown): string[] => {
 
 describe('shipped content', () => {
   it('passes validation and runs S00–S09 for every role', () => {
-    expect(Object.keys(content.screens).sort()).toEqual(['S00', 'S01', 'S02', 'S03', 'S04', 'S05', 'S06', 'S07', 'S08', 'S09']);
-    for (const role of ROLES) expect(resolvePath(content.course, role)).toEqual(['S00', 'S01', 'S02', 'S03', 'S04', 'S05', 'S06', 'S07', 'S08', 'S09']);
+    // S07 ("איך אנחנו לומדים ומשתפרים") was removed after the 24.11 feedback meeting; ids stay stable, so the path skips it.
+    expect(Object.keys(content.screens).sort()).toEqual(['S00', 'S01', 'S02', 'S03', 'S04', 'S05', 'S06', 'S08', 'S09']);
+    for (const role of ROLES) expect(resolvePath(content.course, role)).toEqual(['S00', 'S01', 'S02', 'S03', 'S04', 'S05', 'S06', 'S08', 'S09']);
   });
 
   it('gives every narration and video used in S00–S06 a measured duration and captions', () => {
@@ -55,8 +58,50 @@ describe('shipped content', () => {
     }
   });
 
-  it('names S07–S09 narration as not supplied rather than inventing it', () => {
-    for (const id of ['AUDIO-S07', 'AUDIO-S08', 'AUDIO-S09']) expect(content.media[id]?.status).toBe('missing');
+  it('names S08–S09 narration as not supplied rather than inventing it', () => {
+    for (const id of ['AUDIO-S08', 'AUDIO-S09']) expect(content.media[id]?.status).toBe('missing');
+  });
+
+  it('keeps the removed "learning and improving" section out of the course', () => {
+    expect(Object.values(content.screens).some((s) => s.interactionType === 'measurement')).toBe(false);
+    expect(Object.keys(content.questions).filter((id) => id.startsWith('Q-S07'))).toEqual([]);
+    // No remaining question or scenario relies on the removed content (whole words, so "דיסקרטית" does not match "סקר").
+    const removed = ['לקוח סמוי', 'תצפית', 'תצפיות', 'רמזור', 'סקר', 'שביעות רצון'];
+    const word = (t: string) => new RegExp(`(?<![\\u0590-\\u05FF])${t}(?![\\u0590-\\u05FF])`);
+    for (const item of [...Object.values(content.questions), ...Object.values(content.scenarios)]) {
+      const text = JSON.stringify(item);
+      for (const t of removed) expect(word(t).test(text), `${'questionId' in item ? item.questionId : item.scenarioId}: ${t}`).toBe(false);
+    }
+  });
+
+  it('mentions the satisfaction survey once, in journey station 5, and flags the recording that does not say it yet', () => {
+    const sentence = 'בסיום הביקור נשלח למטופל סקר שביעות רצון, שעוזר לנו להמשיך ולשפר את השירות.';
+    const journey = content.screens.S04!.interaction;
+    if (journey?.type !== 'journey') throw new Error('S04 must be the journey');
+    const mentions = journey.stages.flatMap((st) => st.points.filter((p) => p.text === sentence).map(() => st.id));
+    expect(mentions).toEqual(['followup']);
+    expect(content.media['AUDIO-S04-05']?.notes).toContain('docs/narration-changes.md');
+  });
+
+  it('numbers the assessment as chapter 6 now that S07 is gone', () => {
+    const s08 = content.screens.S08!;
+    expect(s08.eyebrow).toBe('פרק 6');
+    const card = s08.sequences.enter?.[0];
+    expect(card?.kind === 'composition' && card.visual.props.number).toBe('06');
+  });
+
+  it('has every ready file in public/media and every archived file in archive/media', () => {
+    const root = path.resolve(__dirname, '../..');
+    for (const asset of Object.values(content.media)) {
+      if (asset.status === 'ready') expect(fs.existsSync(path.join(root, 'public/media', asset.src!)), asset.id).toBe(true);
+      if (asset.status === 'archived') {
+        expect(fs.existsSync(path.join(root, 'archive/media', asset.src!)), asset.id).toBe(true);
+        expect(fs.existsSync(path.join(root, 'public/media', asset.src!)), `${asset.id} must not ship`).toBe(false);
+      }
+    }
+    const listed = new Set(Object.values(content.media).filter((a) => a.status === 'ready').map((a) => a.src));
+    const shipped = fs.readdirSync(path.join(root, 'public/media')).filter((f) => f !== 'README.md');
+    expect(shipped.filter((f) => !listed.has(f)), 'files shipped without a ready manifest entry').toEqual([]);
   });
 
   it('marks every assessment question as proposed and checks enough questions per role', () => {

@@ -20,7 +20,7 @@ Generated from `src/content/media-manifest.json` and `src/content/captions.json`
 | `VID-WAIT-01` | S05 | ready | 10.026 | V03_Yossi_Waiting_Complaint.mp4 | Web copy cropped to the top 600 rows and letterboxed to 16:9 to remove the garbled burned-in subtitle ("שמחון בזת לאינוי של?"); a clean regeneration is still preferable. |
 | `VID-CARE-01` | S05 | ready | 10.026 | V04B_Reception_Empathetic_Response.mp4 |  |
 | `VID-SERVICE-01` | S09 | ready | 10.026 | V04_Reception_Service_Conversation.mp4 | Dialogue transcript has low confidence; check against the script. |
-| `VID-AST-WELCOME-01` | — | ready | 10.026 | V05_Assistant_Welcomes_Yossi.mp4 | Yossi wears a different outfit than in the other clips. |
+| `VID-AST-WELCOME-01` | — | archived | 10.026 | V05_Assistant_Welcomes_Yossi.mp4 | Not used by any screen; moved to `archive/media/`. Yossi wears a different outfit than in the other clips. |
 | `VID-AST-ANXIETY-01` | S06 | ready | 10.026 | V06_Yossi_Dental_Anxiety.mp4 |  |
 | `VID-CLN-EXPLAIN-01` | S06 | ready | 10.026 | V07_Dentist_Explains_Treatment.mp4 | AI-generated dental image on the tablet needs clinical review; check that Yossi is the same character. |
 | `VID-REC-CLOSING-01` | S06 | ready | 10.026 | V10_Reception_Followup_Closing.mp4 | Yossi puts a card in his wallet; confirm it does not imply a payment step. |
@@ -41,7 +41,7 @@ Generated from `src/content/media-manifest.json` and `src/content/captions.json`
 | `AUDIO-S04-05` | S04 | ready | 28.839 | ElevenLabs upload 5b17c10b |  |
 | `AUDIO-S04-06` | S04 | ready | 15.882 | ElevenLabs upload f865d408 |  |
 | `AUDIO-S03-FB-01` | S03 | ready | 16.117 | ElevenLabs upload 60731d8f |  |
-| `AUDIO-S07` | S07 | missing |  | — | Not supplied. The S05-S09 archive contains narration for S05 and S06 only. |
+| `AUDIO-S07` | — | missing |  | — | Not needed: S07 was removed from the course (24.11). |
 | `AUDIO-S08` | S08 | missing |  | — | Not supplied. The S05-S09 archive contains narration for S05 and S06 only. |
 | `AUDIO-S09` | S09 | missing |  | — | Not supplied. The S05-S09 archive contains narration for S05 and S06 only. |
 | `AUDIO-S05-*`, `AUDIO-S06-*` (29 files) | S05, S06 | ready | | S05-S09.zip | See [`audio/s05-s06-report.md`](audio/s05-s06-report.md) |
@@ -64,4 +64,6 @@ Captions and transcripts are the machine transcription, corrected by hand only w
 ## Brand
 
 The logo (`LOGO-MACCABIDENT-01.png`) was supplied directly. Interface colours are sampled from it: violet `#7F68D7`, navy `#02428E`, blue `#0090D2`. No official brand guide was supplied; fonts (Frank Ruhl Libre, Heebo) are an interim choice.
-9. **S05–S09 narration.** 29 recordings arrived in `S05-S09.zip`; all belong to S05 and S06. S07, S08 and S09 have no narration yet. Mapping, transcripts and report: [`audio/s05-s06-report.md`](audio/s05-s06-report.md).
+9. **S05–S09 narration.** 29 recordings arrived in `S05-S09.zip`; all belong to S05 and S06. S08 and S09 have no narration yet (S07 was later removed from the course). Mapping, transcripts and report: [`audio/s05-s06-report.md`](audio/s05-s06-report.md).
+10. **Archived (2026-11-25).** Three files not used by any screen were moved to `archive/media/`, outside the build: `VID-AST-WELCOME-01.mp4` (V05), `POSTER-VID-AST-WELCOME-01.jpg` and `STILL-CORRIDOR-01.jpg` (2.35 MB). Their manifest entries are kept with status `archived`; see `archive/README.md` to restore.
+11. **AUDIO-S04-05 needs re-recording** to include the sentence about the satisfaction survey now shown in journey station 5 (`docs/narration-changes.md`).

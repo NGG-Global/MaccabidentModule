@@ -112,7 +112,7 @@ export async function seedProgress(page: Page, state: Record<string, unknown>) {
       'good-hands:progress:v1',
       JSON.stringify({
         courseId: 'good-hands',
-        courseVersion: '0.3.0',
+        courseVersion: '0.4.0',
         state: { role: 'assistant', completed: [], answers: {}, visited: [], attempts: [], startedAt: '2026-11-11T08:00:00.000Z', completedAt: null, ...s },
       }),
     );

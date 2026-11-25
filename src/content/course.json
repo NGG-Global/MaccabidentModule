@@ -1,6 +1,6 @@
 {
   "courseId": "good-hands",
-  "courseVersion": "0.3.0",
+  "courseVersion": "0.4.0",
   "title": "בידיים טובות",
   "assessment": {
     "passThreshold": 80,
@@ -20,8 +20,7 @@
       "S03": "S04",
       "S04": "S05",
       "S05": "S06",
-      "S06": "S07",
-      "S07": "S08",
+      "S06": "S08",
       "S08": "S09"
     }
   }

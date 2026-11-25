@@ -154,26 +154,27 @@
   {
     "id": "VID-AST-WELCOME-01",
     "kind": "video",
-    "status": "ready",
+    "status": "archived",
     "alt": "הסייעת דנה מקבלת את יוסי במסדרון",
     "source": "V05_Assistant_Welcomes_Yossi.mp4",
     "verification": "Verified by transcript (local speech-to-text) and visual review. Web copy re-encoded to 720p H.264 with a keyframe every second; the original upload is unchanged.",
     "src": "VID-AST-WELCOME-01.mp4",
     "posterId": "POSTER-VID-AST-WELCOME-01",
     "captionsId": "VID-AST-WELCOME-01",
-    "notes": "Yossi wears a different outfit than in the other clips.",
+    "notes": "Yossi wears a different outfit than in the other clips. Archived 2026-11-25: not used by any screen; the file is in archive/media/ (outside the build).",
     "durationSec": 10.026,
     "approvalStatus": "DRAFT"
   },
   {
     "id": "POSTER-VID-AST-WELCOME-01",
     "kind": "image",
-    "status": "ready",
+    "status": "archived",
     "src": "POSTER-VID-AST-WELCOME-01.jpg",
     "alt": "הסייעת דנה מקבלת את יוסי במסדרון",
     "source": "Frame from V05_Assistant_Welcomes_Yossi.mp4",
     "verification": "Extracted frame",
-    "approvalStatus": "DRAFT"
+    "approvalStatus": "DRAFT",
+    "notes": "Archived 2026-11-25: not used by any screen; the file is in archive/media/ (outside the build)."
   },
   {
     "id": "VID-AST-ANXIETY-01",
@@ -299,12 +300,13 @@
   {
     "id": "STILL-CORRIDOR-01",
     "kind": "image",
-    "status": "ready",
+    "status": "archived",
     "src": "STILL-CORRIDOR-01.jpg",
     "alt": "הסייעת מלווה את יוסי לחדר הטיפולים",
     "source": "Frame from V05",
     "verification": "Extracted frame",
-    "approvalStatus": "DRAFT"
+    "approvalStatus": "DRAFT",
+    "notes": "Archived 2026-11-25: not used by any screen; the file is in archive/media/ (outside the build)."
   },
   {
     "id": "STILL-CLOSING-01",
@@ -495,7 +497,8 @@
     "verification": "Verified by transcript (local speech-to-text) and visual review. Identified by content; upload order did not match station order.",
     "captionsId": "AUDIO-S04-05",
     "durationSec": 28.839,
-    "approvalStatus": "DRAFT"
+    "approvalStatus": "DRAFT",
+    "notes": "The on-screen station now includes a sentence about the satisfaction survey that this recording does not say. Re-record with the updated script in docs/narration-changes.md."
   },
   {
     "id": "AUDIO-S04-06",
@@ -874,7 +877,7 @@
     "kind": "audio",
     "status": "missing",
     "alt": "קריינות S07: מדידת השירות",
-    "notes": "Not supplied. The S05-S09 archive contains narration for S05 and S06 only.",
+    "notes": "Not needed: S07 (measurement chapter) was removed from the course after the feedback meeting of 24.11.",
     "approvalStatus": "DRAFT"
   },
   {
