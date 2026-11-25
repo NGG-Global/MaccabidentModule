@@ -386,7 +386,8 @@
     "verification": "Verified by transcript (local speech-to-text) and visual review",
     "captionsId": "AUDIO-S03-01",
     "durationSec": 16.771,
-    "approvalStatus": "DRAFT"
+    "approvalStatus": "DRAFT",
+    "notes": "Re-record: last sentence now says \"בא לידי ביטוי\" instead of \"מתבטא\" (docs/narration-changes-values.md)."
   },
   {
     "id": "AUDIO-S03-02",
@@ -398,7 +399,8 @@
     "verification": "Verified by transcript (local speech-to-text) and visual review",
     "captionsId": "AUDIO-S03-02",
     "durationSec": 28.029,
-    "approvalStatus": "DRAFT"
+    "approvalStatus": "DRAFT",
+    "notes": "Re-record: new definition of \"רואים אותך\", including \"חמלה\" (docs/narration-changes-values.md)."
   },
   {
     "id": "AUDIO-S03-03",
@@ -469,7 +471,7 @@
     "source": "ElevenLabs upload 48a10b17",
     "verification": "Verified by transcript (local speech-to-text) and visual review. Identified by content; upload order did not match station order.",
     "captionsId": "AUDIO-S04-03",
-    "notes": "The recording opens with \"התחנה השישית\" (\"the sixth station\") although this is station 3 (transcribed with 94% confidence). Re-record the opening line.",
+    "notes": "The recording opens with \"התחנה השישית\" (\"the sixth station\") although this is station 3 (transcribed with 94% confidence). Re-record the opening line. Re-record: \"ולהפגין אמפתיה וחמלה\" (docs/narration-changes-values.md); fix \"השישית\" in the same take.",
     "durationSec": 25.548,
     "approvalStatus": "DRAFT"
   },
