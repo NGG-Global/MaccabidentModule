@@ -7,7 +7,7 @@ The client asked to align the module's look with the branding of the service con
 | What | Source of truth | Mirrors and consumers |
 |---|---|---|
 | UI colours | `src/styles/index.css`, `@theme` block (Tailwind v4 tokens such as `--color-navy`, read by utilities like `bg-navy` and `text-violet-ink`) | `src/remotion/theme.ts` (`color`, `logoGradient`) for the Remotion compositions. `tests/unit/brand.test.ts` fails if the two differ. |
-| Fonts | `src/styles/index.css`: `--font-sans`, `--font-display` | `src/remotion/theme.ts` (`font`); files loaded in `src/main.tsx` through `@fontsource-variable/heebo` and `@fontsource-variable/frank-ruhl-libre` |
+| Fonts | `src/styles/index.css`: `--font-sans`, `--font-display` | `src/remotion/theme.ts` (`font`); files loaded in `src/main.tsx` through `@fontsource-variable/assistant` (interim, until Ploni) |
 | Logo | `assets/brand/bidayim-tovot-logo.svg` or `.png` | `src/components/BrandLogo.tsx`, used on S00 (opening) and S03 (the screen that presents the service concept) |
 | Brand gradient and surfaces | `--gradient-brand`, `--surface-night`, `--surface-dawn` in `src/styles/index.css` | Utilities `bg-brand-gradient`, `bg-night` and `bg-dawn`; `surface` and `logoGradient` in `src/remotion/theme.ts` |
 | Animated logo | `src/remotion/LogoMark.tsx` (vector paths from the supplied logo) | The S03 concept animation, the S00 title moment and outro, the S09 closing |
@@ -64,13 +64,18 @@ White text on the night surface stays above 8:1 everywhere, including over the g
 | `sky` | Not used in the UI | 3 uses on dark backgrounds |
 | `paper`, `mist`, `paper-deep` | Page background, cards' surroundings, light text on dark | Light animation grounds, light text on dark |
 
-## Fonts: waiting for licensed files
+## Fonts: interim Assistant, waiting for licensed Ploni
 
-The task is to move the whole module to Ploni through one central definition, which is `--font-sans` and `--font-display` in `src/styles/index.css`. No Ploni font files are in the repository, so the fonts were **not** changed. Heebo and Frank Ruhl Libre are still in use, and no substitute was added.
+The target is Ploni for the whole module, set in one central place: `--font-sans` and `--font-display` in `src/styles/index.css`, mirrored in `font` in `src/remotion/theme.ts`. A unit test keeps the two the same.
+
+**Interim, at the client's request (2026-11-25):** **Assistant** (SIL Open Font License 1.1, bundled with `@fontsource-variable/assistant`, no external request at runtime) is used for both headings and text, as Ploni is a single family.
+- **Why Assistant:** it was compared side by side with Ploni and other open-licence Hebrew fonts (Heebo, Rubik, Noto Sans Hebrew, IBM Plex Sans Hebrew, Alef, Varela Round). It is the closest in width and in the structure of the letters; Heebo, the previous text font, is noticeably wider.
+- **What was replaced:** Heebo for text and Frank Ruhl Libre (serif) for headings. Both packages were removed.
+- **Fit:** every screen was checked for scrolling at 1440 × 900 and 360 × 740.
 
 The font archive supplied in this conversation was not used. Its `info.txt` reads "License: Free for Personal Use" and links to a third-party download site, which does not license use in a client deliverable.
 
-**Needed, as woff2 from a licensed source (for example a web licence covering Maccabident / NGG):**
+**Still needed for Ploni, as woff2 from a licensed source (for example a web licence covering Maccabident / NGG):**
 
 | Weight | Ploni file (typical name) | Used for |
 |---|---|---|
@@ -79,7 +84,12 @@ The font archive supplied in this conversation was not used. Its `info.txt` read
 | 600 | DemiBold | 56 places (`font-semibold`) and 9 in compositions |
 | 700 | Bold | Headings, 12 `font-bold` and 24 in compositions |
 
-Hebrew and Latin glyphs are both needed (the course has English terms and numbers). Once the files are placed under `public/fonts/ploni/`, the change is one `@font-face` block per weight. `--font-sans` and `--font-display` then become `'Ploni', 'Heebo Variable', 'Arial Hebrew', Arial, sans-serif`, the same value goes into `src/remotion/theme.ts`, and the two `@fontsource` imports are removed.
+Hebrew and Latin glyphs are both needed (the course has English terms and numbers).
+
+**Switching to Ploni:**
+1. Place the files under `public/fonts/ploni/` and add one `@font-face` block per weight in `src/styles/index.css`.
+2. Put `'Ploni'` first in `--font-sans` and `--font-display`, keeping Assistant as the fallback, and the same in `src/remotion/theme.ts`.
+3. Check every screen for fit again, since Ploni's metrics differ slightly.
 
 ## Logo
 
