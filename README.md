@@ -1,10 +1,18 @@
 # בידיים טובות — Maccabident onboarding module
 
 Hebrew (RTL) interactive learning experience for new clinic employees.
-**This build covers the whole course, S00–S09**, for stakeholder review: the
+**This build covers the whole course**, for stakeholder review: the
 introduction chapter (S00–S04), shared and role-specific practice scenarios
-(S05–S06), service measurement (S07), the scored assessment (S08) and the
-conclusion (S09). Narration for S07–S09 has not been supplied yet.
+(S05–S06), the scored assessment (S08) and the conclusion (S09). Narration for
+S08–S09 has not been supplied yet.
+
+**Scope change (feedback meeting, 24.11):** the course covers the service
+concept and behaviours only. The section "איך אנחנו לומדים ומשתפרים" (S07:
+satisfaction survey, mystery shopper, observations and feedback, traffic light)
+was removed from the flow and kept in `archive/` for restoring. Screen ids stay
+stable, so the flow goes S06 → S08; learners see nine chapters. The survey is
+now mentioned once, in journey station 5. Its narration needs re-recording:
+see `docs/narration-changes.md`.
 
 All learner-facing text is DRAFT and has not been approved by Maccabident.
 The specification is in `docs/good_hands_spec/`; the media verification is in
@@ -22,7 +30,6 @@ is approved, proposed or missing is in `docs/content-coverage.md`.
 | S04 Patient journey | Introduction → Touchpoints → Summary | Five touchpoints, key points revealed as narrated; all must be explored; narrated chapter closing | Narration S04 ×7, `journey` |
 | S05 Shared scenario | Situation → Decision → Feedback | A delay in the waiting room: narrated situation and Yossi's complaint on video; the question opens as it is asked; each answer plays its own narrated feedback; the preferred answer is followed by a clip of what it looks like; retry at any time | Narration S05 ×5, V03 (cropped), V04B, `scenarioIntro`, `scenarioFeedback` |
 | S06 Role scenarios | Situation → Decision → Feedback, per case | Two cases for the role chosen in S01 (reception, assistants, or clinicians and hygienists), same pattern | Narration S06 ×24, V06, V07, V10 |
-| S07 Measurement | Mechanisms → Knowledge check | Patient survey, mystery shopper, observations, traffic light and the improvement loop; two check questions with immediate feedback | `measurement` (narration not supplied) |
 | S08 Assessment | Instructions → Questions → Result | 2 shared + 3 role questions, 20 points each, pass at 80 (configurable in `course.json`); no feedback until submission; then score, pass/fail, review with explanations, areas to strengthen, retry when failed | `assessmentResult` (narration not supplied) |
 | S09 Conclusion | — | Yossi's farewell, the closing sequence, and the completion status (complete only with a passed assessment) | V04, `closing` (narration not supplied) |
 
@@ -110,8 +117,9 @@ data is collected. To connect a destination later, implement
 
 - **Remotion licence.** Remotion requires a paid company licence for companies above a small size (see remotion.dev/license). This must be confirmed before production use; the prototype does not set `acknowledgeRemotionLicense`.
 - The station 3 narration says "התחנה השישית" instead of "השלישית" and should be re-recorded.
-- Narration for S07, S08 and S09 has not been supplied; those screens say so on screen.
-- The 11 assessment questions and two S07 check questions were written for the build (`proposed: true`) and need SME approval. See `docs/content-coverage.md`.
+- Narration for S08 and S09 has not been supplied; those screens say so on screen.
+- Station 5 of the journey shows a sentence about the satisfaction survey that its recording (`AUDIO-S04-05`) does not say yet; re-record it with the script in `docs/narration-changes.md`.
+- The 11 assessment questions were written for the build (`proposed: true`) and need SME approval. See `docs/content-coverage.md`.
 - V03's burned-in subtitle is cropped out of the web copy; a clean regeneration is preferable. The clinic logo in the videos is AI-generated and needs Maccabident's confirmation. See `docs/media-audit.md`.
 - Captions are a hand-corrected machine transcription pending comparison with the approved scripts.
 - Progress and the learner id are stored in this browser only; they are not an organisational record.

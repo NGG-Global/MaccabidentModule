@@ -270,8 +270,9 @@ export const MediaAssetSchema = z
   .strictObject({
     id: MediaIdSchema,
     kind: MediaKindSchema,
-    /** missing: not supplied. blocked: supplied but not usable (see notes). ready: in public/media/. */
-    status: z.enum(['missing', 'blocked', 'ready']),
+    /** missing: not supplied. blocked: supplied but not usable (see notes). ready: in public/media/.
+     *  archived: not used by the course; the file is kept in archive/media/, outside the build. */
+    status: z.enum(['missing', 'blocked', 'ready', 'archived']),
     /** Path relative to public/media/. Required once status is "ready". */
     src: z.string().optional(),
     /** Text alternative / description, shown in the placeholder while the asset is not ready. */

@@ -93,6 +93,8 @@ export function buildContent(raw: RawContent): Content {
   const requireMedia = (id: string, kind: Kind, where: string) => {
     const asset = media[id];
     if (!asset) return problems.push(`${where}: media id ${id} is not in media-manifest.json`);
+    // An archived file is outside the build; a screen that needs it must not silently lose it.
+    if (asset.status === 'archived') return problems.push(`${where}: ${id} is archived (archive/media/); restore it before using it`);
     const ok =
       kind === 'visual' ? !['audio', 'captions'].includes(asset.kind) : asset.kind === kind;
     if (!ok) problems.push(`${where}: ${id} must be a ${kind} asset, not ${asset.kind}`);
@@ -100,7 +102,8 @@ export function buildContent(raw: RawContent): Content {
 
   for (const asset of mediaList) {
     const where = `media-manifest.json ${asset.id}`;
-    if (asset.posterId) requireMedia(asset.posterId, 'image', where);
+    // An archived video keeps its (archived) poster; only assets in use need a poster that ships.
+    if (asset.posterId && asset.status !== 'archived') requireMedia(asset.posterId, 'image', where);
     if (asset.captionsId && asset.status === 'ready' && !captions[asset.captionsId])
       problems.push(`${where}: captions ${asset.captionsId} are not in captions.json`);
   }

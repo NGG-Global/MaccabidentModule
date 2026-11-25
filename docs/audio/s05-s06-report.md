@@ -46,7 +46,7 @@ Source: `S05-S09.zip`, 29 ElevenLabs MP3 files (44.1 kHz mono), received 2026-11
 ## Report
 
 ### Missing
-- **S07, S08 and S09 have no narration.** Despite the archive name, all 29 recordings belong to S05 and S06. S07 (measurement), S08 (assessment questions and results) and S09 (conclusion) run with on-screen text, and each names the missing narration in the interface (manifest entries `AUDIO-S07`, `AUDIO-S08`, `AUDIO-S09`, status `missing`).
+- **S07, S08 and S09 have no narration.** Despite the archive name, all 29 recordings belong to S05 and S06. S08 (assessment questions and results) and S09 (conclusion); S07 (measurement) was later removed from the course, run with on-screen text, and each names the missing narration in the interface (manifest entries `AUDIO-S07`, `AUDIO-S08`, `AUDIO-S09`, status `missing`).
 - **No separate question recording for four scenarios.** SC-COM-01, SC-REC-01, SC-AST-01 and SC-CLN-01 end their situation without the question; they reuse the generic question "איך הייתם מגיבים ליוסי?" (`AUDIO-S05-02`). The other three include their question in the situation recording.
 - **Unrecorded patient lines.** In SC-REC-01 and SC-CLN-01 the narration says Yossi asks a question but does not say it. The question is shown on screen, marked in the content as proposed wording (`patientLine.proposed`).
 
