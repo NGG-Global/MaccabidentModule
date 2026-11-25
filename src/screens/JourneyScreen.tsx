@@ -216,7 +216,7 @@ export function JourneyScreen({ screen, state, dispatch, done }: ScreenProps) {
 
       {step === 'summary' && (
         <motion.div key="summary" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="grid min-h-0 flex-1 gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)] lg:gap-6">
-          <section className="relative flex flex-col justify-center overflow-hidden rounded-3xl bg-ink px-6 py-8 text-white sm:px-10" data-testid="chapter-complete" aria-live="polite">
+          <section className="relative flex flex-col justify-center overflow-hidden rounded-3xl bg-night px-6 py-8 text-white sm:px-10" data-testid="chapter-complete" aria-live="polite">
             <svg viewBox="0 0 700 170" className="absolute -top-6 end-0 w-72 opacity-60" aria-hidden>
               <motion.path
                 d="M 12 150 C 210 40, 470 -10, 640 40 C 690 56, 700 110, 660 160"

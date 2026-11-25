@@ -1,7 +1,8 @@
 import { AbsoluteFill, interpolate } from 'remotion';
 import { Arc, MaskLine, Photo, Stage, Words, activeIndex, url, useClock } from '../primitives';
 import type { CommonProps, OpeningPropsT } from '../props';
-import { color, font } from '../theme';
+import { LogoMark } from '../LogoMark';
+import { color, font, surface } from '../theme';
 
 /**
  * S00 opening, driven by the welcome narration. Five movements:
@@ -46,13 +47,21 @@ export function Opening(props: OpeningPropsT & CommonProps) {
       {t >= tTitle - 0.2 && t < tMoments + 0.6 && (
         <AbsoluteFill
           style={{
-            background: color.paper,
+            background: surface.dawn,
             clipPath: `circle(${interpolate(c.move(tTitle, { damping: 30, stiffness: 40 }), [0, 1], [0, 120])}% at 50% 55%)`,
             opacity: c.window(tTitle - 0.2, tMoments + 0.6, 0.6),
           }}
         >
           {t < tAfter + 0.5 ? (
             <AbsoluteFill style={{ justifyContent: 'center', alignItems: 'center', textAlign: 'center', opacity: c.window(tTitle, tAfter + 0.4, 0.4) }}>
+              {/* The concept's logo draws in under the lead and fills as its name is spoken. */}
+              <div style={{ marginBottom: 26 * u }}>
+                <LogoMark
+                  width={(portrait ? 300 : 250) * u}
+                  draw={c.progress(tTitle + 0.2, props.title.at + 0.3)}
+                  fill={c.move(props.title.at + 0.15, { damping: 14, stiffness: 120 })}
+                />
+              </div>
               <MaskLine p={c.enter(tTitle + 0.3)} m={c.move(tTitle + 0.3)} style={{ fontSize: 44 * u, color: color.inkSoft }}>
                 {lead.text}
               </MaskLine>
@@ -65,12 +74,6 @@ export function Opening(props: OpeningPropsT & CommonProps) {
                 >
                   {props.title.text}
                 </MaskLine>
-                <Arc
-                  draw={c.progress(props.title.at + 0.2, props.title.at + 1.6)}
-                  width={(portrait ? 640 : 760) * u}
-                  thickness={12}
-                  style={{ display: 'block', margin: `${-10 * u}px auto 0`, transform: 'scaleY(-0.55)' }}
-                />
               </div>
             </AbsoluteFill>
           ) : (
@@ -88,7 +91,7 @@ export function Opening(props: OpeningPropsT & CommonProps) {
 
       {/* 5 — the concept and the invitation */}
       {t >= tOutro && (
-        <AbsoluteFill style={{ background: color.ink, opacity: c.enter(tOutro), color: color.white, justifyContent: 'center', paddingInline: 120 * u }}>
+        <AbsoluteFill style={{ background: surface.night, opacity: c.enter(tOutro), color: color.white, justifyContent: 'center', paddingInline: 120 * u }}>
           <Outro {...props} c={c} />
         </AbsoluteFill>
       )}
@@ -201,7 +204,10 @@ function Outro({ outro, title, c }: WithClock) {
   if (t >= last.at) {
     return (
       <AbsoluteFill style={{ justifyContent: 'center', alignItems: 'center', textAlign: 'center', gap: 24 * u }}>
-        <Arc draw={c.progress(last.at, last.at + 1.2)} width={300 * u} thickness={10} />
+        {/* The logo's navy line art needs a light ground: a paper seal on the night surface. */}
+        <div style={{ display: 'grid', placeItems: 'center', width: 250 * u, height: 250 * u, borderRadius: 999, background: color.paper, transform: `scale(${c.enter(last.at - 0.3)})`, boxShadow: `0 ${20 * u}px ${60 * u}px rgba(0,0,0,0.25)` }}>
+          <LogoMark width={175 * u} draw={c.progress(last.at - 0.2, last.at + 1)} fill={c.move(last.at + 0.5, { damping: 14, stiffness: 120 })} />
+        </div>
         <MaskLine p={c.enter(last.at)} m={c.move(last.at)} style={{ fontFamily: font.display, fontSize: 150 * u, fontWeight: 700 }}>
           {title.text}
         </MaskLine>

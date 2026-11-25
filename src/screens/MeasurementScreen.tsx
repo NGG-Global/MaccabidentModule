@@ -77,7 +77,7 @@ export function MeasurementScreen({ screen, state, dispatch, done }: ScreenProps
                 <li
                   key={ch.label}
                   aria-current={i === activeChapter ? 'true' : undefined}
-                  className={`flex items-center gap-3 rounded-xl px-3 py-2.5 transition ${i === activeChapter ? 'bg-ink text-white' : i < activeChapter || learnEnded ? 'text-ink' : 'text-ink/50'}`}
+                  className={`flex items-center gap-3 rounded-xl px-3 py-2.5 transition ${i === activeChapter ? 'bg-navy text-white' : i < activeChapter || learnEnded ? 'text-ink' : 'text-ink/50'}`}
                 >
                   <span className={`font-display text-xl tabular-nums ${i === activeChapter ? 'text-violet-ink' : 'text-ink/30'}`}>{String(i + 1).padStart(2, '0')}</span>
                   <span className="font-semibold leading-tight">{ch.label}</span>

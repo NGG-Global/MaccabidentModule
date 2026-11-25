@@ -1,7 +1,8 @@
 import { AbsoluteFill, interpolate } from 'remotion';
-import { Arc, MaskLine, Photo, Stage, Words, activeIndex, url, useClock, type Clock } from '../primitives';
+import { MaskLine, Photo, Stage, Words, activeIndex, url, useClock, type Clock } from '../primitives';
 import type { CommonProps, ValueAccompanyingPropsT, ValueAdaptingPropsT, ValueSeeingPropsT, ValuesIntroPropsT } from '../props';
-import { color, font } from '../theme';
+import { LOGO_RATIO, LogoMark } from '../LogoMark';
+import { color, font, surface } from '../theme';
 
 /** Small emblem per value, reused in the introduction so each treatment is foreshadowed. */
 export function Emblem({ index, draw, size }: { index: number; draw: number; size: number }) {
@@ -32,39 +33,70 @@ export function Emblem({ index, draw, size }: { index: number; draw: number; siz
   );
 }
 
+/**
+ * S03 introduction of the service concept. The "בידיים טובות" logo draws
+ * itself in as its name is spoken, then settles in the corner and stays while
+ * the three values are named.
+ */
 export function ValuesIntro(props: ValuesIntroPropsT & CommonProps) {
   const c = useClock(props.reducedMotion);
-  const { u, t, portrait } = c;
-  const showValues = t >= props.values[0]!.at - 0.2;
+  const { u, t, portrait, width, height } = c;
+  const tValues = props.values[0]!.at;
+  const showValues = t >= tValues - 0.2;
+
+  // The logo: drawn from just before the name, its heart filling as the name lands; then it travels to the corner.
+  const draw = c.progress(props.title.at - 1.4, props.title.at + 0.5);
+  const fill = c.move(props.title.at + 0.1, { damping: 14, stiffness: 120 });
+  const settle = c.move(tValues - 0.4, { damping: 28, stiffness: 70 });
+  const beat = c.reducedMotion || t > tValues ? 1 : 1 + 0.04 * Math.max(0, Math.sin((t - props.title.at) * 5)) * Math.min(1, Math.max(0, t - props.title.at - 0.4));
+  const big = (portrait ? 420 : 360) * u;
+  const small = (portrait ? 170 : 150) * u;
+  const logoW = interpolate(settle, [0, 1], [big, small]);
+  const centreY = height * (portrait ? 0.3 : 0.27);
+  const cornerY = (portrait ? 70 : 60) * u + small / LOGO_RATIO / 2;
+  const cornerX = width - (portrait ? 80 : 110) * u - small / 2;
+  const x = interpolate(settle, [0, 1], [width / 2, cornerX]);
+  const y = interpolate(settle, [0, 1], [centreY, cornerY]);
+
   return (
-    <Stage background={color.ink} style={{ color: color.white }}>
-      <AbsoluteFill style={{ justifyContent: 'center', paddingInline: (portrait ? 80 : 170) * u, gap: 40 * u }}>
-        {!showValues ? (
-          <div style={{ opacity: c.window(0, props.values[0]!.at - 0.2, 0.4) }}>
-            <Arc draw={c.progress(props.title.at - 0.6, props.title.at + 0.8)} width={260 * u} thickness={9} />
-            <MaskLine p={c.enter(props.title.at)} m={c.move(props.title.at)} style={{ fontFamily: font.display, fontSize: 150 * u, fontWeight: 700, marginTop: 16 * u }}>
-              {props.title.text}
-            </MaskLine>
-            <Words text={props.lead.text} at={props.lead.at} clock={c} style={{ fontSize: 50 * u, color: color.mist, marginTop: 20 * u }} />
-          </div>
-        ) : (
+    <Stage background={surface.dawn}>
+      <div style={{ position: 'absolute', left: x - logoW / 2, top: y - logoW / LOGO_RATIO / 2 }}>
+        <LogoMark width={logoW} draw={draw} fill={fill} beat={beat} />
+      </div>
+      {!showValues ? (
+        <AbsoluteFill
+          style={{
+            alignItems: 'center',
+            textAlign: 'center',
+            paddingTop: centreY + big / LOGO_RATIO / 2 + 40 * u,
+            paddingInline: 80 * u,
+            opacity: c.window(0, tValues - 0.2, 0.4),
+          }}
+        >
+          <MaskLine p={c.enter(props.title.at)} m={c.move(props.title.at)} style={{ fontFamily: font.display, fontSize: (portrait ? 150 : 140) * u, fontWeight: 700, color: color.navy, lineHeight: 1.05 }}>
+            {props.title.text}
+          </MaskLine>
+          <Words text={props.lead.text} at={props.lead.at} clock={c} style={{ fontSize: (portrait ? 46 : 46) * u, color: color.inkSoft, marginTop: 22 * u, justifyContent: 'center' }} />
+        </AbsoluteFill>
+      ) : (
+        <AbsoluteFill style={{ justifyContent: 'center', paddingInline: (portrait ? 80 : 170) * u, paddingTop: (portrait ? 160 : 60) * u }}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 34 * u }}>
             {props.values.map((v, i) => {
               const dim = t >= props.outro.at ? 0.5 : 1;
               return (
                 <div key={v.at} style={{ display: 'flex', alignItems: 'center', gap: 36 * u, opacity: c.enter(v.at) * dim }}>
-                  <span style={{ fontFamily: font.display, fontSize: 50 * u, color: color.violet, width: 80 * u }}>{String(i + 1).padStart(2, '0')}</span>
+                  <span style={{ fontFamily: font.display, fontSize: 50 * u, color: color.violetInk, width: 80 * u }}>{String(i + 1).padStart(2, '0')}</span>
                   <Emblem index={i} draw={c.progress(v.at, v.at + 1)} size={90 * u} />
-                  <MaskLine p={c.enter(v.at)} m={c.move(v.at)} style={{ fontFamily: font.display, fontSize: (portrait ? 84 : 104) * u, fontWeight: 700 }}>
+                  <MaskLine p={c.enter(v.at)} m={c.move(v.at)} style={{ fontFamily: font.display, fontSize: (portrait ? 84 : 104) * u, fontWeight: 700, color: color.navy }}>
                     {v.text}
                   </MaskLine>
                 </div>
               );
             })}
-            {t >= props.outro.at && <Words text={props.outro.text} at={props.outro.at} clock={c} style={{ fontSize: 46 * u, color: color.mist, marginTop: 30 * u }} />}
+            {t >= props.outro.at && <Words text={props.outro.text} at={props.outro.at} clock={c} style={{ fontSize: 46 * u, color: color.inkSoft, marginTop: 30 * u }} />}
           </div>
-        )}
-      </AbsoluteFill>
+        </AbsoluteFill>
+      )}
     </Stage>
   );
 }

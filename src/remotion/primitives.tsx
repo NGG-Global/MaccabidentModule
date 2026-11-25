@@ -1,7 +1,7 @@
-import type { CSSProperties, ReactNode } from 'react';
+import { useId, type CSSProperties, type ReactNode } from 'react';
 import { AbsoluteFill, interpolate, spring, useCurrentFrame, useVideoConfig } from 'remotion';
 import type { CommonProps } from './props';
-import { color, font } from './theme';
+import { color, font, logoGradient } from './theme';
 
 /** Frame-accurate clock helpers shared by all compositions. */
 export function useClock(reducedMotion: boolean) {
@@ -80,15 +80,25 @@ export function Words({ text, at, clock, stagger = 0.07, style }: { text: string
   );
 }
 
-/** The swoosh from the Maccabident logo, drawn as a stroke. `draw` is 0→1. */
-export function Arc({ draw, width, stroke = color.violet, thickness = 10, style }: { draw: number; width: number; stroke?: string; thickness?: number; style?: CSSProperties }) {
+/** The swoosh from the Maccabident logo, drawn as a stroke in the "בידיים טובות" gradient by default. `draw` is 0→1. */
+export function Arc({ draw, width, stroke, thickness = 10, style }: { draw: number; width: number; stroke?: string; thickness?: number; style?: CSSProperties }) {
   const length = 1000;
+  const id = useId().replace(/:/g, '');
   return (
     <svg viewBox="0 0 700 170" width={width} height={(width * 170) / 700} style={{ overflow: 'visible', ...style }} aria-hidden>
+      {!stroke && (
+        <defs>
+          <linearGradient id={`${id}-arc`} x1="0" y1="0" x2="1" y2="0">
+            {logoGradient.map((c, i) => (
+              <stop key={c} offset={i / (logoGradient.length - 1)} stopColor={c} />
+            ))}
+          </linearGradient>
+        </defs>
+      )}
       <path
         d="M 12 150 C 210 40, 470 -10, 640 40 C 690 56, 700 110, 660 160"
         fill="none"
-        stroke={stroke}
+        stroke={stroke ?? `url(#${id}-arc)`}
         strokeWidth={thickness}
         strokeLinecap="round"
         pathLength={length}

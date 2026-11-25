@@ -9,7 +9,8 @@ The client asked to align the module's look with the branding of the service con
 | UI colours | `src/styles/index.css`, `@theme` block (Tailwind v4 tokens such as `--color-navy`, read by utilities like `bg-navy` and `text-violet-ink`) | `src/remotion/theme.ts` (`color`, `logoGradient`) for the Remotion compositions. `tests/unit/brand.test.ts` fails if the two differ. |
 | Fonts | `src/styles/index.css`: `--font-sans`, `--font-display` | `src/remotion/theme.ts` (`font`); files loaded in `src/main.tsx` through `@fontsource-variable/heebo` and `@fontsource-variable/frank-ruhl-libre` |
 | Logo | `assets/brand/bidayim-tovot-logo.svg` or `.png` | `src/components/BrandLogo.tsx`, used on S00 (opening) and S03 (the screen that presents the service concept) |
-| Brand gradient | `--gradient-brand` in `src/styles/index.css` | The active node of the patient-journey cycle |
+| Brand gradient and surfaces | `--gradient-brand`, `--surface-night`, `--surface-dawn` in `src/styles/index.css` | Utilities `bg-brand-gradient`, `bg-night` and `bg-dawn`; `surface` and `logoGradient` in `src/remotion/theme.ts` |
+| Animated logo | `src/remotion/LogoMark.tsx` (vector paths from the supplied logo) | The S03 concept animation, the S00 title moment and outro, the S09 closing |
 
 The Maccabident company logo in the header (`public/media/LOGO-MACCABIDENT-01.png`) is unchanged.
 
@@ -28,7 +29,28 @@ All brand hues are sampled from the supplied logo file (`assets/brand/bidayim-to
 | `--color-logo-6` | `#AD52FF` | Gradient end | Brand gradient |
 | `--color-violet-ink` | `#6858D3` | 65% `logo-4` + 35% `logo-navy` | Small violet text and white text on violet (4.9:1 on paper, 5.35:1 with white) |
 
-**Neutrals, unchanged:** `ink` `#0B1F3A`, `paper` `#F6F4EF`, `paper-deep` `#ECE8DF`, `mist` and `brand-100` `#DCE6F2`, `brand-50` `#EEF3FA`. `brand-600` now points to the logo navy. `brand-700` was not used anywhere and was removed.
+**Light neutrals, tinted with the logo's blue.** Each is `logo-3` mixed with white:
+
+| Token | Mix | Value |
+|---|---|---|
+| `paper` | 6% | `#F6F7FF` |
+| `brand-50` | 8% | `#F3F4FF` |
+| `paper-deep` | 12% | `#EDEFFF` |
+| `mist` and `brand-100` | 16% | `#E7EAFF` |
+
+These replace the earlier warm beige. Text contrast on the new paper is unchanged or better: navy 9.3:1, `violet-ink` 5.0:1, `ink/70` 6.0:1.
+
+`ink` `#0B1F3A` stays the neutral dark for text. `brand-600` points to the logo navy.
+
+### Brand surfaces
+
+| Surface | CSS | Remotion | Where |
+|---|---|---|---|
+| Night: navy to ink, with the logo's violet (top start) and cyan (bottom end) glowing in | `bg-night` (`--surface-night`) | `surface.night` | Chapter cards, the opening's closing invitation, the S08 result, the S09 closing, the S04 chapter-complete card, the narration panel, the S09 completion panel |
+| Dawn: the tinted paper with soft logo glows | `bg-dawn` (`--surface-dawn`) | `surface.dawn` | The cover panel, the S03 concept animation, the title moments of S00 and S09 |
+| Brand gradient (the heart) | `bg-brand-gradient` (`--gradient-brand`) | `logoGradient` | The arc motif in every animation, the current segment of the progress bars, the rule under the cover title, the ring of the active journey node |
+
+White text on the night surface stays above 8:1 everywhere, including over the glows. Highlighted list items (the current value, the current measurement chapter) use navy instead of ink.
 
 **Why there is a `violet-ink`.** No violet in the logo reaches 4.5:1 on a light background; the best is 3.9:1, and the previous violet was also only 3.9:1. Small violet text, such as the chapter eyebrow, now uses the mix of two logo colours. Violet as a fill or graphic keeps the logo value.
 
@@ -40,7 +62,7 @@ All brand hues are sampled from the supplied logo file (`assets/brand/bidayim-to
 | `violet` | Fills and rings: current chapter bar, active progress, bullets, focus ring, "continue here" pulse | 33 uses: accents in every composition |
 | `violet-ink` | 17 uses: 14 small-text (eyebrows, step labels, number labels) and 3 badges with white text (current chapter, conclusion, active journey node) | Active journey node |
 | `sky` | Not used in the UI | 3 uses on dark backgrounds |
-| `ink`, `paper`, `mist` | Unchanged | Unchanged |
+| `paper`, `mist`, `paper-deep` | Page background, cards' surroundings, light text on dark | Light animation grounds, light text on dark |
 
 ## Fonts: waiting for licensed files
 
@@ -61,10 +83,24 @@ Hebrew and Latin glyphs are both needed (the course has English terms and number
 
 ## Logo
 
+### Where it appears
+
+- **Cover (S00):** a light brand panel with the logo, the title and "התחלה". The arrival photo sits beside it on wide screens and above it on phones. The cover had a dark overlay before.
+- **Header, every screen:** the "בידיים טובות" logo beside the Maccabident logo. The course name is added on very wide screens.
+- **S03, the screen that presents the service concept:** beside the title.
+- **In the animations,** as an animated vector logo: the hands and the heart outline draw themselves in, and the gradient heart fills with a short beat.
+  - **S03 concept introduction:** the logo draws in as "תפיסת השירות של מכבידנט נקראת בידיים טובות" is spoken, under the name. It then moves to the corner and stays while the three values are named. This animation was moved from the dark surface to the light brand surface, so the logo appears in its true colours.
+  - **S00 opening:** the logo draws in with "כל מטופל רוצה לדעת שהוא נמצא… בידיים טובות". It returns as a light seal on the night surface in the closing invitation.
+  - **S09 closing:** the logo draws in once more above the concept's name, as a reply to the opening.
+
+The static screens use the logo file. The animations use `LogoMark`, whose paths follow the supplied logo; if the official vector file differs, those paths need updating.
+
+### File
+
 - `src/components/BrandLogo.tsx` loads `assets/brand/bidayim-tovot-logo.svg` if it exists, otherwise the `.png`, otherwise a clearly marked dashed placeholder of the same size. Replacing the logo only takes placing the file.
 - The PNG supplied in this conversation (1998 × 1600, transparent background) is in place.
-- **S00 (opening):** the logo sits on a paper tile above the title. The logo's navy line art has 1.7:1 contrast on the dark cover, so it needs a light ground. Its alt text is empty there because the heading beside it already says "בידיים טובות".
-- **S03 (values, the service concept):** the logo sits beside the screen title, with the alt text "לוגו בידיים טובות".
+- The logo's navy line art has only 1.7:1 contrast on dark surfaces, so it is always shown on a light ground: the cover panel, the header, light animation surfaces, or a paper seal on the night surface.
+- Alt text: empty on the cover, where the heading beside it already says "בידיים טובות"; "לוגו בידיים טובות" in the header and on S03.
 - **The SVG version pasted in the conversation was not used.** Its embedded C2PA manifest says it was produced by Claude at a user's request, so it is most likely a vector trace and not the brand owner's master file. Its gradient stops match the PNG exactly. Please confirm with the brand owner and supply the official vector file. If it is placed as `assets/brand/bidayim-tovot-logo.svg`, it is picked up automatically.
 
 ## Emotions model

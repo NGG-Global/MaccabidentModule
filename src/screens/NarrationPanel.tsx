@@ -15,7 +15,7 @@ export function NarrationPanel({ className = '' }: { className?: string }) {
   const { status, missing } = stage.state;
   const playing = status === 'playing';
   return (
-    <div className={`relative overflow-hidden rounded-xl bg-ink px-4 py-3 text-white sm:p-6 ${className}`}>
+    <div className={`relative overflow-hidden rounded-xl bg-night px-4 py-3 text-white sm:p-6 ${className}`}>
       <div className="flex items-center gap-3 text-sm text-mist">
         <span className="flex h-4 items-end gap-0.5" aria-hidden>
           {[0, 1, 2, 3].map((i) => (

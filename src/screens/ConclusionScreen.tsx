@@ -32,7 +32,7 @@ export function ConclusionScreen({ screen, state, dispatch }: ScreenProps) {
           initial={{ opacity: 0, x: -12 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.2 }}
-          className={`${sidePane} gap-4 rounded-2xl p-5 sm:p-6 ${complete ? 'bg-ink text-white' : 'bg-white'}`}
+          className={`${sidePane} gap-4 rounded-2xl p-5 sm:p-6 ${complete ? 'bg-night text-white' : 'bg-white'}`}
           data-testid="completion-status"
           data-complete={complete}
           aria-live="polite"
