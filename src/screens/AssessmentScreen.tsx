@@ -247,7 +247,7 @@ function Improve({ attempt, questions }: { attempt: AssessmentAttempt; questions
   const sorted = [...missed].sort((a, b) => Number(Boolean(b.critical)) - Number(Boolean(a.critical)));
   return (
     <div className="rounded-xl bg-paper p-3" data-testid="assessment-improve">
-      <p className="text-xs font-semibold text-violet">{ui.assessment.improve}</p>
+      <p className="text-xs font-semibold text-violet-ink">{ui.assessment.improve}</p>
       <ul className="mt-1 flex flex-wrap gap-2">
         {sorted.map((q) => (
           <li key={q.questionId} className={`rounded-full px-3 py-1 text-sm font-medium ${q.critical ? 'bg-ink text-white' : 'bg-white'}`}>

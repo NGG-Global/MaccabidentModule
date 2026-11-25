@@ -1,6 +1,7 @@
 import { motion } from 'motion/react';
 import { content, ui } from '../content';
 import { useTrack } from '../analytics/TrackContext';
+import { BrandLogo } from '../components/BrandLogo';
 import { Icon } from '../components/Icon';
 import { useScreenNav } from '../components/ScreenNav';
 import { resolveMedia } from '../media/resolveMedia';
@@ -38,6 +39,15 @@ export function IntroScreen({ screen, state, dispatch }: ScreenProps) {
         {poster.status === 'ready' && <img src={poster.url} alt="" className="absolute inset-0 h-full w-full object-cover opacity-55" />}
         <div className="absolute inset-0 bg-[linear-gradient(to_top,var(--color-ink)_12%,rgba(11,31,58,0.55)_55%,rgba(11,31,58,0.2))]" />
         <div className="relative mx-auto flex h-full w-full max-w-6xl min-[1600px]:max-w-[88rem] flex-col justify-end gap-5 px-6 pb-10 sm:gap-6 sm:px-12 sm:pb-16">
+          {/* The logo's navy line art needs a light ground: it sits on a paper tile over the dark cover. */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.92 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ type: 'spring', damping: 24, stiffness: 160 }}
+            className="self-start rounded-2xl bg-paper p-2.5 shadow-xl sm:p-3"
+          >
+            <BrandLogo height={64} alt="" className="h-12 w-auto sm:h-16" />
+          </motion.div>
           <motion.p initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-sm font-semibold tracking-wide text-mist">
             {screen.eyebrow}
           </motion.p>

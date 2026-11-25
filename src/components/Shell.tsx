@@ -79,7 +79,7 @@ export function Shell({ screen, chapters, canGoBack, canGoNext, nextLabel, hint,
                   <span
                     aria-hidden
                     className={`grid size-6 shrink-0 place-items-center rounded-full text-xs font-bold ${
-                      c.current ? 'bg-violet text-white' : c.complete ? 'bg-navy text-white' : 'border border-ink/25 text-ink/50'
+                      c.current ? 'bg-violet-ink text-white' : c.complete ? 'bg-navy text-white' : 'border border-ink/25 text-ink/50'
                     }`}
                   >
                     {c.complete && !c.current ? <Icon name="check" className="size-3.5" strokeWidth={3} /> : i + 1}

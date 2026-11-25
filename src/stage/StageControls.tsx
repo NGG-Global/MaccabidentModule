@@ -178,7 +178,7 @@ function TranscriptDialog() {
         <ol className="space-y-3 overflow-y-auto px-5 py-4 leading-relaxed">
           {lines.map(({ beat, i, text }) => (
             <li key={i} className={i === state.index ? 'text-ink' : 'text-ink/70'}>
-              {beat.label && <span className="mb-0.5 block text-xs font-semibold text-violet">{beat.label}</span>}
+              {beat.label && <span className="mb-0.5 block text-xs font-semibold text-violet-ink">{beat.label}</span>}
               {beat.kind === 'video' && <span className="me-1 font-semibold text-navy">{ui.stage.inVideo}</span>}
               {text ?? <em className="text-ink/60">{ui.stage.narrationNotSupplied}</em>}
             </li>

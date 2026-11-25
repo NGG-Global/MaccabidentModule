@@ -25,7 +25,7 @@ export function NarrationPanel({ className = '' }: { className?: string }) {
         {ui.stage.narration}
         {status === 'ended' && (
           <span className="ms-auto flex items-center gap-1 text-xs">
-            <Icon name="check" className="size-3.5 text-violet" strokeWidth={3} />
+            <Icon name="check" className="size-3.5 text-violet-ink" strokeWidth={3} />
             {ui.stage.ended}
           </span>
         )}

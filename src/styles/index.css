@@ -1,23 +1,58 @@
 @import 'tailwindcss';
 
 /*
- * Design tokens. Brand colours are sampled from the supplied Maccabident logo;
- * paper and ink tones give the editorial, documentary feel.
+ * Design tokens: the single source for colours and type in the UI.
+ * src/remotion/theme.ts mirrors the colour values for the compositions, and a
+ * unit test keeps the two in step (tests/unit/brand.test.ts).
+ *
+ * Brand palette: sampled from the "בידיים טובות" logo
+ * (assets/brand/bidayim-tovot-logo.png). The outline is #243F82; the heart is
+ * a gradient through the six --color-logo-* stops. No other hue is added:
+ * --color-violet-ink is a mix of two logo colours, for small text that needs
+ * 4.5:1. Ink, paper and mist are neutrals, not brand colours.
  */
 @theme {
-  --color-violet: #7f68d7;
-  --color-navy: #02428e;
-  --color-sky: #0090d2;
+  --color-logo-navy: #243f82;
+  --color-logo-1: #00b9ff;
+  --color-logo-2: #339aff;
+  --color-logo-3: #677bff;
+  --color-logo-4: #8d65ff;
+  --color-logo-5: #a457ff;
+  --color-logo-6: #ad52ff;
+
+  /* Primary: headings, buttons, visited states (9.1:1 on paper). */
+  --color-navy: #243f82;
+  /* Accent: fills, rings, graphics and large text (3.5:1 on paper; not for small text). */
+  --color-violet: #8d65ff;
+  /* Accent for small text: color-mix(in srgb, logo-4 65%, logo-navy) = #6858d3 (4.9:1 on paper). */
+  --color-violet-ink: #6858d3;
+  /* Light accent, on dark backgrounds only (7.4:1 on ink). */
+  --color-sky: #00b9ff;
+
   --color-ink: #0b1f3a;
   --color-paper: #f6f4ef;
   --color-paper-deep: #ece8df;
   --color-mist: #dce6f2;
   --color-brand-50: #eef3fa;
   --color-brand-100: #dce6f2;
-  --color-brand-600: #02428e;
-  --color-brand-700: #01336f;
+  --color-brand-600: #243f82;
+
+  /* Fonts. Ploni is the target family; its licensed woff2 files are not in the repository yet (docs/brand.md). */
   --font-display: 'Frank Ruhl Libre Variable', 'Frank Ruhl Libre', David, serif;
   --font-sans: 'Heebo Variable', 'Heebo', 'Arial Hebrew', Arial, system-ui, sans-serif;
+}
+
+:root {
+  /* The logo's heart gradient, for brand accents. */
+  --gradient-brand: linear-gradient(
+    to right,
+    var(--color-logo-1) 0%,
+    var(--color-logo-2) 22%,
+    var(--color-logo-3) 48%,
+    var(--color-logo-4) 70%,
+    var(--color-logo-5) 88%,
+    var(--color-logo-6) 100%
+  );
 }
 
 html,
@@ -47,13 +82,13 @@ body {
 /* The forward button, once the current step is finished: a soft ring that says "continue here". */
 @keyframes ready-pulse {
   0% {
-    box-shadow: 0 0 0 0 rgb(127 104 215 / 0.55);
+    box-shadow: 0 0 0 0 rgb(141 101 255 / 0.55);
   }
   70% {
-    box-shadow: 0 0 0 12px rgb(127 104 215 / 0);
+    box-shadow: 0 0 0 12px rgb(141 101 255 / 0);
   }
   100% {
-    box-shadow: 0 0 0 0 rgb(127 104 215 / 0);
+    box-shadow: 0 0 0 0 rgb(141 101 255 / 0);
   }
 }
 

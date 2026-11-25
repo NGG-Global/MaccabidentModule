@@ -9,6 +9,7 @@ import { useLiveCaption } from '../stage/CaptionLine';
 import { useMediaPrefs } from '../stage/prefs';
 import { useStage } from '../stage/StageProvider';
 import { StageViewport } from '../stage/StageViewport';
+import { BrandLogo } from '../components/BrandLogo';
 import { ScreenFrame, ScreenHeading, type StepInfo } from './ScreenHeading';
 import { elapsedMs, nowMs } from './timing';
 import { useEnterSequence } from './useEnterSequence';
@@ -93,7 +94,16 @@ export function ValuesScreen({ screen, state, dispatch, done }: ScreenProps) {
 
   return (
     <ScreenFrame
-      heading={<ScreenHeading screen={screen} lead={screen.learningObjective} steps={steps} step={step === 'watch' ? 0 : 1} onStep={(i) => (i === 0 ? goWatch() : goExercise())} />}
+      heading={
+        <ScreenHeading
+          screen={screen}
+          lead={screen.learningObjective}
+          steps={steps}
+          step={step === 'watch' ? 0 : 1}
+          onStep={(i) => (i === 0 ? goWatch() : goExercise())}
+          brand={<BrandLogo height={44} alt={ui.brandLogoAlt} className="h-9 w-auto sm:h-11" />}
+        />
+      }
     >
       <h2 tabIndex={-1} data-step-heading className="sr-only">
         {steps[step === 'watch' ? 0 : 1]!.label}
@@ -115,7 +125,7 @@ export function ValuesScreen({ screen, state, dispatch, done }: ScreenProps) {
                       onClick={() => (onEnter ? stage.goToBeat(chapter.beatIndex) : stage.run('enter', { autoplay: true, startIndex: chapter.beatIndex }))}
                       className={`flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-start transition ${current ? 'bg-ink text-white' : 'hover:bg-white'}`}
                     >
-                      <span className={`font-display text-2xl tabular-nums ${current ? 'text-violet' : 'text-ink/30'}`}>{String(i + 1).padStart(2, '0')}</span>
+                      <span className={`font-display text-2xl tabular-nums ${current ? 'text-violet-ink' : 'text-ink/30'}`}>{String(i + 1).padStart(2, '0')}</span>
                       <span className="flex-1">
                         <span className="block font-display text-lg font-semibold leading-tight">{nameOf(chapter.valueId)}</span>
                         <span className={`flex items-center gap-1 text-sm ${current ? 'text-mist' : 'text-ink/55'}`}>
@@ -141,7 +151,7 @@ export function ValuesScreen({ screen, state, dispatch, done }: ScreenProps) {
         >
           <div className="flex flex-wrap items-end justify-between gap-2">
             <div>
-              <p className="text-xs font-semibold text-violet sm:text-sm">{ui.values.exercise}</p>
+              <p className="text-xs font-semibold text-violet-ink sm:text-sm">{ui.values.exercise}</p>
               <h3 id="exercise-heading" className="font-display text-xl font-semibold sm:text-2xl">
                 {interaction.prompt}
               </h3>
@@ -233,7 +243,7 @@ function ExerciseSummary({ feedbackKey, onListen }: { feedbackKey?: string; onLi
   return (
     <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="flex flex-wrap items-center gap-x-3 gap-y-2 rounded-xl bg-ink px-4 py-2.5 text-white" data-testid="exercise-summary">
       <p className="flex min-w-0 flex-1 items-start gap-2">
-        <Icon name="check" className="mt-0.5 size-5 text-violet" strokeWidth={3} />
+        <Icon name="check" className="mt-0.5 size-5 text-violet-ink" strokeWidth={3} />
         <span className="min-w-0">
           <strong className="block">{ui.values.allDone}</strong>
           {speaking && captions && (
