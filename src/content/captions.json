@@ -806,9 +806,14 @@
     "status": "machine-transcribed",
     "cues": [
       {
-        "start": 4.48,
-        "end": 7.96,
-        "text": "אני מחכה כבר עשרים דקות, למה אף אחד לא מעדכן אותי?"
+        "start": 4.08,
+        "end": 5.92,
+        "text": "אני מחכה כבר עשרים דקות."
+      },
+      {
+        "start": 6.1,
+        "end": 7.62,
+        "text": "למה אף אחד לא מעדכן אותי?"
       }
     ]
   },
@@ -1561,13 +1566,13 @@
     "status": "machine-transcribed",
     "cues": [
       {
-        "start": 0.82,
-        "end": 2.56,
+        "start": 0.88,
+        "end": 2.58,
         "text": "סליחה, יש לי תור לעשר."
       },
       {
-        "start": 4.2,
-        "end": 6.66,
+        "start": 4.24,
+        "end": 6.7,
         "text": "תעביר כרטיס ותשב, יקראו לך."
       }
     ]
@@ -1591,29 +1596,29 @@
     "status": "machine-transcribed",
     "cues": [
       {
-        "start": 1.54,
-        "end": 2.98,
+        "start": 3.28,
+        "end": 4.66,
         "text": "תודה רבה על הכול."
       },
       {
-        "start": 3.4,
-        "end": 6.22,
-        "text": "בשמחה, יוסי. שיהיה לך המשך יום נעים."
+        "start": 5.2,
+        "end": 7.36,
+        "text": "בשמחה, יוסי. שיהיה המשך יום נעים."
       }
     ],
-    "note": "Second line uncertain in the machine transcript; verify against the script."
+    "note": "Machine transcript of the regenerated clip; verify the wording against the script."
   },
   "VID-AST-WELCOME-01": {
     "status": "machine-transcribed",
     "cues": [
       {
-        "start": 1.12,
-        "end": 3.82,
+        "start": 1.16,
+        "end": 3.86,
         "text": "שלום יוסי, אני דנה הסייעת."
       },
       {
-        "start": 4.0,
-        "end": 5.18,
+        "start": 4.04,
+        "end": 5.22,
         "text": "בוא, תרגיש בנוח."
       }
     ]
@@ -1647,13 +1652,13 @@
     "status": "machine-transcribed",
     "cues": [
       {
-        "start": 0.96,
-        "end": 3.74,
+        "start": 1.08,
+        "end": 4.16,
         "text": "יוסי, בוא נוודא שברור לך מה השלב הבא."
       },
       {
-        "start": 4.38,
-        "end": 6.06,
+        "start": 5.2,
+        "end": 6.76,
         "text": "תודה, זה מאוד עוזר."
       }
     ]
@@ -1662,14 +1667,24 @@
     "status": "machine-transcribed",
     "cues": [
       {
-        "start": 0.0,
-        "end": 2.88,
+        "start": 0.66,
+        "end": 1.26,
+        "text": "שלום."
+      },
+      {
+        "start": 1.36,
+        "end": 2.9,
         "text": "שלום, יש לי תור לעשר."
       },
       {
-        "start": 2.88,
-        "end": 6.5,
-        "text": "בוקר טוב, ברוך הבא. בוא נבדוק יחד."
+        "start": 3.2,
+        "end": 5.0,
+        "text": "בוקר טוב, ברוך הבא."
+      },
+      {
+        "start": 5.34,
+        "end": 6.54,
+        "text": "בוא נבדוק יחד."
       }
     ]
   }

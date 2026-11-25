@@ -13,6 +13,11 @@
   "question": "איך הייתם מגיבים ליוסי?",
   "situation": [
     {
+      "kind": "video",
+      "mediaId": "VID-AST-WELCOME-01",
+      "label": "דנה מקבלת את יוסי"
+    },
+    {
       "kind": "narration",
       "audioId": "AUDIO-S06-AST1-01",
       "visual": {
