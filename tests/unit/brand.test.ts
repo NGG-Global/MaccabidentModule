@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
-import { color, logoGradient } from '../../src/remotion/theme';
+import { color, font, logoGradient } from '../../src/remotion/theme';
 
 const css = readFileSync(resolve(__dirname, '../../src/styles/index.css'), 'utf8');
 const token = (name: string) => css.match(new RegExp(`--color-${name}:\\s*(#[0-9a-f]{6})`, 'i'))?.[1]?.toUpperCase();
@@ -42,5 +42,12 @@ describe('brand palette', () => {
     const [v, n] = [hex(color.violet), hex(color.navy)];
     const mix = v.map((c, i) => Math.round(c * 0.65 + n[i]! * 0.35));
     expect(hex(color.violetInk)).toEqual(mix);
+  });
+
+  it('uses one font family for headings and text, the same in the UI and the animations', () => {
+    const family = (name: string) => css.match(new RegExp(`--font-${name}:\\s*'([^']+)'`))?.[1];
+    expect(family('sans')).toBe(family('display'));
+    expect(font.sans.split(',')[0]).toBe(`'${family('sans')}'`);
+    expect(font.display).toBe(font.sans);
   });
 });

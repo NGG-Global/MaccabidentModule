@@ -32,8 +32,9 @@ export const surface = {
 } as const;
 
 export const font = {
-  display: "'Frank Ruhl Libre Variable', 'Frank Ruhl Libre', 'David', serif",
-  sans: "'Heebo Variable', 'Heebo', 'Arial Hebrew', Arial, sans-serif",
+  // Interim (Assistant) until Ploni's licensed files arrive; mirrors --font-sans / --font-display in src/styles/index.css.
+  display: "'Assistant Variable', 'Assistant', 'Arial Hebrew', Arial, sans-serif",
+  sans: "'Assistant Variable', 'Assistant', 'Arial Hebrew', Arial, sans-serif",
 } as const;
 
 export const FPS = 30;

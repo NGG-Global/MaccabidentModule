@@ -1,5 +1,5 @@
-import '@fontsource-variable/frank-ruhl-libre';
-import '@fontsource-variable/heebo';
+// Interim font until the licensed Ploni files arrive: Assistant (SIL OFL 1.1), the closest open-licence match. See docs/brand.md.
+import '@fontsource-variable/assistant';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { App, flow } from './App';

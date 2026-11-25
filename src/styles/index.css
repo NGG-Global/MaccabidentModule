@@ -39,9 +39,15 @@
   --color-brand-100: #e7eaff;
   --color-brand-600: #243f82;
 
-  /* Fonts. Ploni is the target family; its licensed woff2 files are not in the repository yet (docs/brand.md). */
-  --font-display: 'Frank Ruhl Libre Variable', 'Frank Ruhl Libre', David, serif;
-  --font-sans: 'Heebo Variable', 'Heebo', 'Arial Hebrew', Arial, system-ui, sans-serif;
+  /*
+   * Fonts: one family for headings and text, as Ploni is used. Ploni's licensed
+   * files are not in the repository yet, so Assistant (SIL OFL 1.1) stands in:
+   * the closest open-licence match in width and letterforms. To switch, add
+   * Ploni's @font-face rules and put 'Ploni' first here and in
+   * src/remotion/theme.ts (docs/brand.md).
+   */
+  --font-display: 'Assistant Variable', 'Assistant', 'Arial Hebrew', Arial, system-ui, sans-serif;
+  --font-sans: 'Assistant Variable', 'Assistant', 'Arial Hebrew', Arial, system-ui, sans-serif;
 }
 
 :root {
