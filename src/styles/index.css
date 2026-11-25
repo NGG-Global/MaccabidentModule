@@ -9,7 +9,8 @@
  * (assets/brand/bidayim-tovot-logo.png). The outline is #243F82; the heart is
  * a gradient through the six --color-logo-* stops. No other hue is added:
  * --color-violet-ink is a mix of two logo colours, for small text that needs
- * 4.5:1. Ink, paper and mist are neutrals, not brand colours.
+ * 4.5:1. Paper, mist and brand-50/100 are light tints of logo-3; ink is the
+ * neutral dark for text.
  */
 @theme {
   --color-logo-navy: #243f82;
@@ -30,11 +31,12 @@
   --color-sky: #00b9ff;
 
   --color-ink: #0b1f3a;
-  --color-paper: #f6f4ef;
-  --color-paper-deep: #ece8df;
-  --color-mist: #dce6f2;
-  --color-brand-50: #eef3fa;
-  --color-brand-100: #dce6f2;
+  /* Light neutrals, tinted with the logo's blue (logo-3 mixed with white): 6%, 12%, 16%, 8%. */
+  --color-paper: #f6f7ff;
+  --color-paper-deep: #edefff;
+  --color-mist: #e7eaff;
+  --color-brand-50: #f3f4ff;
+  --color-brand-100: #e7eaff;
   --color-brand-600: #243f82;
 
   /* Fonts. Ploni is the target family; its licensed woff2 files are not in the repository yet (docs/brand.md). */
@@ -53,6 +55,29 @@
     var(--color-logo-5) 88%,
     var(--color-logo-6) 100%
   );
+  /* Brand surfaces, matching `surface` in src/remotion/theme.ts. */
+  --surface-night:
+    radial-gradient(120% 90% at 100% 0%, rgb(173 82 255 / 0.3), transparent 55%),
+    radial-gradient(90% 80% at 0% 100%, rgb(0 185 255 / 0.22), transparent 60%),
+    linear-gradient(160deg, var(--color-navy) 0%, var(--color-ink) 70%);
+  --surface-dawn:
+    radial-gradient(70% 60% at 88% 8%, rgb(173 82 255 / 0.1), transparent 70%),
+    radial-gradient(60% 60% at 8% 92%, rgb(0 185 255 / 0.1), transparent 70%),
+    var(--color-paper);
+}
+
+/* Dark brand surface: navy to ink with the logo's violet and cyan glowing in. White text stays above 9:1. */
+@utility bg-night {
+  background: var(--surface-night);
+}
+
+/* Light brand surface: the tinted paper with soft logo glows. */
+@utility bg-dawn {
+  background: var(--surface-dawn);
+}
+
+@utility bg-brand-gradient {
+  background: var(--gradient-brand);
 }
 
 html,

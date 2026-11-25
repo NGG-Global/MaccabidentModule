@@ -89,7 +89,7 @@ function Timeline() {
   const filled = (i: number) => (state.status === 'ended' || i < state.index ? 1 : i === state.index ? fraction : 0);
   const track = (i: number) => (
     <span className="absolute inset-x-0 top-1/2 block h-1.5 -translate-y-1/2 overflow-hidden rounded-full bg-ink/12">
-      <span className={`block h-full rounded-full ${i === state.index && state.status !== 'ended' ? 'bg-violet' : 'bg-navy'}`} style={{ width: `${filled(i) * 100}%` }} />
+      <span className={`block h-full rounded-full ${i === state.index && state.status !== 'ended' ? 'bg-brand-gradient' : 'bg-navy'}`} style={{ width: `${filled(i) * 100}%` }} />
     </span>
   );
 

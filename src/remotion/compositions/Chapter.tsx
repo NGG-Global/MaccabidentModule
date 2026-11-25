@@ -1,14 +1,14 @@
 import { AbsoluteFill } from 'remotion';
 import { Arc, MaskLine, Stage, useClock } from '../primitives';
 import type { ChapterPropsT, CommonProps } from '../props';
-import { color, font } from '../theme';
+import { color, font, surface } from '../theme';
 
 /** Chapter transition: outlined chapter number, title rising from a mask, the brand arc drawing through. */
 export function Chapter(props: ChapterPropsT & CommonProps) {
   const c = useClock(props.reducedMotion);
   const { u, portrait } = c;
   return (
-    <Stage background={color.ink} style={{ color: color.white }}>
+    <Stage background={surface.night} style={{ color: color.white }}>
       <AbsoluteFill style={{ justifyContent: 'center', paddingInline: (portrait ? 90 : 180) * u }}>
         <div
           style={{

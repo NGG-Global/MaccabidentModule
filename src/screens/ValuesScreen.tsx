@@ -123,7 +123,7 @@ export function ValuesScreen({ screen, state, dispatch, done }: ScreenProps) {
                       type="button"
                       aria-current={current ? 'true' : undefined}
                       onClick={() => (onEnter ? stage.goToBeat(chapter.beatIndex) : stage.run('enter', { autoplay: true, startIndex: chapter.beatIndex }))}
-                      className={`flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-start transition ${current ? 'bg-ink text-white' : 'hover:bg-white'}`}
+                      className={`flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-start transition ${current ? 'bg-navy text-white' : 'hover:bg-white'}`}
                     >
                       <span className={`font-display text-2xl tabular-nums ${current ? 'text-violet-ink' : 'text-ink/30'}`}>{String(i + 1).padStart(2, '0')}</span>
                       <span className="flex-1">
@@ -241,7 +241,7 @@ function ExerciseSummary({ feedbackKey, onListen }: { feedbackKey?: string; onLi
   const text = useLiveCaption();
   const speaking = stage.state.key === feedbackKey && (stage.state.status === 'playing' || stage.state.status === 'paused');
   return (
-    <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="flex flex-wrap items-center gap-x-3 gap-y-2 rounded-xl bg-ink px-4 py-2.5 text-white" data-testid="exercise-summary">
+    <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="flex flex-wrap items-center gap-x-3 gap-y-2 rounded-xl bg-navy px-4 py-2.5 text-white" data-testid="exercise-summary">
       <p className="flex min-w-0 flex-1 items-start gap-2">
         <Icon name="check" className="mt-0.5 size-5 text-violet-ink" strokeWidth={3} />
         <span className="min-w-0">

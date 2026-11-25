@@ -29,6 +29,15 @@ describe('brand palette', () => {
     expect(logoGradient).toContain(color.sky);
   });
 
+  it('tints the light neutrals with the logo blue (logo-3 mixed with white)', () => {
+    const l3 = hex(token('logo-3')!);
+    const tint = (p: number) => l3.map((c) => Math.round(c * p + 255 * (1 - p)));
+    expect(hex(token('paper')!)).toEqual(tint(0.06));
+    expect(hex(token('paper-deep')!)).toEqual(tint(0.12));
+    expect(hex(token('mist')!)).toEqual(tint(0.16));
+    expect(hex(token('brand-50')!)).toEqual(tint(0.08));
+  });
+
   it('derives the small-text violet as 65% logo violet mixed with 35% logo navy', () => {
     const [v, n] = [hex(color.violet), hex(color.navy)];
     const mix = v.map((c, i) => Math.round(c * 0.65 + n[i]! * 0.35));

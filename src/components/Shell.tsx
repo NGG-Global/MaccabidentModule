@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { content, ui } from '../content';
 import { resolveMedia } from '../media/resolveMedia';
 import type { Screen } from '../content/schema';
+import { BrandLogo } from './BrandLogo';
 import { DraftBadge } from './DraftBadge';
 import { Icon } from './Icon';
 
@@ -69,7 +70,11 @@ export function Shell({ screen, chapters, canGoBack, canGoNext, nextLabel, hint,
       <header className="shrink-0 border-b border-ink/10 bg-paper">
         <div className="mx-auto flex h-14 w-full max-w-6xl min-[1600px]:max-w-[88rem] items-center gap-4 px-4 sm:px-6">
           {logo.status === 'ready' && <img src={logo.url} alt={ui.brand} className="h-6 w-auto shrink-0" />}
-          <p className="hidden shrink-0 border-s border-ink/15 ps-4 font-display text-lg font-semibold text-navy 2xl:block">{content.course.title}</p>
+          {/* The course's own brand: the "בידיים טובות" logo, named in full on very wide screens. */}
+          <div className="flex shrink-0 items-center gap-2 border-s border-ink/15 ps-3 sm:ps-4">
+            <BrandLogo height={32} alt={ui.brandLogoAlt} className="h-7 w-auto sm:h-8" />
+            <p className="hidden font-display text-lg font-semibold text-navy 2xl:block">{content.course.title}</p>
+          </div>
 
           <nav aria-label={ui.chapters} className="mx-auto hidden min-w-0 flex-1 md:block">
             <ol className="flex min-w-0 items-center justify-center">
@@ -119,7 +124,7 @@ export function Shell({ screen, chapters, canGoBack, canGoNext, nextLabel, hint,
           </p>
           <div aria-hidden className="flex gap-1">
             {chapters.map((c) => (
-              <span key={c.screenId} className={`h-1 flex-1 rounded-full ${c.current ? 'bg-violet' : c.complete ? 'bg-navy' : 'bg-ink/12'}`} />
+              <span key={c.screenId} className={`h-1 flex-1 rounded-full ${c.current ? 'bg-brand-gradient' : c.complete ? 'bg-navy' : 'bg-ink/12'}`} />
             ))}
           </div>
         </div>

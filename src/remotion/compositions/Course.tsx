@@ -1,7 +1,8 @@
 import { AbsoluteFill, interpolate } from 'remotion';
 import { Arc, MaskLine, Photo, Stage, Words, activeIndex, url, useClock, type Clock } from '../primitives';
 import type { AssessmentResultPropsT, ClosingPropsT, CommonProps, MeasurementPropsT, ScenarioFeedbackPropsT, ScenarioIntroPropsT } from '../props';
-import { color, font } from '../theme';
+import { LogoMark } from '../LogoMark';
+import { color, font, surface } from '../theme';
 import { Emblem } from './Values';
 
 const VALUE_ORDER = ['רואים אותך', 'מתאמצים למענך', 'מלווים אותך לאורך הדרך'];
@@ -315,7 +316,7 @@ export function AssessmentResult(props: AssessmentResultPropsT & CommonProps) {
   const size = r * 2 + 60 * u;
   const angle = (props.threshold / 100) * Math.PI * 2 - Math.PI / 2;
   return (
-    <Stage background={color.ink} style={{ color: color.white }}>
+    <Stage background={surface.night} style={{ color: color.white }}>
       <AbsoluteFill style={{ flexDirection: portrait ? 'column' : 'row', alignItems: 'center', justifyContent: 'center', gap: 100 * u }}>
         <div style={{ position: 'relative', width: size, height: size }}>
           <svg width={size} height={size} aria-hidden>
@@ -374,7 +375,7 @@ export function Closing(props: ClosingPropsT & CommonProps) {
   const tValues = props.values[0]!.at;
   const tTitle = props.title.at;
   return (
-    <Stage background={color.ink} style={{ color: color.white }}>
+    <Stage background={surface.night} style={{ color: color.white }}>
       {t < tValues + 0.6 && (
         <AbsoluteFill style={{ opacity: c.window(0, tValues + 0.6, 0.6) }}>
           <AbsoluteFill style={{ display: 'grid', gridTemplateColumns: `repeat(${portrait ? 1 : props.photos.length}, 1fr)`, gap: 10 * u, padding: 10 * u }}>
@@ -405,7 +406,7 @@ export function Closing(props: ClosingPropsT & CommonProps) {
       {t >= tTitle - 0.2 && (
         <AbsoluteFill
           style={{
-            background: color.paper,
+            background: surface.dawn,
             color: color.navy,
             clipPath: `circle(${interpolate(c.move(tTitle, { damping: 30, stiffness: 40 }), [0, 1], [0, 120])}% at 50% 55%)`,
             alignItems: 'center',
@@ -414,10 +415,11 @@ export function Closing(props: ClosingPropsT & CommonProps) {
             gap: 10 * u,
           }}
         >
-          <MaskLine p={c.enter(tTitle + 0.2)} m={c.move(tTitle + 0.2, { damping: 26, stiffness: 70 })} style={{ fontFamily: font.display, fontSize: (portrait ? 180 : 200) * u, fontWeight: 700, lineHeight: 1.05 }}>
+          {/* A reply to the opening: the concept's logo draws in once more above its name. */}
+          <LogoMark width={(portrait ? 320 : 280) * u} draw={c.progress(tTitle - 0.1, tTitle + 1.3)} fill={c.move(tTitle + 0.7, { damping: 14, stiffness: 120 })} />
+          <MaskLine p={c.enter(tTitle + 0.2)} m={c.move(tTitle + 0.2, { damping: 26, stiffness: 70 })} style={{ fontFamily: font.display, fontSize: (portrait ? 180 : 200) * u, fontWeight: 700, lineHeight: 1.05, marginTop: 20 * u }}>
             {props.title.text}
           </MaskLine>
-          <Arc draw={c.progress(tTitle + 0.4, tTitle + 1.8)} width={(portrait ? 620 : 740) * u} thickness={12} style={{ display: 'block', margin: `${-10 * u}px auto 0`, transform: 'scaleY(-0.55)' }} />
           <MaskLine p={c.enter(props.thanks.at)} m={c.move(props.thanks.at)} style={{ fontSize: 48 * u, color: color.inkSoft, marginTop: 30 * u }}>
             {props.thanks.text}
           </MaskLine>
